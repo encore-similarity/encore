@@ -1,3 +1,14 @@
+****ATTENTION*****: The project has now been moved to a google code repository: 
+
+https://code.google.com/r/matteotiberti-ensemble/
+
+The current github is now deprecated. Please refer to the google code page. Thank you.
+
+
+
+
+
+----
 
 This is an extension to the MDAnalysis python package for
 analysing ensembles for molecular simulation. So far, the
