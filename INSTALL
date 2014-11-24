@@ -1,0 +1,29 @@
+=====================
+Installing ENCORE
+=====================
+
+ENCORE is written as a Python 2.6 library which interfaces to specialized C code in order to perform the most time-consuming operations. 
+The prerequisites for installing ENCORE are:
+
+	* A working python2.6 distribution or higher (2.X) 
+	* the MDAnalysis package ( http://https://code.google.com/p/mdanalysis/ )
+	* a command-line C compiler (as gcc or clang)
+	* Optionally, a working cython distribution
+	
+Installation happens through a standard distutils setup.py script. In order to install the library simply unpack the provided .tar.gz package, enter the unpacked directory and run:
+
+	python setup.py install 
+
+this performs a system-wide install, and administrative privileges may be required. It is possible however to select a custom location supplying the --prefix argument:
+
+	python setup.py install --prefix=user_dir/location 
+
+see 
+
+	python setup.py install --help
+
+for more details. Please notice the encore package directory MUST be in the python sys.path in order to work correctly. This is performed for instance by runnng this command in a bash shell:
+
+export PYTHONPATH=$PYTHONPATH":/location/of/encore"
+
+you can add this line to your .bashrc or .profile file so that it's automatically executed after a shell is opened.

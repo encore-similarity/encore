@@ -1,5 +1,5 @@
 =====================
-  ENCORE README
+  ENCORE
 =====================
 
 ENCORE is a Python package designed to calculate similarity measures between protein ensembles, as reported in: 
