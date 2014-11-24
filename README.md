@@ -1,29 +1,14 @@
-****ATTENTION*****: The project has now been moved to a google code repository: 
+=====================
+  ENCORE README
+=====================
 
-https://code.google.com/r/matteotiberti-ensemble/
+ENCORE is a Python package designed to calculate similarity measures between protein ensembles, as reported in: 
 
-The current github is now deprecated. Please refer to the google code page. Thank you.
+       Lindorff-Larsen K, Ferkinghoff-Borg J (2009) 
+       Similarity Measures for Protein Ensembles. 
+       PLoS ONE 4(1): e4203. doi:10.1371/journal.pone.0004203
 
+The package includes facilities for handling ensembles and trajectories, performing clustering or dimensionality reduction of the ensemble space, estimating multivariate probability distributions from the input data, calculate conformational entropies, principal component analysis and more. The package was designed as a Python 2.6 library, but most library files include their own __main__ section which allows them to be run as user scripts that accept command line arguments. Usually, the included help strings (python encore/script.py -h) is pretty much self-explanatory. An example on how the similarity measures are calculated on a number of ensembles is also available.
 
-
-
-
-----
-
-This is an extension to the MDAnalysis python package for
-analysing ensembles for molecular simulation. So far, the
-package contains support for calculating similarity scores, 
-covariance matrices (including shrinkage estimation), PCA,
-and entropy.
-
-The .py files are libraries, but can also serve as 
-executables. For instance: 
-
-python ensemble/similarity.py --trajectory1 traj1.dcd \
-                              --trajectory2 traj2.dcd \
-                              --topology1 top1.pdb \
-                              --topology2 top2.pdb 
-
-When running them as executables, use the --help option to see 
-the available command line options.
+ENCORE is able to use as input data files deriving from simulations and experimental data (e.g. from NMR structure resolution experiments). The software is able to handle the most popular trajectory formats (as xtc or dcd files), although the periodic boundaries condition must be solved before being used, as well as multimodel PDB files.
 
