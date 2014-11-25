@@ -89,7 +89,7 @@ cdef class AffinityPropagation:
         
         # run C module Affinity Propagation
         iterations = caffinityprop.CAffinityPropagation( <double*>matndarray.data, cn, lam, max_iterations, convergence, noise, <long*>clusters.data)
-
+        print clusters, "CLUSS"
         # Check results and return them
         if iterations > 0:
             centroids = numpy.unique(clusters)
@@ -105,4 +105,6 @@ cdef class AffinityPropagation:
             logging.info("Preference %3.2f: could not converge in %d iterations" % (preference, -iterations))
             return None
 
-    __call__ = run
+    def __call__(self, *args):
+        results = self.run(*args)
+        return results

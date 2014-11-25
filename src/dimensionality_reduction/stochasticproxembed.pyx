@@ -85,7 +85,8 @@ cdef class StochasticProximityEmbedding:
           
         return (finalstress, d_coords.reshape((-1,dim)).T)
 	
-    __call__ = run
+    def __call__(self, *args):
+        return self.run(*args)
 
 cdef class kNNStochasticProximityEmbedding:
     """

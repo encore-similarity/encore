@@ -239,7 +239,6 @@ def cumulative_clustering_ensemble_similarity(cc, ens1, ens1_id, ens2, ens2_id, 
     ensB = [ numpy.where( numpy.logical_and(c.metadata['ensemble'] <= ens2_id, c.metadata['ensemble']) >= ens2_id_min)[0].shape[0] for c in cc ]
     sizeA = float(numpy.sum(ensA))
     sizeB = float(numpy.sum(ensB))
-    print "ab", sizeA, sizeB
     #sizeA = float( numpy.sum( [numpy.where( numpy.logical_and(c.metadata['ensemble'] <= ens1_id, c.metadata['ensemble']) >= ens1_id_min)[0].shape[0] for c in cc])
     #sizeB = float(numpy.sum( [numpy.where( numpy.logical_and(c.metadata['ensemble'] <= ens2_id, c.metadata['ensemble']) >= ens2_id_min)[0].shape[0] for c in cc])
 
@@ -1020,8 +1019,9 @@ if __name__ == "__main__":
             logging.info("\n    Done!")
 
             # Create clusters collections from clustering results, one for each cluster. None if clustering didn't work.
+            print results, "MMM"
             ccs = [ ClustersCollection(clusters[1], metadata=metadata) for clusters in results ]
-
+            
             for i,p in enumerate(preferences):
                 if ccs[i].clusters == None:
                     continue
@@ -1040,23 +1040,22 @@ if __name__ == "__main__":
                     #        print "%.3f" % clustering_ensemble_similarity( ccs[i], ensembles[0], 1, ensembles[j], j+1)
                     elif parser_phase3.options.convergence_mode == "increasing-half":
                         print "increasing half ==="
-                        for j in range(0,len(ensembles)-1):
+                        for j in range(0,len(ensembles)):
                             print "%.3f" % cumulative_clustering_ensemble_similarity( ccs[i], ensembles[-1], len(ensembles)+1, ensembles[j], j+1, ens1_id_min=len(ensembles)+1)
                     elif parser_phase3.options.convergence_mode=="increasing-window":
                         print "increasing window ==="
-                        for j in range(0,len(ensembles)-1):
+                        for j in range(0,len(ensembles)):
                             print "%.3f" % cumulative_clustering_ensemble_similarity( ccs[i], ensembles[-1], len(ensembles)+1,
 ensembles[j], j+1)
             # for every preference value
                 else:
                     values = TriangularMatrix(size=out_matrix_eln)
-                
-                    for pair in pairs_indeces:
 
+                    print "==== Preference value: %1.2f ==="%p
+                    for pair in pairs_indeces:
                     # Calculate dJS
-                        values[pair[0],pair[1]] = clustering_ensemble_similarity( ccs[i], ensembles[pair[0]], ensembles[pair[1]] )
+                        values[pair[0],pair[1]] = clustering_ensemble_similarity( ccs[i], ensembles[pair[0]], pair[0]+1, ensembles[pair[1]], pair[1]+1)
                 
-                        print "==== Preference value: %1.2f ==="%p
                     values.square_print()
                         
                 if parser_phase3.options.details:
@@ -1181,7 +1180,7 @@ ensembles[j], j+1)
             if parser_phase3.options.details:
                 kwds = {}
                 kwds["stress"] = numpy.array([embedded_stress])
-            for en,e in enumerate(embedded_ensembles):
-                kwds[("ensemble%d"%en)] = e
-            numpy.savez("%s_%d_dimensions" % (parser_phase3.options.details, ndim), **kwds) 
+                for en,e in enumerate(embedded_ensembles):
+                    kwds[("ensemble%d"%en)] = e
+                numpy.savez("%s_%d_dimensions" % (parser_phase3.options.details, ndim), **kwds) 
         exit(0)
