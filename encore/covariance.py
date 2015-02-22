@@ -221,7 +221,7 @@ def covariance_matrix(ensemble,
     # Optionally correct with mass-weighting
     if mass_weighted:
         # Calculate mass-weighted covariance matrix
-        masses = numpy.repeat(ensemble.get_atom_selection(start=start,end=end).masses(), 3)
+        masses = numpy.repeat(ensemble.atom_selection.masses(), 3)
         mass_matrix = numpy.sqrt(numpy.identity(len(masses))*masses)
         sigma = numpy.dot(mass_matrix, numpy.dot(sigma, mass_matrix))
 
