@@ -4,8 +4,9 @@ complete and exhaustive assessment of the convergence of a simulation is
 difficult, because of the short time-scale of molecular simulations 
 which do not allow to sample relatively slow events, it is possible to 
 at least evaluate the convergence within the sampled conformational basin. 
-Here this is performed by comparing the whole MD ensemble (trajctory) with 
-time-windows of increasing size. In this way we can answer the question of 
+Here this is performed by comparing the whole MD ensemble (trajectory) with 
+time-windows of the same trajectory of increasing size. 
+In this way we can answer the question of 
 how quickly a simulation converges to our current best estimate of the 
 complete distribution of conformations (i.e. the entire simulation). 
 A simulation which repeadetly samples a single well-defined basin will quickly
@@ -24,8 +25,13 @@ they both quickly fall towards low values of divergence with increasing size
 of the time-window.
 
 Running the examples, assuming that ENCORE is correctly installed and that 
-the set_environment.sh file is properly set up, is just a matter of running the .sh files. The output log files will contain a list of values, which are
+the set_environment.sh file is properly set up, is just a matter of running 
+the .sa files. The output log files will contain a list of values, which are
  the results of the comparison between the time-window of increasing 
 size and the full trajectory. In this case, the time-window starts with a size
  of 50ns and increases of 50ns for every step, so that there will be 10 
 windows in total. 
+
+IMPORTANT: Please run clustering.sh before dimred.sh. This is because clustering.sh
+will save a the -RMSD matrix it uses as a file on disk, which is used in dimred.sh
+so that it doesn't need to be recomputed.

@@ -1,6 +1,6 @@
 . ../set_environment.sh
-ln -s ../$ENCORE_BUILD .
-ln -s ../$MDANALYSIS_BUILD .
+ln -s $ENCORE_BUILD .
+ln -s $MDANALYSIS_BUILD .
 
 if [[ ! -e minusrmsd_pw.npz ]]; then
 	echo "-RMSD Matrix file ( minusrmsd_pw.npz ) not found! Please run the clustering example first."
@@ -25,5 +25,5 @@ done
 echo "Now running: $cmdline"
 echo "Results will be written in file: dimred.log"
 
-$PYTHON encore/similarity.py $cmdline &> dimred.log
+$PYTHON encore/similarity.py $cmdline
 

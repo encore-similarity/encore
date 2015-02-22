@@ -1,4 +1,4 @@
-	In this example, the three 
+In this example, the three 
 measures of ensemble similarity implemented in ENCORE (harmonic, clustering and
 dimensionality reduction) are tested. In this case, we are comparing few 
 different experimental ensembles of the Ubiquitin resolved by different
@@ -9,19 +9,18 @@ is inspired from the paper
    Recognition dynamics up to microseconds revealed from an RDC-derived 
    ubiquitin ensemble in solution. Science 320: 1471–1475
 
-in which a method using NMR's residual dipolar couplings (RDC) is used to 
-resolve Ubiquitin motions in the millisecond time-scale and several Ubiquitin experimental ensembles are compared. 
+in which an residual dipolar couplings (RDC)-derived Ubiquitin ensemble 
+is compared with several other Ubiquitin experimental ensembles. 
 
 In a similar fashion,  we use our ensemble comparison 
-methods to compare several NMR-resolved ensembles together with a 
-collection of X-ray structures:
+methods to compare several NMR-resolved ensembles, together with a 
+collection of X-ray structures. The NMR ensembles are:
 
 DER: 1XQQ
 EROS: 2K39
 ERNST: 2KOX
 SB: 2LJ5
 MUMO: 2NR2
-
 
 In this directory, three .sh files are present (harmonic.sh, clustering.sh 
 and dimred.sh). If the set_environment.sh file has been adequately set in the

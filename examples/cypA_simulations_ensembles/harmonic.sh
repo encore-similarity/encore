@@ -1,6 +1,6 @@
 . ../set_environment.sh
-ln -s ../$ENCORE_BUILD .
-ln -s ../$MDANALYSIS_BUILD .
+ln -s $ENCORE_BUILD .
+ln -s $MDANALYSIS_BUILD .
 
 # Trajectories containing the ensembles to be compared
 trajs=(traj_c22-star.xtc  traj_c36.xtc  traj_ff99sb-ildn-star.xtc)

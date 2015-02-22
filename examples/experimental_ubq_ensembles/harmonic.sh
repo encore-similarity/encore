@@ -20,4 +20,4 @@ done
 echo "Now running: $cmdline"
 echo "Results will be written in file: harmonic.log"
 echo  $ENCORE_BUILD/similarity.py
-$PYTHON encore/similarity.py $cmdline &> harmonic.log
+$PYTHON encore/similarity.py $cmdline

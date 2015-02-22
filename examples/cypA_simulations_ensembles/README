@@ -18,3 +18,7 @@ directory (harmonic.sh, clustering.sh, dimred.sh), each of them using
 one of the three methods detailed in the paper. You can take a look at
 the comments in these files to understand how the commands work in
 details.
+
+IMPORTANT: Please run clustering.sh before dimred.sh. This is because clustering.sh
+will save a the -RMSD matrix it uses as a file on disk, which is used in dimred.sh
+so that it doesn't need to be recomputed.

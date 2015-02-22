@@ -1,6 +1,6 @@
 . ../set_environment.sh
-ln -s ../$ENCORE_BUILD .
-ln -s ../$MDANALYSIS_BUILD .
+ln -s $ENCORE_BUILD .
+ln -s $MDANALYSIS_BUILD .
 
 # Just one ensemble, since we want to evaluate convergence.                                                                                         
 nensembles=1
@@ -17,5 +17,5 @@ for ff in ff99sb-ildn-star c22-star; do
 	echo "Now running: $ff"
 	echo "Results will be written in file: dimred_"$ff".log"
 	echo  $ENCORE_BUILD/similarity.py
-	$PYTHON encore/similarity.py $cmdline &> dimred_"$ff".log
+	$PYTHON encore/similarity.py $cmdline
 done

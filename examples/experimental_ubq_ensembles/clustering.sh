@@ -1,6 +1,6 @@
 . ../set_environment.sh
-ln -s ../$ENCORE_BUILD .
-ln -s ../$MDANALYSIS_BUILD .
+ln -s $ENCORE_BUILD .
+ln -s $MDANALYSIS_BUILD .
 
 # List of files containing the ensembles to be compared. The x-ray derived ensemble is included as a .DCD trajectory file.
 pdbs=(filtered_1XQQ.pdb  filtered_2K39.pdb  filtered_2KOX.pdb filtered_2LJ5.pdb filtered_2NR2.pdb xray.dcd)
@@ -20,5 +20,5 @@ done
 echo "Now running: $cmdline"
 echo "Results will be written in file: clustering.log"
 echo  $ENCORE_BUILD/similarity.py
-$PYTHON encore/similarity.py $cmdline &> clustering.log
+$PYTHON encore/similarity.py $cmdline
 
