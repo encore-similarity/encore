@@ -413,6 +413,26 @@ def cumulative_gen_kde_pdfs(embedded_space, ensemble_assignment, nensembles,  ns
 
     return (kdes, resamples, embedded_ensembles)
 
+def write_output(matrix, base_fname=None, header="", suffix="", extension="dat"):
+    if base_fname != None:
+        fname = base_fname+"-"+suffix+"."+extension
+    else:
+        fname = None
+    matrix.square_print(header=header, fname=fname)
+        
+def write_output_line(value, fhandler=None, suffix="", extension="dat", label="win.", number=0, rawline=None):
+
+    if fhandler == None:
+        fh = Tee(sys.stdout)
+    else:
+        fh = Tee(sys.stdout, fhandler)
+
+    if rawline != None:
+        print >>fh, rawline
+        return
+
+    print >>fh, "{:s}{:d}\t{:.3f}".format(label, number, value)
+
 
 
 
@@ -429,51 +449,53 @@ if __name__ == "__main__":
                       help="Number of ensembles to compare")
     group.add_option("--mode", dest="mode", default="harmonic", type="choice",
                       choices=["harmonic", "clustering","dimred"],
-                      help="Ensemble similarity mode")
+                      help="Ensemble similarity method")
     group.add_option("--np", dest="coresn", default=cpu_count(), type=int,
                       help="Maximum number of processes to perform calculation (default: as many as the system's cores (%d))"% cpu_count())
     group.add_option("--no-align", dest="align", action="store_false", default=True,
-                      help="Whether to align ensembles internally before calculating similarity")
+                      help="Whether to align ensembles to the reference conformation before calculating similarity. Reference conformation will be the topology, if not specified otherwise with --reference.")
     group.add_option("--reference", dest="reference", default=None,
-                 help="CHARMM-style atom selection")
+                 help="Reference conformation to which conformations will be aligned, if desired.")
     group.add_option("--topology", dest="topology", type="string",
-                 help="Topology file for ensemble %(index)s")
+                 help="Topology file for ensemble %(index)s. Supported formats: PDB, PDBQT, PQR, GRO, CRD")
     group.add_option("--details", dest="details", type="string", default=None,
-                 help="Store details on the performed calculations in file. If several calculations have been performed with different parameters a bunch of files will be generated, each for every calculation")
+                 help="Store details on the performed calculations in file. If several calculations have been performed with different parameters a bunch of files will be generated, one for each calculation.")
     group.add_option("-v","--verbose", dest="verbose", action="store_true", default=False,
                       help="Toggle verbose mode")
     group.add_option("--evaluate-convergence", dest="evaluate_convergence", action="store_true", default=False,
-                 help="Use the distance metrics to evaluate trajectory convergence.")
-    group.add_option("--evaluate-convergence-mode", dest="convergence_mode", type="choice", default="half-half", choices=["half-half","increasing-window","increasing-half"],
-                     help="Use the distance metrics to evaluate trajectory convergence.")
+                 help="Use the ensemble comparison measure to evaluate the convergence of the ensemble 1.")
+    group.add_option("--evaluate-convergence-mode", dest="convergence_mode", type="choice", default="increasing-window", choices=["increasing-window"],
+                     help="Compare a time-window of increasing size with the rest of the trajectory.")
+    group.add_option("--output-files","-o", dest="outfiles", action="store", type="str", default=None,
+                     help="Write single matrices in output files as well. Use this basename for the file names.")
 
 # Options for evaluate-convergence=half-half
-    group = group_templates.add_group("evaluate-convergence-mode=half-half options")
-    group.add_option("--window-size", dest="window_size", type=int, default=2500,
-                     help="Size of used windows (number of frames; default 2500)")
+    #group = group_templates.add_group("evaluate-convergence-mode=half-half options")
+    #group.add_option("--window-size", dest="window_size", type=int, default=2500,
+    #                 help="Size of used windows (number of frames; default 2500)")
 
     group = group_templates.add_group("evaluate-convergence-mode=increasing-window options")
     group.add_option("--window-size", dest="window_size", type=int, default=2500,
                      help="Size of used windows (number of frames; default 2500)")
 
-    group = group_templates.add_group("evaluate-convergence-mode=increasing-half options")
-    group.add_option("--window-size", dest="window_size", type=int, default=2500,
-                     help="Size of used windows (number of frames; default 2500)")
+    #group = group_templates.add_group("evaluate-convergence-mode=increasing-half options")
+    #group.add_option("--window-size", dest="window_size", type=int, default=2500,
+    #                 help="Size of used windows (number of frames; default 2500)")
 
 # Options for mode=harmonic 
     group = group_templates.add_group("mode=harmonic options")
     group.add_option("--covariance-estimator", type="choice", dest="covariance_estimator", default="shrinkage",
                       choices=["ml","shrinkage"],
-                      help="Type of estomator (maximum likelihood (ml) or shrinkage")
+                      help="Type of covariance matrix estomator (maximum likelihood (ml) or shrinkage")
 
 # Options for mode=cluster 
     group = group_templates.add_group("mode=clustering options")
     group.add_option("--similarity-mode", dest="similarity_mode", default="minusrmsd", type="choice",
                       choices=["minusrmsd"],
-                      help="Metric for similarity matrix calculation")
+                      help="Metric for distance matrix calculation")
     group.add_option("--clustering-mode", dest="clustering_mode", default="ap", type="choice",
                       choices=["ap"],
-                      help="Metric for similarity matrix calculation")
+                      help="Clustering algorithm to be used, [ap: Affinity Propagation]")
                   
 # Options for mode=dimred
     group = group_templates.add_group("mode=dimred options")
@@ -486,33 +508,34 @@ if __name__ == "__main__":
                       choices=["kde"],
                       help="Density estimation method")
     group.add_option("--dim", dest="dim", default="2", type="str",
-                      help="Dimensionalities of the embedded spaces (comma-separated)")
-    group.add_option("--replicas", dest="replicas", default=1, type="int",
-                      help="Number of replicas for each number of dimensions")
+                      help="Dimensionality of the embedded spaces (one or more, comma-separated: 2,3,4)")
+    #group.add_option("--replicas", dest="replicas", default=1, type="int",
+    #                  help="Number of replicas for each number of dimensions")
 
 # Options for dimred-mode = spe
     group = group_templates.add_group("dimred-mode=spe options")
     group.add_option("--spe-mode", dest="spe_mode", default='knn',type='choice',
-                      choices=['vanilla','rn','knn'])
+                      choices=['vanilla','rn','knn'],
+		      help="Types of spe calculation: plain SPE (vanilla), k-Nearest neighbours SPE (knn), Random neighborhood SPE (rn)")
     group.add_option("--neighborhood-cutoff", dest="neighborhood_cutoff", default=1.5, type="float",
-                      help="Neighborhood cutoff")
+                      help="Neighborhood cutoff (vanilla)")
     group.add_option("--nneighs", dest="kn", default=15, type="int",
-                      help="number of neighbours")
+                      help="number of neighbours to be considered (knn and rn)")
     group.add_option("--max-lambda", dest="maxlam", default=2.0, type="float",
-                      help="Starting lambda")
+                      help="Starting lambda learning rate parameter")
     group.add_option("--min-lambda", dest="minlam", default=0.1, type="float",
-                      help="Final lambda")
+                      help="Final lambda learning rate")
     group.add_option("--nsteps", dest="nstep", default=100, type="int",
                       help="Number of steps per cycle")
     group.add_option("--ncycles", dest="ncycle", default=50, type="int",
-                      help="Number of cycles per run")
+                      help="Number of cycles per run. At the end of every cycle, lambda is changed.")
     group.add_option("--stress-frequency", dest="stressfreq", default=-1, type="int",
                       help="Calculate residual stress value every --stress-frequency cycle")
 
 # Options for ensembles
     group = group_templates.add_group("Ensemble %(index)s options")
     group.add_option("--ensemble%(index)s-trajectory", dest="ensemble%(index)s_trajectory", type="string",
-                 help="Trajectory file for ensemble %(index)s")
+                 help="Trajectory file for ensemble %(index)s. Supported formats: DCD, XTC, TRR, XYZ, TRJ, MDCRD, PDB")
 #    group.add_option("--ensemble%(index)s-start", dest="ensemble%(index)s_start", type="int", default=0,
 #                 help="Start index for ensemble %(index)s")
 #    group.add_option("--ensemble%(index)s-end", dest="ensemble%(index)s_end", type="int", default=None,
@@ -530,11 +553,11 @@ if __name__ == "__main__":
                       help="Group for superimposition (MDAnalysis selection syntax). Otherwise, the whole structure, as defined by --atom-selection, will be used.")
     group.add_option("--no-mass-weighted", dest="mass_weighted", action="store_false", default = True,
                       help="Calculate non-massweighted RMSD (also, superimposition will not be mass-weighted)")
-    group.add_option("--save-matrix", dest="save_matrix", default = None,
-                      help="Save calculated matrix as numpy binary file. A filename is required.")
-    group.add_option("--load-matrix", dest="load_matrix", default = None,
-                      help="Load matrix from numpy binary file instead of calculating it. A filename is required.")
-    group.add_option("--change-matrix-sign", dest="change_matrix_sign", default=False, action="store_true", help="Change the sign of the loaded matrix")
+    group.add_option("--save-matrix", "--save-similarity-matrix", dest="save_matrix", default = None,
+                      help="Save calculated similarity/dissimilarity matrix as numpy binary file. A filename is required.")
+    group.add_option("--load-matrix", "--load-similarity-matrix", dest="load_matrix", default = None,
+                      help="Load similarity/dissimilarity matrix from numpy binary file instead of calculating it. A filename is required.")
+    group.add_option("--change-matrix-sign", dest="change_matrix_sign", default=False, action="store_true", help="Change the sign of the elements of loaded matrix")
 
     # Options for similarity-mode=rmsd
     group = group_templates.add_group("similarity-mode=rmsd options")
@@ -548,7 +571,7 @@ if __name__ == "__main__":
                       help="Save calculated matrix as numpy binary file. A filename is required.")
     group.add_option("--load-matrix", dest="load_matrix", default = None,
                       help="Load matrix from numpy binary file instead of calculating it. A filename is required.")
-    group.add_option("--change-matrix-sign", dest="change_matrix_sign", default=False, action="store_true", help="Change the sign of the loaded matrix")
+    group.add_option("--change-matrix-sign", dest="change_matrix_sign", default=False, action="store_true", help="Invert the sign of the elements of the loaded matrix")
 # Options for similarity-mode=ap
     group = group_templates.add_group("clustering-mode=ap options")
     group.add_option("--preferences", dest="preferences", default="-10.0", type="str",
@@ -558,24 +581,37 @@ if __name__ == "__main__":
     group.add_option("--maxiter", dest="max_iterations", default=1000, type="int",
                       help="Maximum number of iterations (default: 1000")
     group.add_option("--convergence", dest="convergence", default=10, type="int",
-                      help="Minimum number of invariant iterations to achieve convergence (default: 10")
+                      help="Minimum number of unchanging iterations to achieve convergence (default: 10")
     group.add_option("--nonoise", dest="noise", action="store_false", default=True,
                       help="Do not add noise to data (note: similarities must be not degenerate!)")
 
 # Options for density_mode = kde
     group = group_templates.add_group("density-mode=kde options")
-    group.add_option("--bw-method", dest="bw_method", default="scott", type="choice",
-                      choices=['scott','silverman','scalar'], help="number of nearest neighbours to each element")
+#    group.add_option("--bw-method", dest="bw_method", default="scott", type="choice",
+#                      choices=['scott','silverman','scalar'], help="number of nearest neighbours to each element")
     group.add_option("--use-density", dest='use_density', default='grid', type="choice",
                       choices=['grid','data','resample'], help="Compute JS divergence by evaluating density on the selected points")
     group.add_option("--grid-resolution", dest="kde_resolution", default="0.01", type="float",
                        help="Grid resolution for Kernel Density Estimation"), 
-    group.add_option("--grid-size", dest="grid_size", default=1.0, type="float",
-                    help="For each dimension, grid size will be chosen as (max-min)+2*(max-min)*D.")
+    #group.add_option("--grid-size", dest="grid_size", default=1.0, type="float",
+    #                help="For each dimension, grid size will be chosen as (max-min)+2*(max-min)*D.")
     group.add_option("--samples", dest="samples", default=None, type="int",
                        help="Number of points to resample from kde"), 
 
-    usage = "usage %prog [options]"
+    usage = """%prog [options].
+
+    Since many options are useful only when using one of the three
+    ensemble similarity methods, many of them are hidden by default.
+    In order to show them, please run similarity.py -h together with:
+
+    --mode=harmonic: options for the harmonic similarity method (default)    
+    --mode=clustering: options for the clustering-based method
+    --mode=dimred: options for the dimensionality reduction-based method
+
+    for instance:
+	
+	similarity.py --mode=clustering -h
+"""
 
     ##### Parse command line options
     parser = optparse.OptionParser(usage=usage)
@@ -589,6 +625,7 @@ if __name__ == "__main__":
     parser_phase1.parse()
     
     # Parsing phase 2 
+
     if parser_phase1.options.mode == "harmonic":
         option_groups += [group_templates["mode=harmonic options"]]
     elif parser_phase1.options.mode == "clustering":
@@ -597,15 +634,19 @@ if __name__ == "__main__":
         option_groups += [group_templates["mode=dimred options"]]
 
     if parser_phase1.options.evaluate_convergence:
-        if parser_phase1.options.convergence_mode == "half-half":
-            option_groups += [group_templates["evaluate-convergence-mode=half-half options"]]
-        elif parser_phase1.options.convergence_mode == "increasing-window":
+        if parser_phase1.options.convergence_mode == "increasing-window":
             option_groups += [group_templates["evaluate-convergence-mode=increasing-window options"]]
-        elif parser_phase1.options.convergence_mode == "increasing-half":
-            option_groups += [group_templates["evaluate-convergence-mode=increasing-half options"]]
 
+        #if parser_phase1.options.convergence_mode == "half-half":
+        #    option_groups += [group_templates["evaluate-convergence-mode=half-half options"]]
+        #elif parser_phase1.options.convergence_mode == "increasing-half":
+        #    option_groups += [group_templates["evaluate-convergence-mode=increasing-half options"]]
+
+    
     option_groups += [group_templates["Ensemble %(index)s options"].duplicate(i+1) for i in range(parser_phase1.options.nensembles)]
+    
     parser_phase2 = ParserPhase(option_groups, allow_unrecognized=True, add_help_option=False)
+    
     parser_phase2.parse()
         
     # Parsing phase 3
@@ -622,7 +663,7 @@ if __name__ == "__main__":
         if parser_phase2.options.density_mode == "kde":
             option_groups += [group_templates["density-mode=kde options"]]
 
-    parser_phase3 = ParserPhase(option_groups, allow_unrecognized=False, add_help_option=True)
+    parser_phase3 = ParserPhase(option_groups, allow_unrecognized=False, add_help_option=True, usage=usage)
     parser_phase3.parse()
 
     # Set logging level and format
@@ -639,7 +680,7 @@ if __name__ == "__main__":
 
     # Check if topology file has been specified
     if not parser_phase3.options.topology:    
-        logging.error("ERROR: Topology file not specified.")
+        parser_phase3.parser.error("Topology file not specified.")
         exit(1)
 
     # Check if evaluate convergence. In this case, just 1 ensemble.
@@ -654,7 +695,7 @@ if __name__ == "__main__":
         if getattr(parser_phase3.options, "ensemble%d_trajectory"%i):
             ensemble_numbers.append(i)
     if set(range(1,parser_phase3.options.nensembles+1)) != set(ensemble_numbers):
-        logging.error("ERROR: Wrong number of ensembles or trajectories specified.")
+        parser_phase3.parser.error("ERROR: Wrong number of ensembles or trajectories specified.")
         exit(1)
 
     # Load ensembles
@@ -723,43 +764,42 @@ if __name__ == "__main__":
 
         tmp_ensembles = []
 
-        if parser_phase3.options.convergence_mode == 'half-half': #or parser_phase3.options.convergence_mode == 'sliding-window' or parser_phase3.options.convergence_mode == 'fixed-window':
-            if parser_phase3.options.convergence_mode == 'half-half':
-                first_window_size = ens_size/2
-                if ens_size % first_window_size == 0:
-                    parser_phase3.options.window_size = first_window_size
-                else:
-                    parser_phase3.options.window_size = first_window_size + 1
+        #if parser_phase3.options.convergence_mode == 'half-half': #or parser_phase3.options.convergence_mode == 'sliding-window' or parser_phase3.options.convergence_mode == 'fixed-window':
+            #if parser_phase3.options.convergence_mode == 'half-half':
+                #first_window_size = ens_size/2
+                #if ens_size % first_window_size == 0:
+                    #parser_phase3.options.window_size = first_window_size
+                #else:
+                    #parser_phase3.options.window_size = first_window_size + 1
             #elif parser_phase3.options.convergence_mode == 'sliding-window':
             #    first_window_size = parser_phase3.options.window_size
             #elif parser_phase3.options.convergence_mode == 'fixed-window':
             #    first_window_size = parser_phase3.options.first_window_size
         
-            slices_n.append(first_window_size)
+            #slices_n.append(first_window_size)
         
-            rest_slices = (ens_size - first_window_size)/parser_phase3.options.window_size
+            #rest_slices = (ens_size - first_window_size)/parser_phase3.options.window_size
             #print "r_s", rest_slices
 
-            residuals =  (ens_size - first_window_size) % parser_phase3.options.window_size
-            print "res", residuals
+            #residuals =  (ens_size - first_window_size) % parser_phase3.options.window_size
 
-            for rs in range(rest_slices):
-                slices_n.append(slices_n[-1] + parser_phase3.options.window_size)
-            if residuals != 0:
-                slices_n.append(slices_n[-1] + residuals)
-                logging.warning("WARNING: the last window will be shorter than the prescribed window size (%s frames)"%residuals)
+            #for rs in range(rest_slices):
+                #slices_n.append(slices_n[-1] + parser_phase3.options.window_size)
+            #if residuals != 0:
+                #slices_n.append(slices_n[-1] + residuals)
+                #logging.warning("WARNING: the last window will be shorter than the prescribed window size (%s frames)"%residuals)
             
-                tmp_ensembles = []
-            for s in range(len(slices_n)-1):
-                tmp_ensembles.append( Ensemble(topology = parser_phase3.options.topology,
-                                           trajectory = parser_phase3.options.topology,
-                                           atom_selection_string = atom_selection_string,
-                                           superimposition_selection_string = parser_phase3.options.superimposition_subset,
-                                           frame_interval = frame_interval ) )
+                #tmp_ensembles = []
+            #for s in range(len(slices_n)-1):
+                #tmp_ensembles.append( Ensemble(topology = parser_phase3.options.topology,
+                #                           trajectory = parser_phase3.options.topology,
+                #                           atom_selection_string = atom_selection_string,
+                #                           superimposition_selection_string = parser_phase3.options.superimposition_subset,
+                #                           frame_interval = frame_interval ) )
             
-                tmp_ensembles[-1].coordinates = ensembles[0].coordinates[slices_n[s]:slices_n[s+1],:,:]        
+                #tmp_ensembles[-1].coordinates = ensembles[0].coordinates[slices_n[s]:slices_n[s+1],:,:]        
         
-        elif parser_phase3.options.convergence_mode == "increasing-half" or parser_phase3.options.convergence_mode=="increasing-window":
+        if parser_phase3.options.convergence_mode == "increasing-half" or parser_phase3.options.convergence_mode=="increasing-window":
 
             window_size = parser_phase3.options.window_size
             if parser_phase3.options.convergence_mode == "increasing-half":
@@ -835,12 +875,21 @@ if __name__ == "__main__":
                                estimator = covariance_estimator) )
 
         if parser_phase3.options.evaluate_convergence:
+            fname = str(parser_phase3.options.outfiles)+"_convergence_"
             if parser_phase3.options.convergence_mode == 'half-half':
-                print "=== half vs half convergence estimation ==="
-                print "%.3f" %  harmonic_ensemble_similarity(x1 = xs[0],
+                fname+="half-half_harmonic.dat"
+                if parser_phase3.options.outfiles != None:
+                    fhandler = open(fname,'a')
+                else:
+                    fhandler = None
+                write_output_line(0, rawline="=== half vs half convergence estimation ===", fhandler=fhandler)
+                write_output_line(0, rawline="half-half hes: %.3f" %   
+                                                        harmonic_ensemble_similarity(x1 = xs[0],
                                                           x2 = xs[1],
                                                           sigma1 = sigmas[0],
-                                                          sigma2 = sigmas[1])
+                                                          sigma2 = sigmas[1]), 
+                                                          fhandler=fhandler)
+                
             #elif parser_phase3.options.convergence_mode == 'sliding-window':
             #    print "=== sliding window convergence estimation ==="
             #    for i in range(len(ensembles)-1):
@@ -858,27 +907,44 @@ if __name__ == "__main__":
             #                                                   sigma2 = sigmas[i])            
 
             elif parser_phase3.options.convergence_mode == "increasing-half":
+                fname += "increasing-half_harmonic.dat"
+                if parser_phase3.options.outfiles != None:
+                    fhandler = open(fname,'a')
+                else:
+                    fhandler = None
+
                 ref_x = numpy.average(ref_ensemble.coordinates, axis=0).flatten()
                 ref_sigma = covariance_matrix(ref_ensemble,
                                               mass_weighted=True,
                                               estimator = covariance_estimator) 
-                print "=== first half vs increasing window convergence estimation ==="
+                write_output_line(rawline="# === first half vs increasing window convergence estimation ===", fhandler=fhandler)
                 for i in range(0,len(ensembles[:-1])):
-                    print "%.3f" % harmonic_ensemble_similarity(x1 = ref_x,
+                    write_output_line(harmonic_ensemble_similarity(x1 = ref_x,
                                                                 x2 = xs[i],
                                                                 sigma1 = ref_sigma,
-                                                                sigma2 = sigmas[i])
+                                                                sigma2 = sigmas[i]),
+                    fhandler = fhandler,
+                    number = i+1)
             elif parser_phase3.options.convergence_mode == "increasing-window":
+                fname += "increasing-window_harmonic.dat"
+                if parser_phase3.options.outfiles != None:
+                    fhandler = open(fname,'a')
+                else:
+                    fhandler = None
+
                 ref_x = numpy.average(ref_ensemble.coordinates, axis=0).flatten()
                 ref_sigma = covariance_matrix(ref_ensemble,
                                               mass_weighted=True,
-                                              estimator = covariance_estimator) 
-                print "=== full ensemble vs increasing window convergence estimation ==="
+                                              estimator = covariance_estimator)
+
+                write_output_line(rawline="# === first half vs increasing window convergence estimation ===")
                 for i in range(0,len(ensembles)):
-                    print "%.3f" % harmonic_ensemble_similarity(x1 = ref_x,
+                    write_output_line(harmonic_ensemble_similarity(x1 = ref_x,
                                                                 x2 = xs[i],
                                                                 sigma1 = ref_sigma,
-                                                                sigma2 = sigmas[i])
+                                                                sigma2 = sigmas[i]),
+                    fhandler = fhandler,
+                    number = i+1)
 
         else:
             for i,j in pairs_indeces:
@@ -893,8 +959,12 @@ if __name__ == "__main__":
                 kwds['ensemble%d_mean'%(i+1)] = xs[i]
                 kwds['ensemble%d_covariance_matrix'%(i+1)] = sigmas[i]
             numpy.savez(parser_phase3.options.details, **kwds)       
-        values.square_print()
+
+
+        header = "# === Harmonic similarity ==="
+        write_output(values, header=header, base_fname=parser_phase3.options.outfiles, suffix="harmonic")
         
+        logging.info("Calculation complete.")
         exit(0)
 
     if parser_phase3.options.mode == "clustering":
@@ -1026,10 +1096,24 @@ if __name__ == "__main__":
                 if ccs[i].clusters == None:
                     continue
                 if parser_phase3.options.evaluate_convergence:
-                    print "=== convergence clustering, preference %.1f, "%p,
+                    fname = str(parser_phase3.options.outfiles)+"_convergence_clustering_preference%.1f" %p
+                    header = "=== convergence clustering, preference %.1f, "%p
                     if parser_phase3.options.convergence_mode == 'half-half':
-                        print "half-half ==="
-                        print "%.3f" % clustering_ensemble_similarity( ccs[i], ensembles[0], 1, ensembles[1], 2)
+                        header += "half-half ==="
+                        fname+="_half-half.dat"
+                        if parser_phase3.options.outfiles != None:
+                            fhandler = open(fname,'a')
+                        else:
+                            fhandler = None
+
+                        write_output_line(0,rawline=header,fhandler=fhandler)
+                        write_output_line(0, rawline="half-half distance: %.3f" %   
+                                                        harmonic_ensemble_similarity(x1 = xs[0],
+                                                          x2 = xs[1],
+                                                          sigma1 = sigmas[0],
+                                                          sigma2 = sigmas[1]),
+                                                        fhandler=fhandler)
+
                     #elif parser_phase3.options.convergence_mode == 'sliding-window':
                     #    print "sliding window ==="
                     #    for j in range(len(ensembles)-1):
@@ -1038,6 +1122,7 @@ if __name__ == "__main__":
                     #    print "fixed window ==="
                     #    for j in range(1,len(ensembles)):
                     #        print "%.3f" % clustering_ensemble_similarity( ccs[i], ensembles[0], 1, ensembles[j], j+1)
+<<<<<<< Updated upstream
                     elif parser_phase3.options.convergence_mode == "increasing-half":
                         print "increasing half ==="
                         for j in range(0,len(ensembles)):
@@ -1052,11 +1137,58 @@ ensembles[j], j+1)
                     values = TriangularMatrix(size=out_matrix_eln)
 
                     print "==== Preference value: %1.2f ==="%p
+=======
+                    #if parser_phase3.options.convergence_mode == "increasing-half":
+                    #    fname += "_increasing-half.dat"
+                    #    header += "increasing half ==="
+                    #    if parser_phase3.options.outfiles != None:
+                    #        fhandler = open(fname,'a')
+                    #    else:
+                    #        fhandler = None
+
+                    #    write_output_line(0,rawline=header, fhandler=fhandler)
+                    #    for j in range(0,len(ensembles)):
+                    #        write_output_line(cumulative_clustering_ensemble_similarity( ccs[i], 
+                    #                                                                    ensembles[-1], 
+                    #                                                                    len(ensembles)+1, 
+                    #                                                                    ensembles[j], 
+                    #                                                                    j+1, 
+                    #                                                                    ens1_id_min=len(ensembles)+1),
+                    #                            fhandler=fhandler,
+                    #                            number=j+1)
+
+                    elif parser_phase3.options.convergence_mode=="increasing-window":
+                        fname += "_increasing-window.dat"
+                        header += "increasing window ==="
+
+                        if parser_phase3.options.outfiles != None:
+                            fhandler = open(fname,'a')
+                        else:
+                            fhandler = None
+
+                        write_output_line(0,rawline=header, fhandler=fhandler)
+                        for j in range(0,len(ensembles)):
+                            write_output_line( cumulative_clustering_ensemble_similarity( ccs[i], 
+                                                                                        ensembles[-1], 
+                                                                                        len(ensembles)+1,
+                                                                                        ensembles[j], j+1),
+                            fhandler=fhandler,
+                            number=j+1)
+                # for every preference value
+                else:
+                    values = TriangularMatrix(size=out_matrix_eln)
+
+                    header = "# ==== Preference value: %1.2f ==="%p
+>>>>>>> Stashed changes
                     for pair in pairs_indeces:
                     # Calculate dJS
                         values[pair[0],pair[1]] = clustering_ensemble_similarity( ccs[i], ensembles[pair[0]], pair[0]+1, ensembles[pair[1]], pair[1]+1)
                 
+<<<<<<< Updated upstream
                     values.square_print()
+=======
+                    write_output(values, header=header, base_fname=parser_phase3.options.outfiles, suffix="clustering-pref%.1f"%p)
+>>>>>>> Stashed changes
                         
                 if parser_phase3.options.details:
                     kwds = {}
@@ -1065,6 +1197,8 @@ ensembles[j], j+1)
                     for cln,cluster in enumerate(ccs[i]):
                         kwds["cluster%d"%(cln+1)] = numpy.array(cluster.elements)
                     numpy.savez("%s_preference_%.2f"%(parser_phase3.options.details,p), **kwds)
+
+            logging.info("Calculation complete.")
             exit(0)
 
     if parser_phase3.options.mode == "dimred":
@@ -1144,9 +1278,20 @@ ensembles[j], j+1)
 
         # For every chosen dimension value:
             if parser_phase3.options.evaluate_convergence:
-                print "=== convergence dimred, dimension %d: "%ndim,
-                if parser_phase3.options.convergence_mode == 'half-half':
-                    print "%.3f" % dimred_ensemble_similarity(kdes[0], resamples[0], kdes[1],resamples[1])
+                fname = parser_phase3.options.outfiles+"_convergence_dimred_%ddimensions" %ndim
+                header = "=== convergence dimred, dimension %d: " % ndim
+                #if parser_phase3.options.convergence_mode == 'half-half':
+                #    fname+="_half-half.dat"
+                #    header += "half-half ==="
+                #    if parser_phase3.options.outfiles != None:
+                #        fhandler = open(fname,'a')
+                #    else:
+                #        fhandler = None
+
+                #    write_output_line(0,rawline=header, handler=fhandler)
+                #    write_output_line(0, rawline="half-half convergence: %.3f" %
+                #                                        dimred_ensemble_similarity(kdes[0], resamples[0], kdes[1],resamples[1]), fhandler=fhandler)
+
                 #elif parser_phase3.options.convergence_mode == 'sliding-window':
                 #    print "sliding window ==="
                 #    for j in range(len(ensembles)-1):
@@ -1155,32 +1300,64 @@ ensembles[j], j+1)
                 #    print "fixed window ==="
                 #    for j in range(1,len(ensembles)):
                 #        print "%.3f" % dimred_ensemble_similarity(kdes[0], resamples[0], kdes[j],resamples[j])
-                elif parser_phase3.options.convergence_mode == "increasing-half":
-                    kdes, resamples, embedded_ensembles = cumulative_gen_kde_pdfs(embedded_space, ensemble_assignment, parser_phase3.options.nensembles, nsamples = parser_phase3.options.samples, ens_id_max=len(ensembles))
-                    ref_kdes, ref_resamples, ref_embedded_ensembles = cumulative_gen_kde_pdfs(embedded_space, ensemble_assignment, parser_phase3.options.nensembles, nsamples = parser_phase3.options.samples, ens_id_max=len(ensembles), ens_id_min=len(ensembles))
-                    print "increasing half ==="
-                    for j in range(0,len(ensembles)-1):
-                        print "%.3f" % dimred_ensemble_similarity(ref_kdes[0], ref_resamples[0], kdes[j], resamples[j])
-                elif parser_phase3.options.convergence_mode=="increasing-window":
+                #elif parser_phase3.options.convergence_mode == "increasing-half":
+                #    fname += "_increasing-half.dat"
+                #    header += "increasing half ==="
+                #    if parser_phase3.options.outfiles != None:
+                #        fhandler = open(fname,'a')
+                #    else:
+                #        fhandler = None
+
+                #    kdes, resamples, embedded_ensembles = cumulative_gen_kde_pdfs(embedded_space, ensemble_assignment, parser_phase3.options.nensembles, nsamples = parser_phase3.options.samples, ens_id_max=len(ensembles))
+                #    ref_kdes, ref_resamples, ref_embedded_ensembles = cumulative_gen_kde_pdfs(embedded_space, ensemble_assignment, parser_phase3.options.nensembles, nsamples = parser_phase3.options.samples, ens_id_max=len(ensembles), ens_id_min=len(ensembles))
+
+                #    write_output_line(0,rawline=header, fhandler=fhandler)
+
+                #    for j in range(0,len(ensembles)-1):
+                #        write_output_line(dimred_ensemble_similarity(ref_kdes[0], 
+                #                                                    ref_resamples[0], 
+                #                                                    kdes[j], 
+                #                                                    resamples[j]),
+                #        fhandler = fhandler,
+                #        number = j+1)
+
+                if parser_phase3.options.convergence_mode=="increasing-window":
+                    fname += "_increasing-window.dat"
+                    header += "increasing window ==="
+                    if parser_phase3.options.outfiles != None:
+                        fhandler = open(fname,'a')
+                    else:
+                        fhandler = None
+
                     kdes, resamples, embedded_ensembles = cumulative_gen_kde_pdfs(embedded_space, ensemble_assignment, parser_phase3.options.nensembles-1, nsamples = parser_phase3.options.samples)
-                    print "increasing window ==="
+                    
+                    write_output_line(0, rawline=header, fhandler=fhandler)
                     for j in range(0,len(ensembles)):
-                        print "%.3f" % dimred_ensemble_similarity(kdes[-1], resamples[-1], kdes[j], resamples[j])
+                        write_output_line(dimred_ensemble_similarity(kdes[-1], 
+                                                                    resamples[-1], 
+                                                                    kdes[j], 
+                                                                    resamples[j]),
+                        fhandler = fhandler,
+                        number = j+1)
             else:
-#def gen_kde_pdfs(embedded_space, ensemble_assignment, nesnsembles, mode='kde', nsamples=None, kwargs**):
-#def dimred_ensemble_similarity(kde1, resample1, kde2, resample2):
 
                                  
                 for pair in pairs_indeces:
                     values[pair[0],pair[1]] = dimred_ensemble_similarity(kdes[pair[0]], resamples[pair[0]], kdes[pair[1]],resamples[pair[1]])
             
-                print "==== Number of dimensions: %d ==="%ndim
-                values.square_print()
+                header = "# ==== Number of dimensions: %d ==="%ndim
+                write_output(values, header=header, base_fname=parser_phase3.options.outfiles, suffix="dimred-%ddimensions"%ndim)
 
             if parser_phase3.options.details:
                 kwds = {}
                 kwds["stress"] = numpy.array([embedded_stress])
                 for en,e in enumerate(embedded_ensembles):
                     kwds[("ensemble%d"%en)] = e
+<<<<<<< Updated upstream
                 numpy.savez("%s_%d_dimensions" % (parser_phase3.options.details, ndim), **kwds) 
+=======
+                numpy.savez("%s_%d_dimensions" % (parser_phase3.options.details, ndim), **kwds)
+
+        logging.info("Calculation complete.")
+>>>>>>> Stashed changes
         exit(0)

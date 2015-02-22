@@ -25,6 +25,15 @@ import time
 import optparse
 import copy
 
+
+class Tee:
+    def __init__(self, *files):
+        self.files = files
+        
+    def write(self, obj):
+        for f in self.files:
+            f.write(obj)
+
 class TriangularMatrix:
     """Triangular matrix class. This class is designed to provide a memory-efficient representation of a triangular matrix that still behaves as a square symmetric one. The class wraps a numpy.array object, in which data are memorized in row-major order. It also has few additional facilities to conveniently load/write a matrix from/to file. It can be accessed using the [] and () operators, similarly to a normal numpy array.
 
@@ -120,17 +129,37 @@ metadata for the matrix (date of creation, name of author ...)
                 print "%.3f".ljust(justification) % self.__getitem__((i,j)),
             print ""
 
-    def square_print(self, justification=10):
+    def square_print(self, fname=None, header=None, label="ens.", justification=10):
         """ 
-        Print the triangular matrix as a symmetrical square matrix
+        Print the triangular matrix as a symmetrical square matrix.
+        Also supports printing to a file (named fname).
         """
+        
+        if fname:
+            try: 
+                fileh = open(fname,'w')
+            except:
+                logging.ERROR("Could not write file %s; Exiting..." %fname)
+                exit(1)
+            fh = Tee(fileh, sys.stdout)
+        else:
+            fh = Tee(sys.stdout)
+        
+        if header:
+            print >>fh, header
+
+        print >>fh, "{:<10}".format(""),
         for i in xrange(0,self.size):
+            print >>fh, "{:<10}".format("%s%d" % (label,i)),
+        print >>fh, ""
+        for i in xrange(0,self.size):
+            print >>fh, "{:<10}".format("%s%d" % (label,i)),
             for j in xrange(0,self.size):
                 if i > j:
-                    print "%.3f".ljust(justification) % self.__getitem__((i,j)),
+                    print >>fh, "{:<10.3f}".format(self.__getitem__((i,j))),
                 else:
-                    print "%.3f".ljust(justification) % self.__getitem__((j,i)),
-            print ""
+                    print >>fh, "{:<10.3f}".format(self.__getitem__((j,i))),
+            print >>fh, ""
 
 class AllowUnrecognizedOptionParser(optparse.OptionParser):
     ''' Parser allowing unknown options. Note that only AmbiguousOptionError
@@ -200,12 +229,12 @@ class OptionGroups:
 class ParserPhase:
     ''' Wrapper for a parser for a single phase. Takes a list of option groups as arguments '''
 
-    def __init__(self, option_groups, add_help_option=True, allow_unrecognized=False):
+    def __init__(self, option_groups, add_help_option=True, allow_unrecognized=False, usage=""):
         self.option_groups = option_groups
         if allow_unrecognized:
             self.parser = AllowUnrecognizedOptionParser(add_help_option=add_help_option)
         else:
-            self.parser = optparse.OptionParser(add_help_option=add_help_option)
+            self.parser = optparse.OptionParser(add_help_option=add_help_option, usage=usage)
 
         self.add_option_groups(option_groups)
 

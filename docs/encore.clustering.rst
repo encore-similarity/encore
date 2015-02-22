@@ -15,6 +15,14 @@ encore.clustering.Cluster module
 encore.clustering.affinityprop module
 -------------------------------------
 
+.. automodule:: encore.clustering.affinityprop
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+encore.clustering.affinityprops module
+-------------------------------------
+
 .. automodule:: encore.clustering.affinityprop.AffinityPropagation
     :members:
     :undoc-members:

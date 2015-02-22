@@ -13,4 +13,6 @@ Contents:
 
    encore.rst
 
+   encore.clustering.rst
 
+   encore.dimensionality_reduction.rst

@@ -81,7 +81,8 @@ class EstimatorShrinkage:
 
     This implementation is based on the matlab code made available by Olivier Ledoit on
     his website:
-        http://www.ledoit.net/ole2_abstract.htm
+
+    http://www.ledoit.net/ole2_abstract.htm
         
     The generated object acts as a functor.
 
@@ -110,6 +111,7 @@ class EstimatorShrinkage:
             optional reference to use instead of mean
             
         **Returns**:
+
         `cov_mat` : nump.array
             covariance matrix
         '''

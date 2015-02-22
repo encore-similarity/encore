@@ -149,11 +149,13 @@ class Ensemble:
         Get a set of coordinates from Universe.
             
         **Arguments:**
+
         `subset_selection_string` : None or str
             Selection string that selects the universe atoms whose coordinates have to be returned. The frame_interval will be automatically applied.
             If the argument is None,  the atoms defined in the atom_selection_string will be considered.
                 
         **Returns:**
+
         `coordinates` : (x,N,3) numpy array
             the requested array of coordinates.
             

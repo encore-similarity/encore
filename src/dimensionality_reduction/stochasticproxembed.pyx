@@ -1,4 +1,4 @@
-#cython embedsignature=True
+# cython: embedsignature=True
 # stochasticproxembed.pyx --- Cython wrapper for the stochastic proximity embedding C library
 # Copyright (C) 2014 Wouter Boomsma, Matteo Tiberti
 #

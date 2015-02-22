@@ -64,6 +64,14 @@ encore.utils module
     :undoc-members:
     :show-inheritance:
 
+encore.clustering.Cluster module
+--------------------------------
+
+.. automodule:: encore.clustering.Cluster
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 encore.clustering.affinityprop module
 -------------------------------------
 
@@ -73,11 +81,3 @@ encore.clustering.affinityprop module
     :show-inheritance:
 
 
-
-Module contents
----------------
-
-.. automodule:: encore
-    :members:
-    :undoc-members:
-    :show-inheritance:

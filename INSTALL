@@ -2,28 +2,139 @@
 Installing ENCORE
 =====================
 
-ENCORE is written as a Python 2.6 library which interfaces to specialized C code in order to perform the most time-consuming operations. 
-The prerequisites for installing ENCORE are:
 
-	* A working python2.6 distribution or higher (2.X) 
-	* the MDAnalysis package ( http://https://code.google.com/p/mdanalysis/ )
-	* a command-line C compiler (as gcc or clang)
-	* Optionally, a working cython distribution
+Installation notes
+--------------------
+
+ENCORE is written as a Python 2.6 library which interfaces to specialized C code
+in order to perform the most time-consuming operations. The C and the Python
+parts are coupled through Cython wrappers. The prerequisites for installing
+ENCORE are:
+
+	* A working python2.6 distribution or higher (2.X)
+	* the MDAnalysis package, version 0.8.1 or higher ( http://https://code.google.com/p/mdanalysis/ )
+	* a command-line C compiler (gcc or clang)
+	* a working Cython distribution
+
+Please notice that a working MDAnalysis installation must be available before
+installing ENCORE, as the ENCORE installation script will fail if no
+MDAnalysis is detected.
 	
-Installation happens through a standard distutils setup.py script. In order to install the library simply unpack the provided .tar.gz package, enter the unpacked directory and run:
 
-	python setup.py install 
+Easy installation steps
+------------------------
 
-this performs a system-wide install, and administrative privileges may be required. It is possible however to select a custom location supplying the --prefix argument:
+Summing up, in order to install ENCORE from scratch, the following steps should be enough:
 
-	python setup.py install --prefix=user_dir/location 
+	1.  Verify that you have a working Python installation, version 2.6 or
+	    higher. In order to do so, run:
+	    
+		python --version
+	
+	    if your python version is not compatible with ENCORE, please install
+	    or use another python version (for instance, the python2.6 or
+	    python2.7 executables might be available). In the follwing steps,
+	    always use the same python interpreter (choose one and stick with it)
 
-see 
+ 	2.  Install the packages required for MDAnalysis. You can find the
+ 		complete list here:
+	    
+		    http://code.google.com/p/mdanalysis/wiki/Install#Additional_non-standard_packages	  
+	    
+		Most packages are easily installed through your OS's package
+	    	management system, and you really should rely on that if possible.
+	    	However, if you don't have administrative privileges, you can install
+	    	the packages locally in a more or less automatic way; if this is the
+	    	case you can skip this step and go directly to step 3.
 
-	python setup.py install --help
+	3.  Install MDAnalysis. There are several possible ways of doing this, as
+		listed on the MDAnalysis website
+		(https://code.google.com/p/mdanalysis/wiki/Install). If you are able to
+		use your distribution's package management system, MDAnalysis can be
+		installed as a normal binary package. See the MDAnalysis website for
+		detailed instructions. If you prefer to install it locally instead, you
+		can simply use easy_install or pip. Just run:
+	    
+	        easy_install -U MDAnalysis
+	    
+	        or:
+	    
+			pip install MDAnalysis
 
-for more details. Please notice the encore package directory MUST be in the python sys.path in order to work correctly. This is performed for instance by runnng this command in a bash shell:
+	    	these commands should download and install locally the requisites for
+	    	MDAnalysis as well, allowing you to skip step 2 entirely. If this
+	   	doesn't work as expected, you should download the MDAnalysis source
+	    	code (https://pypi.python.org/packages/source/M/MDAnalysis/MDAnalysis-
+	    	0.8.1.tar.gz#md5=a6f3a92c561822116124b09926296837) and install it
+	    	manually, as detailed in the MDAnalysis website. Please notice that
+	    	MDAnalysis should be available to Python before installing ENCORE.
 
-export PYTHONPATH=$PYTHONPATH":/location/of/encore"
+	4.  Install ENCORE. First, download the ENCORE installation package and
+		uncompress it:
+	    	   
+			tar xvzf ENCORE-1.0.tar.gz
 
-you can add this line to your .bashrc or .profile file so that it's automatically executed after a shell is opened.
+		then enter the directory that has been uncompressed (ENCORE-1.0). If you
+		want to install it system-wide, just run:
+	    
+			python setup.py install
+
+		if you want to install it locally, run instead:
+
+	               python setup.py install --user
+
+	5.  After the installation is finished, the installation script will report
+	    the location of the installed ENCORE package, for instance:
+
+	    	Installed /home/teo/.local/lib/python2.7/site-packages/ENCORE-0.1b-py2.7-linux-x86_64.egg
+
+	    Take note of the location. You will need it to set-up your calculations.
+	    It is especially useful to save this location in a system variable, for instance:
+
+	   export ENCORE=/home/teo/.local/lib/python2.7/site-packages/ENCORE-0.1b-py2.7-linux-x86_64.egg
+
+	6.  Go to your working directory (e.g. the directory where you want your 
+	    work with ENCORE to be saved. Link ENCORE in your working directory:
+	     
+                 ln -s ${ENCORE}/encore/ . 
+
+	7.  Run the similarity script from the encore directory:
+
+	        python encore/similarity.py --help
+
+	    The program should print the help information, meaning that ENCORE has been
+	    installed correcly.
+
+Also notice that:
+
+	* ENCORE should be installed using the same Python version as its
+	prerequisites. This means that, for instance, if you install
+	MDAnlaysis and its prerequisites using Python 2.7, ENCORE must be
+	installed using Python 2.7 as well. Otherwise, the installation of ENCORE
+	will most likely fail. In most systems, it is just easier to use the
+	default Python interpreter ("python").
+
+	* As previously mentioned, the MDAnalysis installation directory needs be 
+	available to Python (i.e.
+	in the PYTHONPATH) before installing ENCORE. The ENCORE installer checks
+	for the availability of MDAnalysis and stops if it cannot find it. In
+	order to check if MDAnalysis is available, just run the python version
+	that we have used to install MDAnalysis (the "python" executable by
+	default) and run "import MDAnalysis" at the Python interpreter command
+	prompt. If no error shows up, you're good to go. This is most often the
+	case if you have installed it as suggested here.  If the "No module
+	named MDAnalysis" error is returned, you'll need to tell Python where to
+	find the MDAnalysis module. This is done by adding the location of the
+	MDAnalysis module to the system variable PYTHONPATH. For instance, you
+	should run:
+
+		export PYTHONPATH=/location/of/MDAnalysis/:$PYTHONPATH
+
+	where /location/of/MDAnalysis/ is the location of the MDAnalysis module
+	you have installed. The very same procedure can also be used to 
+	verify if the ENCORE module is available to Python, and, if not,
+	you should add it to PYTHONPATH as well, exactly as explained
+	here for MDAnalysis.
+
+	you can add this "export" line to your .bashrc or .profile file so that
+	it's automatically executed after a shell is opened.
