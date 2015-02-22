@@ -1,0 +1,41 @@
+ENCORE EXAMPLES
+=================
+
+This directory contains the examples of running the ENCORE software. Two
+examples are available, showcasing the two most important features of
+ENCORE: the ability to calculate three different similarity measures
+for protein ensembles as well as to give a rough estimate of the level
+of convergence on an ensemble. The examples are found in the two
+subdirectories available here (experimental_ubq_ensembles and
+md_trajectory_convergence). In order to run the examples please follow
+these steps:
+ 
+- install ENCORE. Please refer to the INSTALL file in the main ENCORE
+  installation for detailed instructions.
+
+- each example is run through a simple bash script. The
+  scripts need to have few system variables set up to work
+  properly, which are set in the file set_environment.sh file in this
+  directory. Therefore, you should modify the set_environment.sh file
+  according to the location of ENCORE and MDAnalysis on your system
+  and other details:
+
+	* MDANALYSIS_BUILD: This is where the MDAnlaysis build is
+          located. This is necessary only if MDAnalysis is not in your
+          $PYTHONPATH.       
+
+	* ENCORE_BUILD: This is where the ENCORE build is
+          located. This is ALWAYS necessary (i.e. even if the ENCORE
+          build is in your PYTHONPATH)
+       
+	* PYTHON: location of your python (2.6 or 2.7) executable 
+	 Please use the same version that you have used to build ENCORE.
+
+	* NP: number of cores that ENCORE will use its examples. On a
+       	 modern computer running the ENCORE examples will take few
+       	 minutes, even with a low number of cores (for instance 4).
+	   
+- Now you are ready to run the examples. They are contained in the three 
+directories experimental_ubq_ensembles, md_trajectory_convergence and 
+cypA_simulations_ensembles, each of them containing further instructions 
+in the respective README file.

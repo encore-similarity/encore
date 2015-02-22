@@ -1,0 +1,31 @@
+The present example showcases the ability of ENCORE to assess the convergence 
+of a sampled ensemble from molecular dynamics (MD) simulations. While a 
+complete and exhaustive assessment of the convergence of a simulation is 
+difficult, because of the short time-scale of molecular simulations 
+which do not allow to sample relatively slow events, it is possible to 
+at least evaluate the convergence within the sampled conformational basin. 
+Here this is performed by comparing the whole MD ensemble (trajctory) with 
+time-windows of increasing size. In this way we can answer the question of 
+how quickly a simulation converges to our current best estimate of the 
+complete distribution of conformations (i.e. the entire simulation). 
+A simulation which repeadetly samples a single well-defined basin will quickly
+ fall to zero divergence with increasing window size, while a simulation
+which samples several basins without stabily remaining in a well-defined one 
+ will feature a much slower fall of the divergence values.
+
+In this case, we use both the clustering-based and dimensionality 
+reduction-based ensemble comparison methods to assess the convergence of 
+two 500ns MD simulation trajectories of the Cyclophilin A enzyme, sampled 
+every 500ps. The two simulations only differ by the force-field used: one of
+ them was performed using a force-field from the CHARMM family (CHARMM22*), 
+while the other was performed using a force-field from the AMBER family 
+(AMBER99SB-ILDN*). As both of them are high-quality modern force-fields, 
+they both quickly fall towards low values of divergence with increasing size 
+of the time-window.
+
+Running the examples, assuming that ENCORE is correctly installed and that 
+the set_environment.sh file is properly set up, is just a matter of running the .sh files. The output log files will contain a list of values, which are
+ the results of the comparison between the time-window of increasing 
+size and the full trajectory. In this case, the time-window starts with a size
+ of 50ns and increases of 50ns for every step, so that there will be 10 
+windows in total. 
