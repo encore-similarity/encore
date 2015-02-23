@@ -799,13 +799,13 @@ if __name__ == "__main__":
             
                 #tmp_ensembles[-1].coordinates = ensembles[0].coordinates[slices_n[s]:slices_n[s+1],:,:]        
         
-        if parser_phase3.options.convergence_mode == "increasing-half" or parser_phase3.options.convergence_mode=="increasing-window":
+        if parser_phase3.options.convergence_mode == "increasing-window": #or parser_phase3.options.convergence_mode=="increasing-window":
 
             window_size = parser_phase3.options.window_size
-            if parser_phase3.options.convergence_mode == "increasing-half":
-                ref_window_size = ens_size/2
-            else:
-                ref_window_size = 0
+            #if parser_phase3.options.convergence_mode == "increasing-half":
+            #    ref_window_size = ens_size/2
+            
+            ref_window_size = 0
             if ref_window_size % window_size != 0:
                 ref_window_size += ref_window_size % window_size
             rest_slices = (ens_size - ref_window_size) / parser_phase3.options.window_size
@@ -876,19 +876,19 @@ if __name__ == "__main__":
 
         if parser_phase3.options.evaluate_convergence:
             fname = str(parser_phase3.options.outfiles)+"_convergence_"
-            if parser_phase3.options.convergence_mode == 'half-half':
-                fname+="half-half_harmonic.dat"
-                if parser_phase3.options.outfiles != None:
-                    fhandler = open(fname,'a')
-                else:
-                    fhandler = None
-                write_output_line(0, rawline="=== half vs half convergence estimation ===", fhandler=fhandler)
-                write_output_line(0, rawline="half-half hes: %.3f" %   
-                                                        harmonic_ensemble_similarity(x1 = xs[0],
-                                                          x2 = xs[1],
-                                                          sigma1 = sigmas[0],
-                                                          sigma2 = sigmas[1]), 
-                                                          fhandler=fhandler)
+            #if parser_phase3.options.convergence_mode == 'half-half':
+            #    fname+="half-half_harmonic.dat"
+            #    if parser_phase3.options.outfiles != None:
+            #        fhandler = open(fname,'a')
+            #    else:
+            #        fhandler = None
+            #    write_output_line(0, rawline="=== half vs half convergence estimation ===", fhandler=fhandler)
+            #    write_output_line(0, rawline="half-half hes: %.3f" %   
+            #                                            harmonic_ensemble_similarity(x1 = xs[0],
+            #                                              x2 = xs[1],
+            #                                              sigma1 = sigmas[0],
+            #                                              sigma2 = sigmas[1]), 
+            #                                              fhandler=fhandler)
                 
             #elif parser_phase3.options.convergence_mode == 'sliding-window':
             #    print "=== sliding window convergence estimation ==="
@@ -906,26 +906,27 @@ if __name__ == "__main__":
             #                                                   sigma1 = sigmas[0],
             #                                                   sigma2 = sigmas[i])            
 
-            elif parser_phase3.options.convergence_mode == "increasing-half":
-                fname += "increasing-half_harmonic.dat"
-                if parser_phase3.options.outfiles != None:
-                    fhandler = open(fname,'a')
-                else:
-                    fhandler = None
+            #if parser_phase3.options.convergence_mode == "increasing-half":
+            #    fname += "increasing-half_harmonic.dat"
+            #    if parser_phase3.options.outfiles != None:
+            #        fhandler = open(fname,'a')
+            #    else:
+            #        fhandler = None
+	    #
+            #    ref_x = numpy.average(ref_ensemble.coordinates, axis=0).flatten()
+            #    ref_sigma = covariance_matrix(ref_ensemble,
+            #                                  mass_weighted=True,
+            #                                  estimator = covariance_estimator) 
+            #    write_output_line(rawline="# === first half vs increasing window convergence estimation ===", fhandler=fhandler)
+            #    for i in range(0,len(ensembles[:-1])):
+            #        write_output_line(harmonic_ensemble_similarity(x1 = ref_x,
+            #                                                    x2 = xs[i],
+            #                                                    sigma1 = ref_sigma,
+            #                                                    sigma2 = sigmas[i]),
+            #        fhandler = fhandler,
+            #        number = i+1)
 
-                ref_x = numpy.average(ref_ensemble.coordinates, axis=0).flatten()
-                ref_sigma = covariance_matrix(ref_ensemble,
-                                              mass_weighted=True,
-                                              estimator = covariance_estimator) 
-                write_output_line(rawline="# === first half vs increasing window convergence estimation ===", fhandler=fhandler)
-                for i in range(0,len(ensembles[:-1])):
-                    write_output_line(harmonic_ensemble_similarity(x1 = ref_x,
-                                                                x2 = xs[i],
-                                                                sigma1 = ref_sigma,
-                                                                sigma2 = sigmas[i]),
-                    fhandler = fhandler,
-                    number = i+1)
-            elif parser_phase3.options.convergence_mode == "increasing-window":
+            if parser_phase3.options.convergence_mode == "increasing-window":
                 fname += "increasing-window_harmonic.dat"
                 if parser_phase3.options.outfiles != None:
                     fhandler = open(fname,'a')
@@ -937,7 +938,7 @@ if __name__ == "__main__":
                                               mass_weighted=True,
                                               estimator = covariance_estimator)
 
-                write_output_line(rawline="# === first half vs increasing window convergence estimation ===")
+                write_output_line(rawline="# === Increasing window convergence estimation ===")
                 for i in range(0,len(ensembles)):
                     write_output_line(harmonic_ensemble_similarity(x1 = ref_x,
                                                                 x2 = xs[i],
@@ -1098,21 +1099,21 @@ if __name__ == "__main__":
                 if parser_phase3.options.evaluate_convergence:
                     fname = str(parser_phase3.options.outfiles)+"_convergence_clustering_preference%.1f" %p
                     header = "=== convergence clustering, preference %.1f, "%p
-                    if parser_phase3.options.convergence_mode == 'half-half':
-                        header += "half-half ==="
-                        fname+="_half-half.dat"
-                        if parser_phase3.options.outfiles != None:
-                            fhandler = open(fname,'a')
-                        else:
-                            fhandler = None
+                    #if parser_phase3.options.convergence_mode == 'half-half':
+                    #    header += "half-half ==="
+                    #    fname+="_half-half.dat"
+                    #    if parser_phase3.options.outfiles != None:
+                    #        fhandler = open(fname,'a')
+                    #    else:
+                    #        fhandler = None
 
-                        write_output_line(0,rawline=header,fhandler=fhandler)
-                        write_output_line(0, rawline="half-half distance: %.3f" %   
-                                                        harmonic_ensemble_similarity(x1 = xs[0],
-                                                          x2 = xs[1],
-                                                          sigma1 = sigmas[0],
-                                                          sigma2 = sigmas[1]),
-                                                        fhandler=fhandler)
+                    #    write_output_line(0,rawline=header,fhandler=fhandler)
+                    #    write_output_line(0, rawline="half-half distance: %.3f" %   
+                    #                                    harmonic_ensemble_similarity(x1 = xs[0],
+                    #                                      x2 = xs[1],
+                    #                                      sigma1 = sigmas[0],
+                    #                                      sigma2 = sigmas[1]),
+                    #                                    fhandler=fhandler)
 
                     #elif parser_phase3.options.convergence_mode == 'sliding-window':
                     #    print "sliding window ==="
@@ -1122,22 +1123,17 @@ if __name__ == "__main__":
                     #    print "fixed window ==="
                     #    for j in range(1,len(ensembles)):
                     #        print "%.3f" % clustering_ensemble_similarity( ccs[i], ensembles[0], 1, ensembles[j], j+1)
-<<<<<<< Updated upstream
-                    elif parser_phase3.options.convergence_mode == "increasing-half":
-                        print "increasing half ==="
-                        for j in range(0,len(ensembles)):
-                            print "%.3f" % cumulative_clustering_ensemble_similarity( ccs[i], ensembles[-1], len(ensembles)+1, ensembles[j], j+1, ens1_id_min=len(ensembles)+1)
-                    elif parser_phase3.options.convergence_mode=="increasing-window":
+                    #elif parser_phase3.options.convergence_mode == "increasing-half":
+                    #    print "increasing half ==="
+                    #    for j in range(0,len(ensembles)):
+                    #        print "%.3f" % cumulative_clustering_ensemble_similarity( ccs[i], ensembles[-1], len(ensembles)+1, ensembles[j], j+1, ens1_id_min=len(ensembles)+1)
+                    if parser_phase3.options.convergence_mode=="increasing-window":
                         print "increasing window ==="
                         for j in range(0,len(ensembles)):
                             print "%.3f" % cumulative_clustering_ensemble_similarity( ccs[i], ensembles[-1], len(ensembles)+1,
 ensembles[j], j+1)
             # for every preference value
-                else:
-                    values = TriangularMatrix(size=out_matrix_eln)
 
-                    print "==== Preference value: %1.2f ==="%p
-=======
                     #if parser_phase3.options.convergence_mode == "increasing-half":
                     #    fname += "_increasing-half.dat"
                     #    header += "increasing half ==="
@@ -1157,7 +1153,8 @@ ensembles[j], j+1)
                     #                            fhandler=fhandler,
                     #                            number=j+1)
 
-                    elif parser_phase3.options.convergence_mode=="increasing-window":
+                    values = TriangularMatrix(size=out_matrix_eln)
+                    if parser_phase3.options.convergence_mode=="increasing-window":
                         fname += "_increasing-window.dat"
                         header += "increasing window ==="
 
@@ -1179,16 +1176,11 @@ ensembles[j], j+1)
                     values = TriangularMatrix(size=out_matrix_eln)
 
                     header = "# ==== Preference value: %1.2f ==="%p
->>>>>>> Stashed changes
                     for pair in pairs_indeces:
                     # Calculate dJS
                         values[pair[0],pair[1]] = clustering_ensemble_similarity( ccs[i], ensembles[pair[0]], pair[0]+1, ensembles[pair[1]], pair[1]+1)
                 
-<<<<<<< Updated upstream
-                    values.square_print()
-=======
                     write_output(values, header=header, base_fname=parser_phase3.options.outfiles, suffix="clustering-pref%.1f"%p)
->>>>>>> Stashed changes
                         
                 if parser_phase3.options.details:
                     kwds = {}
@@ -1353,11 +1345,7 @@ ensembles[j], j+1)
                 kwds["stress"] = numpy.array([embedded_stress])
                 for en,e in enumerate(embedded_ensembles):
                     kwds[("ensemble%d"%en)] = e
-<<<<<<< Updated upstream
-                numpy.savez("%s_%d_dimensions" % (parser_phase3.options.details, ndim), **kwds) 
-=======
                 numpy.savez("%s_%d_dimensions" % (parser_phase3.options.details, ndim), **kwds)
 
         logging.info("Calculation complete.")
->>>>>>> Stashed changes
         exit(0)
