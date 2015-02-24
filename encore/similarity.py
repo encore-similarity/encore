@@ -841,8 +841,6 @@ if __name__ == "__main__":
             else:
                 ref_ensemble = ensembles[0]
             
-            for i in tmp_ensembles:
-                print i.coordinates.shape
         ensembles = tmp_ensembles 
         parser_phase3.options.nensembles = len(ensembles)
     
@@ -1090,7 +1088,6 @@ if __name__ == "__main__":
             logging.info("\n    Done!")
 
             # Create clusters collections from clustering results, one for each cluster. None if clustering didn't work.
-            print results, "MMM"
             ccs = [ ClustersCollection(clusters[1], metadata=metadata) for clusters in results ]
             
             for i,p in enumerate(preferences):
@@ -1127,12 +1124,7 @@ if __name__ == "__main__":
                     #    print "increasing half ==="
                     #    for j in range(0,len(ensembles)):
                     #        print "%.3f" % cumulative_clustering_ensemble_similarity( ccs[i], ensembles[-1], len(ensembles)+1, ensembles[j], j+1, ens1_id_min=len(ensembles)+1)
-                    if parser_phase3.options.convergence_mode=="increasing-window":
-                        print "increasing window ==="
-                        for j in range(0,len(ensembles)):
-                            print "%.3f" % cumulative_clustering_ensemble_similarity( ccs[i], ensembles[-1], len(ensembles)+1,
-ensembles[j], j+1)
-            # for every preference value
+                    # for every preference value
 
                     #if parser_phase3.options.convergence_mode == "increasing-half":
                     #    fname += "_increasing-half.dat"
@@ -1153,8 +1145,8 @@ ensembles[j], j+1)
                     #                            fhandler=fhandler,
                     #                            number=j+1)
 
-                    values = TriangularMatrix(size=out_matrix_eln)
                     if parser_phase3.options.convergence_mode=="increasing-window":
+                        values = TriangularMatrix(size=out_matrix_eln)
                         fname += "_increasing-window.dat"
                         header += "increasing window ==="
 
@@ -1201,7 +1193,7 @@ ensembles[j], j+1)
                 exit(1)
 
         # prepare runs. (e.g.: runs = [1,2,3,1,2,3,1,2,3, ...])
-        runs = 1
+        runs = dimensions*1
         
         # Choose algorithm and prepare options
         embedding_options = []
@@ -1270,7 +1262,7 @@ ensembles[j], j+1)
 
         # For every chosen dimension value:
             if parser_phase3.options.evaluate_convergence:
-                fname = parser_phase3.options.outfiles+"_convergence_dimred_%ddimensions" %ndim
+                fname = str(parser_phase3.options.outfiles)+"_convergence_dimred_%ddimensions" %ndim
                 header = "=== convergence dimred, dimension %d: " % ndim
                 #if parser_phase3.options.convergence_mode == 'half-half':
                 #    fname+="_half-half.dat"
