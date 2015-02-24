@@ -6,7 +6,7 @@ ln -s $MDANALYSIS_BUILD .
 nensembles=1
 
 # Command line
-cmdline="./similarity.py --save-matrix=minusrmsd_ff99sb-ildn-star.npz --superimpose --convergence=50 --maxiter=500 --preferences=-2 --np=$NP --nensembles $nensembles --topology topology.pdb --mode=clustering -v --evaluate-convergence --evaluate-convergence-mode=increasing-window --window-size=100"
+cmdline="./similarity.py --save-matrix=minusrmsd_ff99sb-ildn-star.npz --superimpose --convergence=50 --maxiter=500 --preferences=-2 --np=$NP --nensembles $nensembles --topology topology.pdb --mode=clustering -v --evaluate-convergence --evaluate-convergence-mode=increasing-window --window-size=25"
 
 # Run the same command line for both trajectories
 for ff in ff99sb-ildn-star c22-star; do
