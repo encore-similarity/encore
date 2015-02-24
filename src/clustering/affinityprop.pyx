@@ -89,7 +89,6 @@ cdef class AffinityPropagation:
         
         # run C module Affinity Propagation
         iterations = caffinityprop.CAffinityPropagation( <double*>matndarray.data, cn, lam, max_iterations, convergence, noise, <long*>clusters.data)
-        print clusters, "CLUSS"
         # Check results and return them
         if iterations > 0:
             centroids = numpy.unique(clusters)
