@@ -1,19 +1,19 @@
-In this example, the three 
-measures of ensemble similarity implemented in ENCORE (harmonic, clustering and
-dimensionality reduction) are tested. In this case, we are comparing few 
-different experimental ensembles of the Ubiquitin resolved by different
-NMR methods with a collection of crystal structures (xray.dcd). This example
-is inspired from the paper 
+In this example, the three measures of ensemble similarity implemented
+in ENCORE (harmonic, clustering and dimensionality reduction) are
+tested. In this case, we are comparing few different experimental
+ensembles of  Ubiquitin resolved by different NMR methods with a
+collection of crystal structures (xray.dcd). This example is inspired
+by the article:
 
    Lange OF,Lakomek NA,Fares C,Schroder GF,Walter KF,et al. (2008)
-   Recognition dynamics up to microseconds revealed from an RDC-derived 
+   Recognition dynamics up to microseconds revealed from an RDC-derived
    ubiquitin ensemble in solution. Science 320: 1471–1475
 
-in which an residual dipolar couplings (RDC)-derived Ubiquitin ensemble 
-is compared with several other Ubiquitin experimental ensembles. 
+in which a Residual Dipolar Couplings (RDC)-derived  ensemble of Ubiquitin
+is compared with several other Ubiquitin experimental ensembles.
 
-In a similar fashion,  we use our ensemble comparison 
-methods to compare several NMR-resolved ensembles, together with a 
+In a similar fashion,  we use our ensemble comparison
+methods to compare several NMR-resolved ensembles, together with a
 collection of X-ray structures. The NMR ensembles are:
 
 DER: 1XQQ
@@ -22,35 +22,22 @@ ERNST: 2KOX
 SB: 2LJ5
 MUMO: 2NR2
 
-In this directory, three .sh files are present (harmonic.sh, clustering.sh 
+In this directory, three .sh files are present (harmonic.sh, clustering.sh
 and dimred.sh). If the set_environment.sh file has been adequately set in the
- examples directory and ENCORE is correctly installed, they should be 
-completely automatical. The three scripts refer to thee different methods 
-implemented in ENCORE: the harmonic similiarity measure (harmonic.sh), 
-that based on clustering (clustering.sh) and finally the method based 
+ examples directory and ENCORE is correctly installed, they should be
+completely automatical. The three scripts refer to three different methods
+implemented in ENCORE: the harmonic similiarity measure (harmonic.sh),
+that based on clustering (clustering.sh) and finally the method based
 upon dimensionality reduction (dimred.sh).
 
-Running the .sh scripts generates the correct command lines, which are then 
-run. IMPORTANT: the clustering.sh script should be run before the dimred.sh. 
-This is because the the script generates a RMSD matrix on file, which is then 
-used in the dimred example instead of being re-calculated from scratch.
+Running the .sh scripts generates the correct command lines, which are then
+run. 
 
-Each script produces a log file which contains the output of the analysis: 
-one ore or more matrices, which contain the values for the selected similarity
- ensemble measure between each ensemble and each other. 
+IMPORTANT: Please run clustering.sh before dimred.sh. This is because
+clustering.sh will save the -RMSD matrix as a file on disk. The
+dimensionality reduction method (used in the script dimred.sh, ) loads
+the matrix and changes the signs of its elements instead of
+recomputing it from scratch, thus saving computational time.
 
-The values in the output matrices are in the same order with which the input 
-files are provided to the program, which is the following:
-
-    DER, EROS, ERNST, SB, MUMO, X-ray
-
-This means that the values in the output matrix are to be interpreted as follows:
-
-     	   DER  EROS  ERNST    SB	   MUMO	  X-ray
- DER	   0.0	0.1   0.4      ...
- EROS	   0.1	0.0   0.3
- ERNST	   0.4  0.3   0.0	      
- SB	   ...
- MUMO
- X-ray
-
+Each script produces a log file which contains the output of the analysis:
+one or or more matrices, which contain the values for the selected similarity

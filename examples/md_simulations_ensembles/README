@@ -1,0 +1,27 @@
+In this example, we show the application of ENCORE to calculate the
+similarity measures between three ensembles from molecular
+dynamics (MD) simulations. Each ensemble derives from the
+trajectory of an independent molecular simulation, and a
+different force field was used for each of them:
+
+
+traj_c22-star.xtc           : CHARMM22*
+traj_c36.xtc                : CHARMM36
+traj_ff99sb-ildn-star.xtc   : AMBER99SB*-ILDN
+
+In this example, we use the harmonic, clustering and dimensionality
+reduction-based methods to estimate how much the ensembles sampled by
+these force fields overlap. Running the examples, assuming that ENCORE
+is correctly installed and that the set_environment.sh file is
+properly set up, is just a matter of running the .sh files in the
+directory (harmonic.sh, clustering.sh, dimred.sh), each of them using
+one of the three methods detailed in the paper. You can look at
+the comments in these files to understand how the commands work in
+details.
+
+IMPORTANT: Please run clustering.sh before dimred.sh. This is because
+clustering.sh will save the -RMSD matrix as a file on disk. The
+dimensionality reduction method (used in the script dimred.sh, ) loads
+the matrix and changes the signs of its elements instead of
+recomputing it from scratch, thus saving computational time.
+

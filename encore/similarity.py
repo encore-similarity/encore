@@ -446,10 +446,10 @@ if __name__ == "__main__":
 # Main definitions
     group = group_templates.add_group("Main options")
     group.add_option("--nensembles", dest="nensembles", default=2, type="int",
-                      help="Number of ensembles to compare")
+                      help="Number of ensembles to compare (default: 2)")
     group.add_option("--mode", dest="mode", default="harmonic", type="choice",
                       choices=["harmonic", "clustering","dimred"],
-                      help="Ensemble similarity method")
+                      help="Ensemble similarity method (default: harmonic)")
     group.add_option("--np", dest="coresn", default=cpu_count(), type=int,
                       help="Maximum number of processes to perform calculation (default: as many as the system's cores (%d))"% cpu_count())
     group.add_option("--no-align", dest="align", action="store_false", default=True,
@@ -465,7 +465,7 @@ if __name__ == "__main__":
     group.add_option("--evaluate-convergence", dest="evaluate_convergence", action="store_true", default=False,
                  help="Use the ensemble comparison measure to evaluate the convergence of the ensemble 1.")
     group.add_option("--evaluate-convergence-mode", dest="convergence_mode", type="choice", default="increasing-window", choices=["increasing-window"],
-                     help="Compare a time-window of increasing size with the rest of the trajectory.")
+                     help="Compare a time-window of increasing size with the rest of the trajectory. (default: increasing-window)")
     group.add_option("--output-files","-o", dest="outfiles", action="store", type="str", default=None,
                      help="Write single matrices in output files as well. Use this basename for the file names.")
 
@@ -486,51 +486,51 @@ if __name__ == "__main__":
     group = group_templates.add_group("mode=harmonic options")
     group.add_option("--covariance-estimator", type="choice", dest="covariance_estimator", default="shrinkage",
                       choices=["ml","shrinkage"],
-                      help="Type of covariance matrix estomator (maximum likelihood (ml) or shrinkage")
+                      help="Type of covariance matrix estomator (maximum likelihood (ml) or shrinkage (default: shrinkage)")
 
 # Options for mode=cluster 
     group = group_templates.add_group("mode=clustering options")
     group.add_option("--similarity-mode", dest="similarity_mode", default="minusrmsd", type="choice",
                       choices=["minusrmsd"],
-                      help="Metric for distance matrix calculation")
+                      help="Metric for distance matrix calculation (default: minusrmsd)")
     group.add_option("--clustering-mode", dest="clustering_mode", default="ap", type="choice",
                       choices=["ap"],
-                      help="Clustering algorithm to be used, [ap: Affinity Propagation]")
+                      help="Clustering algorithm to be used, [ap: Affinity Propagation] (default: ap)")
                   
 # Options for mode=dimred
     group = group_templates.add_group("mode=dimred options")
     group.add_option("--similarity-mode", dest="similarity_mode", default="rmsd", type="choice",
                       choices=["rmsd"],
-                      help="Metric for similarity matrix calculation")
+                      help="Metric for similarity matrix calculation (defaukt: rmsd)")
     group.add_option("--dimred-mode", dest="dimred_mode", default="spe", type="choice", choices=["spe"],
-                      help="Dimensionality reduction method")
+                      help="Dimensionality reduction method (default: spe)" )
     group.add_option("--density-mode", dest="density_mode", default="kde", type="choice",
                       choices=["kde"],
-                      help="Density estimation method")
+                      help="Density estimation method (default: kde)")
     group.add_option("--dim", dest="dim", default="2", type="str",
-                      help="Dimensionality of the embedded spaces (one or more, comma-separated: 2,3,4)")
+                      help="Dimensionality of the embedded spaces (one or more, comma-separated: 2,3,4; default: 2)")
     #group.add_option("--replicas", dest="replicas", default=1, type="int",
     #                  help="Number of replicas for each number of dimensions")
 
 # Options for dimred-mode = spe
     group = group_templates.add_group("dimred-mode=spe options")
-    group.add_option("--spe-mode", dest="spe_mode", default='knn',type='choice',
+    group.add_option("--spe-mode", dest="spe_mode", default='vanilla',type='choice',
                       choices=['vanilla','rn','knn'],
-		      help="Types of spe calculation: plain SPE (vanilla), k-Nearest neighbours SPE (knn), Random neighborhood SPE (rn)")
+		      help="Types of spe calculation [plain SPE (vanilla), k-Nearest neighbours SPE (knn), Random neighborhood SPE (rn)] (default: vanilla)0")
     group.add_option("--neighborhood-cutoff", dest="neighborhood_cutoff", default=1.5, type="float",
-                      help="Neighborhood cutoff (vanilla)")
+                      help="Neighborhood cutoff (vanilla; default: 1.5)")
     group.add_option("--nneighs", dest="kn", default=15, type="int",
-                      help="number of neighbours to be considered (knn and rn)")
+                      help="number of neighbours to be considered (knn and rn; default: 15)")
     group.add_option("--max-lambda", dest="maxlam", default=2.0, type="float",
-                      help="Starting lambda learning rate parameter")
+                      help="Starting lambda learning rate parameter (default: 2.0)")
     group.add_option("--min-lambda", dest="minlam", default=0.1, type="float",
-                      help="Final lambda learning rate")
+                      help="Final lambda learning rate (default: 0.1)")
     group.add_option("--nsteps", dest="nstep", default=100, type="int",
-                      help="Number of steps per cycle")
+                      help="Number of steps per cycle (default: 50)")
     group.add_option("--ncycles", dest="ncycle", default=50, type="int",
-                      help="Number of cycles per run. At the end of every cycle, lambda is changed.")
+                      help="Number of cycles per run. At the end of every cycle, lambda is changed. (default: 50)")
     group.add_option("--stress-frequency", dest="stressfreq", default=-1, type="int",
-                      help="Calculate residual stress value every --stress-frequency cycle")
+                      help="Calculate residual stress value every --stress-frequency cycle (default: -1 (never))")
 
 # Options for ensembles
     group = group_templates.add_group("Ensemble %(index)s options")
@@ -541,9 +541,9 @@ if __name__ == "__main__":
 #    group.add_option("--ensemble%(index)s-end", dest="ensemble%(index)s_end", type="int", default=None,
 #                 help="End index for ensemble %(index)s")
     group.add_option("--ensemble%(index)s-frame-interval", dest="ensemble%(index)s_frame_interval", type="int", default=1,
-                 help="Frame interval ensemble %(index)s")
+                 help="Frame interval ensemble %(index)s (default: 1)")
     group.add_option("--ensemble%(index)s-atom-selection", dest="ensemble%(index)s_atom_selection_string", default="(name CA)",
-                 help="CHARMM-style atom selection")
+                 help="CHARMM-style atom selection (default: name CA)")
     
 # Options for similarity-mode=minusrmsd
     group = group_templates.add_group("similarity-mode=minusrmsd options")
@@ -574,14 +574,14 @@ if __name__ == "__main__":
     group.add_option("--change-matrix-sign", dest="change_matrix_sign", default=False, action="store_true", help="Invert the sign of the elements of the loaded matrix")
 # Options for similarity-mode=ap
     group = group_templates.add_group("clustering-mode=ap options")
-    group.add_option("--preferences", dest="preferences", default="-10.0", type="str",
-                      help="Preference values, comma-separated (default: -10.0")    
+    group.add_option("--preferences", dest="preferences", default="-5.0", type="str",
+                      help="Preference values, comma-separated (default: -5.0")    
     group.add_option("--lambda", dest="lam", default=0.8, type="float",
-                      help="Damping factor ([0.0;1.0] default: 0.5)")
+                      help="Damping factor ([0.0;1.0] (default: 0.5))")
     group.add_option("--maxiter", dest="max_iterations", default=1000, type="int",
-                      help="Maximum number of iterations (default: 1000")
-    group.add_option("--convergence", dest="convergence", default=10, type="int",
-                      help="Minimum number of unchanging iterations to achieve convergence (default: 10")
+                      help="Maximum number of iterations (default: 1000)")
+    group.add_option("--convergence", dest="convergence", default=50, type="int",
+                      help="Minimum number of unchanging iterations to achieve convergence (default: 50)")
     group.add_option("--nonoise", dest="noise", action="store_false", default=True,
                       help="Do not add noise to data (note: similarities must be not degenerate!)")
 
@@ -592,11 +592,11 @@ if __name__ == "__main__":
     group.add_option("--use-density", dest='use_density', default='grid', type="choice",
                       choices=['grid','data','resample'], help="Compute JS divergence by evaluating density on the selected points")
     group.add_option("--grid-resolution", dest="kde_resolution", default="0.01", type="float",
-                       help="Grid resolution for Kernel Density Estimation"), 
+                       help="Grid resolution for Kernel Density Estimation (default: 0.01)"), 
     #group.add_option("--grid-size", dest="grid_size", default=1.0, type="float",
     #                help="For each dimension, grid size will be chosen as (max-min)+2*(max-min)*D.")
-    group.add_option("--samples", dest="samples", default=None, type="int",
-                       help="Number of points to resample from kde"), 
+    group.add_option("--samples", dest="samples", default=1000, type="int",
+                       help="Number of points to resample from kde (default: 1000)"), 
 
     usage = """%prog [options].
 
@@ -1201,7 +1201,7 @@ ensembles[j], j+1)
                 exit(1)
 
         # prepare runs. (e.g.: runs = [1,2,3,1,2,3,1,2,3, ...])
-        runs = dimensions*parser_phase3.options.replicas 
+        runs = 1
         
         # Choose algorithm and prepare options
         embedding_options = []
@@ -1254,7 +1254,7 @@ ensembles[j], j+1)
         for i in range(len(dimensions)):
             stresses_perdim[dimensions[i]] = []
             embedded_spaces_perdim[dimensions[i]] = []
-            for j in range(parser_phase3.options.replicas):
+            for j in range(1):
                 stresses_perdim[dimensions[i]].append(results[j*len(dimensions)+i][1][0])
                 embedded_spaces_perdim[dimensions[i]].append(results[j*len(dimensions)+i][1][1])
 
