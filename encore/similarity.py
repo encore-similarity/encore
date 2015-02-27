@@ -448,7 +448,7 @@ if __name__ == "__main__":
     group.add_option("--nensembles", dest="nensembles", default=2, type="int",
                       help="Number of ensembles to compare (default: 2)")
     group.add_option("--mode", dest="mode", default="harmonic", type="choice",
-                      choices=["harmonic", "clustering","dimred"],
+                      choices=["hes","harmonic", "ces", "clustering","dres", "dimred"],
                       help="Ensemble similarity method (default: harmonic)")
     group.add_option("--np", dest="coresn", default=cpu_count(), type=int,
                       help="Maximum number of processes to perform calculation (default: as many as the system's cores (%d))"% cpu_count())
@@ -604,9 +604,10 @@ if __name__ == "__main__":
     ensemble similarity methods, many of them are hidden by default.
     In order to show them, please run similarity.py -h together with:
 
-    --mode=harmonic: options for the harmonic similarity method (default)    
-    --mode=clustering: options for the clustering-based method
-    --mode=dimred: options for the dimensionality reduction-based method
+    --mode=hes: options for the harmonic similarity method (default)    
+    --mode=ces: options for the clustering ensemble similarity method
+    --mode=dres: options for the dimensionality reduction ensemble 
+		 similarity method
 
     for instance:
 	
@@ -626,11 +627,11 @@ if __name__ == "__main__":
     
     # Parsing phase 2 
 
-    if parser_phase1.options.mode == "harmonic":
+    if parser_phase1.options.mode == "harmonic" or parser_phase1.options.mode == "hes":
         option_groups += [group_templates["mode=harmonic options"]]
-    elif parser_phase1.options.mode == "clustering":
+    elif parser_phase1.options.mode == "clustering" or parser_phase1.options.mode == "ces":
         option_groups += [group_templates["mode=clustering options"]]
-    elif parser_phase1.options.mode == "dimred":
+    elif parser_phase1.options.mode == "dimred" or parser_phase1.options.mode == "dres":
         option_groups += [group_templates["mode=dimred options"]]
 
     if parser_phase1.options.evaluate_convergence:
@@ -650,12 +651,12 @@ if __name__ == "__main__":
     parser_phase2.parse()
         
     # Parsing phase 3
-    if parser_phase2.options.mode == "clustering":
+    if parser_phase2.options.mode == "clustering" or parser_phase2.options.mode == "ces":
         if parser_phase2.options.similarity_mode == "minusrmsd":
             option_groups += [group_templates["similarity-mode=minusrmsd options"]]
         if parser_phase2.options.clustering_mode == "ap":
             option_groups += [group_templates["clustering-mode=ap options"]]
-    elif parser_phase2.options.mode == "dimred":
+    elif parser_phase2.options.mode == "dimred" or parser_phase2.options.mode == "dres":
         if parser_phase2.options.similarity_mode == "rmsd":
             option_groups += [group_templates["similarity-mode=rmsd options"]]
         if parser_phase2.options.dimred_mode == "spe":
@@ -844,7 +845,7 @@ if __name__ == "__main__":
         ensembles = tmp_ensembles 
         parser_phase3.options.nensembles = len(ensembles)
     
-    if parser_phase3.options.mode == "harmonic":
+    if parser_phase3.options.mode == "harmonic" or parser_phase3.options.mode == "hes":
         logging.info("Chosen metric: Harmonic similarity")
         if out_matrix_eln % parser_phase3.options.coresn != 0:
             logging.warning("WARNING: for optimal performance, the number of cores should be a factor of the number of similarity metric values.")
@@ -966,11 +967,11 @@ if __name__ == "__main__":
         logging.info("Calculation complete.")
         exit(0)
 
-    if parser_phase3.options.mode == "clustering":
+    if parser_phase3.options.mode == "clustering" or parser_phase3.options.mode == "ces":
         logging.info("Chosen metric: Conformational clustering")
-    if parser_phase3.options.mode == "dimred":
+    if parser_phase3.options.mode == "dimred" or parser_phase3.options.mode == "dres":
         logging.info("Chosen metric: Dimensionality reduction")
-    if parser_phase3.options.mode == "clustering" or parser_phase3.options.mode == "dimred": # safeguard 
+    if parser_phase3.options.mode == "clustering" or parser_phase3.options.mode == "dimred" or parser_phase3.options.mode == "ces" or parser_phase3.options.mode == "dres": # safeguard 
 
         trajlist = []
         ensemble_assignment = []
@@ -1049,7 +1050,7 @@ if __name__ == "__main__":
                 confdistmatrix.savez(parser_phase3.options.save_matrix)
 
     # Start building Probability density functions (pdf)
-    if parser_phase3.options.mode == "clustering":
+    if parser_phase3.options.mode == "clustering" or parser_phase3.options.mode == "ces":
 
         # Clustering mode
         if parser_phase3.options.clustering_mode == "ap":
@@ -1185,7 +1186,7 @@ if __name__ == "__main__":
             logging.info("Calculation complete.")
             exit(0)
 
-    if parser_phase3.options.mode == "dimred":
+    if parser_phase3.options.mode == "dimred" or parser_phase3.options.mode == "dres":
         dimensions = map(int,parser_phase3.options.dim.split(','))
         for d in dimensions:
             if d > confdistmatrix.size:

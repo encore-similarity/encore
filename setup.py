@@ -69,7 +69,7 @@ except ImportError:
     
     # Check MDAnalysis version
 if LooseVersion(MDAnalysis.__version__) < REQUIRED_MDANALYSIS:
-    print "*** package 'MDAnalysis' supported version is >= 0.8.1 ***"
+    print "*** package 'MDAnalysis' was found, but supported version is >= 0.8.1 ***"
     sys.exit(-1)
 
 import numpy
@@ -174,9 +174,6 @@ if __name__ == '__main__':
           ext_modules       = extensions,
           long_description  = LONG_DESCRIPTION,
           cmdclass          = cmdclass,
-	  include_dirs	    = include_dirs
-          #install_requires = ['MDAnalysis>=0.8.1'],
-          #extras_require = {
-          #      'plot':    ['matplotlib>=0.0']   # for AMBER netcdf, also needs HDF5 and netcdf-4
-          #      },
+	  include_dirs	    = include_dirs,
+          zip_safe          = False
           )
