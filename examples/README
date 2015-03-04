@@ -1,14 +1,21 @@
 ENCORE EXAMPLES
 =================
 
-This directory contains the examples of running the ENCORE software. Two
-examples are available, showcasing the two most important features of
-ENCORE: the ability to calculate three different similarity measures
-for protein ensembles as well as to give a rough estimate of the level
-of convergence on an ensemble. The examples are found in the two
-subdirectories available here (experimental_ubq_ensembles and
-md_trajectory_convergence). In order to run the examples please follow
+This directory contains three examples of how the ENCORE software may
+be used. Together these examples demonstrate how to use the two most
+important features of ENCORE:
+
+(i) to calculate the three different similarity measures (HES, CES and DRES)
+for protein ensembles, either from molecular simulations or from
+experiments and  
+(ii) to use such calculations to provide an estimate of  
+the rate of convergence of a molecular simulation. 
+
+The examples are found in the three subdirectories:
+md_simulations_ensembles, experimental_ubq_ensembles and
+md_trajectory_convergence. In order to run the examples please follow
 these steps:
+
  
 - install ENCORE. Please refer to the INSTALL file in the main ENCORE
   installation for detailed instructions.
@@ -20,22 +27,28 @@ these steps:
   according to the location of ENCORE and MDAnalysis on your system
   and other details:
 
-	* MDANALYSIS_BUILD: This is where the MDAnlaysis build is
-          located. This is necessary only if MDAnalysis is not in your
-          $PYTHONPATH.       
+      * MDANALYSIS_BUILD: This is where the MDAnalysis build is
+      	located. This is necessary only if MDAnalysis is not in your
+      	$PYTHONPATH.  	  
 
-	* ENCORE_BUILD: This is where the ENCORE build is
-          located. This is ALWAYS necessary (i.e. even if the ENCORE
-          build is in your PYTHONPATH)
-       
-	* PYTHON: location of your python (2.6 or 2.7) executable 
-	 Please use the same version that you have used to build ENCORE.
+      * ENCORE_BUILD: This is where the ENCORE build is
+      	located. This is ALWAYS necessary (i.e. even if the ENCORE
+      	build is in your PYTHONPATH)
+  	 
+      * PYTHON: location of your python (2.6 or 2.7) executable
+     	 Please use the same version that you have used to build ENCORE.
 
-	* NP: number of cores that ENCORE will use its examples. On a
-       	 modern computer running the ENCORE examples will take few
-       	 minutes, even with a low number of cores (for instance 4).
-	   
-- Now you are ready to run the examples. They are contained in the three 
-directories experimental_ubq_ensembles, md_trajectory_convergence and 
-cypA_simulations_ensembles, each of them containing further instructions 
-in the respective README file.
+      * NP: number of cores that ENCORE will use its examples. Certain
+        calculations within ENCORE, such as the calculation of the
+        pairwise RMSDs between a large number of structures, can be
+        slow, and ENCORE allows such calculations to be parallelized
+        over multiple cores if these are present.
+
+- Now you are ready to run the examples. They are contained in the three
+  directories experimental_ubq_ensembles, md_trajectory_convergence and
+  md_simulations_ensembles, each of them containing further instructions
+  in the respective README file.
+
+
+
+

@@ -43,7 +43,7 @@ from scipy.stats import gaussian_kde
 # Silence deprecation warnings - scipy problem
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 warnings.filterwarnings("ignore", category=RuntimeWarning) 
-
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 # Low boundary value for log() argument - ensure no nans 
 EPSILON=1E-15

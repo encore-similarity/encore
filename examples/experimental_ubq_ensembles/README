@@ -1,20 +1,13 @@
-In this example, the three measures of ensemble similarity implemented
-in ENCORE (harmonic, clustering and dimensionality reduction) are
-tested. In this case, we are comparing few different experimental
-ensembles of  Ubiquitin resolved by different NMR methods with a
-collection of crystal structures (xray.dcd). This example is inspired
-by the article:
+In this example, we demonstrate how the three
+measures of ensemble similarity implemented in ENCORE (HES, CES and
+DRES) can be used to compare ensembles obtained by combining
+experiments and simulations. We do so by comparing few different
+experimental ensembles of  Ubiquitin resolved by different NMR methods
+with a collection of crystal structures (xray.dcd).
 
-   Lange OF,Lakomek NA,Fares C,Schroder GF,Walter KF,et al. (2008)
-   Recognition dynamics up to microseconds revealed from an RDC-derived
-   ubiquitin ensemble in solution. Science 320: 1471–1475
-
-in which a Residual Dipolar Couplings (RDC)-derived  ensemble of Ubiquitin
-is compared with several other Ubiquitin experimental ensembles.
-
-In a similar fashion,  we use our ensemble comparison
-methods to compare several NMR-resolved ensembles, together with a
-collection of X-ray structures. The NMR ensembles are:
+In particular the ensemble comparison methods are used to compare
+several NMR-resolved ensembles, together with a collection of X-ray
+structures. The NMR ensembles were all obtained from the PDB:
 
 DER: 1XQQ
 EROS: 2K39
@@ -22,22 +15,41 @@ ERNST: 2KOX
 SB: 2LJ5
 MUMO: 2NR2
 
-In this directory, three .sh files are present (harmonic.sh, clustering.sh
-and dimred.sh). If the set_environment.sh file has been adequately set in the
- examples directory and ENCORE is correctly installed, they should be
-completely automatical. The three scripts refer to three different methods
-implemented in ENCORE: the harmonic similiarity measure (harmonic.sh),
-that based on clustering (clustering.sh) and finally the method based
-upon dimensionality reduction (dimred.sh).
+In this directory, three .sh files are present (hes.sh, ces.sh and
+dres.sh). If the set_environment.sh file has been adequately set in
+the examples directory and ENCORE is correctly installed, they should
+be completely automatic. The three scripts refer to three different
+methods implemented in ENCORE: the harmonic similiarity measure
+(harmonic.sh), that based on clustering (ces.sh) and finally the
+method based upon dimensionality reduction (dres.sh).
 
-Running the .sh scripts generates the correct command lines, which are then
-run. 
+Running the .sh scripts generates the correct command lines, which are
+then run.
 
-IMPORTANT: Please run clustering.sh before dimred.sh. This is because
-clustering.sh will save the -RMSD matrix as a file on disk. The
-dimensionality reduction method (used in the script dimred.sh, ) loads
+IMPORTANT: Please run ces.sh before dres.sh. This is because
+ces.sh will save the -RMSD matrix as a file on disk. The
+dimensionality reduction method (used in the script dres.sh) loads
 the matrix and changes the signs of its elements instead of
 recomputing it from scratch, thus saving computational time.
 
 Each script produces a log file which contains the output of the analysis:
-one or or more matrices, which contain the values for the selected similarity
+one or more matrices, which contain the values for the selected similarity
+ ensemble measure between each ensemble and each other.
+
+The values in the output matrices are in the same order with which the input
+files are provided to the program, which is the following:
+
+      DER, EROS, ERNST, SB, MUMO, X-ray
+
+This means that the values in the output matrix are to be interpreted
+as follows:
+
+       	   DER  EROS  ERNST   SB    MUMO   X-ray
+ DER   	   0.0  0.1   0.4     ...
+ EROS  	   0.1  0.0   0.3
+ ERNST	   ...
+ SB    	   
+ MUMO
+ X-ray
+
+

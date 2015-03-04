@@ -8,8 +8,12 @@ ffs=(filtered_1XQQ.pdb  filtered_2K39.pdb  filtered_2KOX.pdb filtered_2LJ5.pdb f
 # number of ensembles to be used
 nensembles=6
 
-# command line
-cmdline="./similarity.py -v --topology filtered_reference.pdb --mode=harmonic --nensembles=$nensembles"
+# command line. Options:
+# --topology: topology for the provided trajectories
+# --mode=hes: harmonic ensemble similarity
+# --nensembles: numbers of ensembles that will be used for calculation
+
+cmdline="./similarity.py -v --topology filtered_reference.pdb --mode=hes --nensembles=$nensembles"
 
 # for each ensemble: add the --ensemble-trajectory option to the command line. For instance: --ensemble1-trajectory filtered_1XQQ.pdb --ensemble2-trajectory filtered_2K39.pdb etc.
 for i in $(seq 0 5); do
@@ -18,6 +22,5 @@ done
 
 # Run encore
 echo "Now running: $cmdline"
-echo "Results will be written in file: harmonic.log"
 echo  $ENCORE_BUILD/similarity.py
 $PYTHON encore/similarity.py $cmdline

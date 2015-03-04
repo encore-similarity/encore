@@ -1,27 +1,30 @@
-In this example, we show the application of ENCORE to calculate the
-similarity measures between three ensembles from molecular
-dynamics (MD) simulations. Each ensemble derives from the
-trajectory of an independent molecular simulation, and a
-different force field was used for each of them:
+In this example we demonstrate how ENCORE can be applied to calculate the
+similarity measures between ensembles as obtained e.g. from molecular
+dynamics simulations. In the example we use three ensembles, with each
+ensemble obtained from a molecular dynamics simulation of the protein
+Cyclophilin A using different force fields:
+
+traj_c22-star.xtc          : CHARMM22*
+traj_c36.xtc   		   : CHARMM36
+traj_ff99sb-ildn-star.xtc  : AMBER99SB*-ILDN
+
+We use the harmonic (HES), clustering (CES) and dimensionality
+reduction-based (DRES) methods to estimate how much the ensembles
+sampled by these force fields overlap. Running the examples, assuming
+that ENCORE is correctly installed and that the set_environment.sh
+file is properly set up, is just a matter of running the .sh files in
+the directory (hes.sh, ces.sh, dres.sh), each of them using one of the
+three methods detailed in the paper. Each of these files also contain
+comments that provide more details on how the commands work.
+
+IMPORTANT: In this example, please run ces.sh before dres.sh. This is
+because ces.sh will save the -RMSD matrix as a file on disk. The
+dimensionality reduction method (used in the script dres.sh) loads the
+matrix and changes the signs of its elements instead of recomputing it
+from scratch, thus saving computational time. If you want to calculate
+the ensemble similarity using only dimensionality reduction and not
+clustering, you can of course modify the dimred.sh script to calculate
+the matrix.
 
 
-traj_c22-star.xtc           : CHARMM22*
-traj_c36.xtc                : CHARMM36
-traj_ff99sb-ildn-star.xtc   : AMBER99SB*-ILDN
-
-In this example, we use the harmonic, clustering and dimensionality
-reduction-based methods to estimate how much the ensembles sampled by
-these force fields overlap. Running the examples, assuming that ENCORE
-is correctly installed and that the set_environment.sh file is
-properly set up, is just a matter of running the .sh files in the
-directory (harmonic.sh, clustering.sh, dimred.sh), each of them using
-one of the three methods detailed in the paper. You can look at
-the comments in these files to understand how the commands work in
-details.
-
-IMPORTANT: Please run clustering.sh before dimred.sh. This is because
-clustering.sh will save the -RMSD matrix as a file on disk. The
-dimensionality reduction method (used in the script dimred.sh, ) loads
-the matrix and changes the signs of its elements instead of
-recomputing it from scratch, thus saving computational time.
 

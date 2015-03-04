@@ -1,42 +1,49 @@
-The present example showcases the ability of ENCORE to assess the
-convergence of a sampled ensemble from molecular dynamics (MD)
-simulations.  A complete and exhaustive assessment of the convergence
-of a simulation is difficult, because of the short timescale of
-conventional MD simulations which do not allow to sample relatively
-slow conformational changes. Nonetheless, it is possible to at least
-evaluate the convergence within the sampled conformational basin.
-
+This example demonstrates how ENCORE can be used to assess the
+convergence of ensembles obtained from molecular dynamics (MD)
+simulations. A complete and exhaustive assessment of the convergence
+of a simulation is difficult. Nonetheless, it is possible at least to
+evaluate whether equilibrium has been reached at least locally within
+the conformational basin(s) that have been sampled.
 
 Here, this is performed by comparing the whole MD ensemble
 (trajectory) with time-windows (i.e. continuous portions of a
 trajectory) of the same trajectory of increasing size. In this way, we
 can answer the question of how quickly a simulation converges to our
 current best estimate of the complete distribution of conformations
-(i.e. the entire simulation). A simulation which repeatedly samples a
-single well-defined basin will quickly fall to zero divergence with
-increasing window size, while a simulation which samples several
-basins without stabily remaining in a well-defined one will feature a
-much slower fall of the divergence values.
+(i.e. the entire simulation).
 
-In this case, we use both the clustering-based and dimensionality
-reduction-based ensemble comparison methods to assess the convergence
-of two 500-ns MD simulation trajectories, sampled every 500 ps. The
-two simulations only differ by the force field used: one of them was
-performed using a force field from the CHARMM family (CHARMM22*),
-while the other was performed using a force field from the AMBER family
-(AMBER99SB-ILDN*).
+If a simulation rapidly reaches a (local) equilibrium so that the
+distribution of conformations is relatively stable, the calculated
+ensemble similarity between subsegments and the entire simulation will
+quickly drop to low values. Conversely, a simulation which continues
+to sample new conformations or for which the populations of different
+basins do not stabilize will more slowly drop to an ensemble
+similarity score of zero. Note that since the calculations compare
+segments of increasing size to the entire simulation, the final score
+will always be zero. This does of course not indicate that convergence
+has been reached, and so instead the quantity to monitor is the rate
+and time to which low values are reached.
 
-Running the examples, assuming that ENCORE is correctly installed and that
-the set_environment.sh file is properly set up, is just a matter of running
-the .sh files. The output log files will contain a list of values, which are
- the results of the comparison between the time-window of increasing
-size and the full trajectory. In this example, the time-window length is 
- 50 ns and it increases of 50 ns for every step, so that there will be ten
-windows in total.
+In this example, we use both the clustering-based (CES) and
+dimensionality reduction-based (DRES) ensemble comparison methods to
+assess the convergence oftwo 500-ns MD simulation trajectories, each
+sampled every 500 ps (i.e. 250 frames in each simulation). The two
+simulations only differ by the force field used (CHARMM22* and AMBER
+ff99SB-ILDN*).
 
-IMPORTANT: Please run clustering.sh before dimred.sh. This is because
-clustering.sh will save the -RMSD matrix as a file on disk. The
-dimensionality reduction method (used in the script dimred.sh, ) loads
-the matrix and changes the signs of its elements instead of
-recomputing it from scratch, thus saving computational time.
+Running the examples, assuming that ENCORE is correctly installed and
+that the set_environment.sh file is properly set up, is just a matter
+of running the .sh files. The output log files will contain a list of
+values, which are the results of the comparison between the
+time-window of increasingsize and the full trajectory. In this
+example, the time-window length is 50 ns and it increases of 50 ns for
+every step, so that there will be ten windows in total.
+
+IMPORTANT: Please run ces.sh before dres.sh. This is because ces.sh
+will save the -RMSD matrix as a file on disk. The dimensionality
+reduction method (used in the script dres.sh) loads the matrix and
+changes the signs of its elements instead of recomputing it from
+scratch, thus saving computational time.
+
+
 
