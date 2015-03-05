@@ -52,7 +52,7 @@ class Cluster:
 	**Arguments:**
 
 	`elem_list` : numpy.array or None
-	    numpy array of cluster elements. if None, che cluster will be initialized as empty.
+	    numpy array of cluster elements. if None, the cluster will be initialized as empty.
 	
 	`centroid` : None or element object
 	    centroid object
@@ -61,7 +61,7 @@ class Cluster:
 	    cluster ID
 
 	`metadata` : {str:iterable, ...}
-	    metadata, one value for each cluster element. the iterable must have the same length as the elements array.
+	    metadata, one value for each cluster element. The iterable must have the same length as the elements array.
 
 """
 	
@@ -112,7 +112,7 @@ class ClustersCollection():
 
 	[ a, a, a, a, b, b, b, c, c, ... , z, z ]
 
-	the variables a,b,c,...,z are clusters centroids, represented as cluster elment numbers (i.e. 3 means the 4th element of the ordered input data for clustering).
+	the variables a,b,c,...,z are clusters centroids, represented as cluster element numbers (i.e. 3 means the 4th element of the ordered input data for clustering).
  The array has the same number of elements as input data. The array maps a correspondence between cluster elements (which are implicitly associated with the position in the array) with centroids, i. e. defines clusters. For instance:
 
 	[ 1, 1, 1, 4, 4, 5 ]

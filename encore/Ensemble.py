@@ -36,9 +36,9 @@ class Ensemble:
     '''
     Ensemble class designed to easily manage more than one trajectory files. Users can provide either a topology/trajectory(es) combination or a MDAnalysis.Universe object. Topology and trajectory files must have the same number of atoms, and order is of course important.
     
-    While creating a new Ensemble object it is possible to load from a trajectory a selected subset of atoms, using the MDAnalysis syntax for selections (see http://mdanalysis.googlecode.com/git/package/doc/html/documentation_pages/selections.html for details) and the atom_selection_string argument. By default all the alpha carbons ("CA") are considered. It is also possible to load a lower number of frames for each trajectory, by selecting only one frame every frame_interval (e.g. with frame interval=2 only one frame every two will be loaded).
+    While creating a new Ensemble object it is possible to load from a trajectory a selected subset of atoms, using the MDAnalysis syntax for selections (see http://mdanalysis.googlecode.com/git/package/doc/html/documentation_pages/selections.html for details) and the atom_selection_string argument. By default all the alpha carbons ("CA") are considered. It is also possible to load a lower number of frames for each trajectory, by selecting only one frame every frame_interval (e.g. with frame-interval=2 only every second frame will be loaded).
     
-    Frames in an Ensemble objects can be superimposed to a reference conformation (see method align). By default the rotation matrix for this superimposition is calculated on all the atoms of the system, as defined by the atom_selection_string. However, if the superimposition_selection_string is provided, that subset will be used to calculate the rotation matrix, which will be applied on the whole atom_selection_string. Notice that the set defined by superimposition_selection_string is completely independent from the atom_selection_string atoms, as it can be a subset or superset of that, although it must refer to the same topology.
+    Frames in an Ensemble object can be superimposed to a reference conformation (see method align). By default the rotation matrix for this superimposition is calculated on all the atoms of the system, as defined by the atom_selection_string. However, if the superimposition_selection_string is provided, that subset will be used to calculate the rotation matrix, which will be applied on the whole atom_selection_string. Notice that the set defined by superimposition_selection_string is completely independent from the atom_selection_string atoms, as it can be a subset or superset of that, although it must refer to the same topology.
     
     **Attributes**
     
@@ -84,21 +84,23 @@ class Ensemble:
         
         '''
         Constructor for the Ensemble class. See the module description for more details.
+       	
+	**Arguments:**
+
+        `universe`: MDAnalysis.Universe
+            If universe is specified, topology and trajectory will be ignored
         
-        universe: MDAnalysis.Universe
-            if universe is specified, topology and trajectory will be ignored
-        
-        topology : str
+        `topology` : str
             Topology file name
             
-        trajectory : iterable of str
-            One or more Trajectory file name
+        `trajectory` : iterable of str
+            One or more Trajectory file name(s)
             
-        atom_selection_string : str
+        `atom_selection_string` : str
             
-        superimposition_selection_string : str or None
+        `superimposition_selection_string` : str or None
             
-        frame_interval : int
+        `frame_interval` : int
             
         '''
         
@@ -157,7 +159,7 @@ class Ensemble:
         **Returns:**
 
         `coordinates` : (x,N,3) numpy array
-            the requested array of coordinates.
+            The requested array of coordinates.
             
         '''
             
@@ -200,7 +202,7 @@ class Ensemble:
             If reference is None, the structure in the first frame of the ensemble will be used as reference.
         
         `weighted` : bool
-            whether perform weighted superimposition or not
+            Whether to perform weighted superimposition or not
         
         '''
     

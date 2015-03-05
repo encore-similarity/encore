@@ -43,7 +43,7 @@ from scipy.stats import gaussian_kde
 # Silence deprecation warnings - scipy problem
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 warnings.filterwarnings("ignore", category=RuntimeWarning) 
-warnings.filterwarnings("ignore", category=FutureWarning)
+
 
 # Low boundary value for log() argument - ensure no nans 
 EPSILON=1E-15
@@ -56,14 +56,17 @@ def discrete_kullback_leibler_divergence(pA, pB):
     """Kullback-Leibler divergence between discrete probability distribution. Notice that since this measure is not symmetric  :math:`d_{KL}(p_A,p_B) != d_{KL}(p_B,p_A)`
 
     **Arguments:**
+	
 	`pA` : iterable of floats
-		first discrete probability density function
+		First discrete probability density function
+	
 	`pB` : iterable of floats
-		second discrete probability density function
+		Second discrete probability density function
 
     **Returns:**
+	
 	`dkl` : float
-		discrete Kullback-Liebler divergence
+		Discrete Kullback-Liebler divergence
 	"""
 
     return numpy.sum( xlogy(pA, pA/pB) )
@@ -73,14 +76,17 @@ def discrete_jensen_shannon_divergence(pA, pB):
     """Jensen-Shannon divergence between discrete probability distributions.
 
     **Arguments:**
-        `pA` : iterable of floats
-                first discrete probability density function
-        `pB` : iterable of floats
-                second discrete probability density function
+        
+	`pA` : iterable of floats
+                First discrete probability density function
+        
+	`pB` : iterable of floats
+                Second discrete probability density function
 
     **Returns:**
-        `djs` : float
-                discrete Jensen-Shannon divergence
+        
+	`djs` : float
+                Discrete Jensen-Shannon divergence
 """
     return 0.5*( discrete_kullback_leibler_divergence(pA, (pA+pB)*0.5) + 
                  discrete_kullback_leibler_divergence(pB, (pA+pB)*0.5) )
@@ -104,28 +110,28 @@ def harmonic_ensemble_similarity(ensemble1=None,
     **Arguments:**
 
 	`ensemble1` : encore.Ensemble or None
-		first ensemble to be compared. If this is None, sigma1 and x1 must be provided.
+		First ensemble to be compared. If this is None, sigma1 and x1 must be provided.
 
 	`ensemble2` : encore.Ensemble or None
-		second ensemble to be compared. If this is None, sigma2 and x2 must be provided.
+		Second ensemble to be compared. If this is None, sigma2 and x2 must be provided.
 
 	`sigma1` : numpy.array
-		covariance matrix for the first ensemble. If this None, calculate it from ensemble1 using covariance_estimator
+		Covariance matrix for the first ensemble. If this None, calculate it from ensemble1 using covariance_estimator
 
 	`sigma2` : numpy.array
-		covariance matrix for the second ensemble. If this None, calculate it from ensemble1 using covariance_estimator
+		Covariance matrix for the second ensemble. If this None, calculate it from ensemble1 using covariance_estimator
 
 	`x1`: numpy.array 
-		mean for the estimated normal multivariate distribution of the first ensemble. If this is None, calculate it from ensemble1
+		Mean for the estimated normal multivariate distribution of the first ensemble. If this is None, calculate it from ensemble1
 
 	`x2`: numpy.array
-                mean for the estimated normal multivariate distribution of the first ensemble.. If this is None, calculate it from ensemble2
+                Mean for the estimated normal multivariate distribution of the first ensemble.. If this is None, calculate it from ensemble2
 
 	`mass_weighted` : bool
-		whether to perform mass-weighted covariance matrix estimation
+		Whether to perform mass-weighted covariance matrix estimation
 
 	`covariance_estimator` : either EstimatorShrinkage or EstimatorML objects
-		use this covariance estimator
+		Which covariance estimator to use
 	
     **Returns:**
 	
@@ -175,7 +181,7 @@ def harmonic_ensemble_similarity(ensemble1=None,
     return d_hes
 
 def clustering_ensemble_similarity(cc, ens1, ens1_id, ens2, ens2_id):
-    """Clustering ensemble similarity: calculate the probability densities from the clusters and compare calculate discrete Jensen-Shannon divergence.
+    """Clustering ensemble similarity: calculate the probability densities from the clusters and calculate discrete Jensen-Shannon divergence.
 	
 	**Arguments:**
 
@@ -258,12 +264,13 @@ def gen_kde_pdfs(embedded_space, ensemble_assignment, nensembles,  nsamples=None
 **Arguments:**
 
 `embedded_space` : numpy.array
-	array containing the coordinates of the embedded space
+	Array containing the coordinates of the embedded space
+
 `ensemble_assignment` : numpy.array
-	array containing one int per ensemble conformation. These allow to distinguish, in the complete embedded space, which conformations belong to each ensemble. For instance if ensemble_assignment is [1,1,1,1,2,2], it means that the first four conformations belong to ensemble 1 and the last two to ensemble 2
+	Array containing one int per ensemble conformation. These allow to distinguish, in the complete embedded space, which conformations belong to each ensemble. For instance if ensemble_assignment is [1,1,1,1,2,2], it means that the first four conformations belong to ensemble 1 and the last two to ensemble 2
 
 `nesensembles` : int
-	number of ensembles
+	Number of ensembles
 
 `nsamples` : int samples to be drawn from the ensembles. Will be required in a later stage in order to calculate dJS.`
 
@@ -273,10 +280,10 @@ def gen_kde_pdfs(embedded_space, ensemble_assignment, nensembles,  nsamples=None
 	KDEs calculated from ensembles
 
 `resamples` : list of numpy.array
-	for each KDE, draw samples according to the probability distribution of the kde mixture model
+	For each KDE, draw samples according to the probability distribution of the KDE mixture model
 
 `embedded_ensembles` : list of numpy.array
-	list of numpy.array containing, each one, the elements of the embedded space belonging to a certain ensemble
+	List of numpy.array containing, each one, the elements of the embedded space belonging to a certain ensemble
 """
     kdes = []
     embedded_ensembles = []
@@ -298,14 +305,14 @@ def gen_kde_pdfs(embedded_space, ensemble_assignment, nensembles,  nsamples=None
     return (kdes, resamples, embedded_ensembles)
     
 def dimred_ensemble_similarity(kde1, resamples1, kde2, resamples2, ln_P1_exp_P1=None, ln_P2_exp_P2=None, ln_P1P2_exp_P1=None, ln_P1P2_exp_P2=None):
-    """ Calculate the Jensen-Shannon divergence according the the Dimensionality reduction method. In this case we have continuous probability densities we have to integrate over the measureable space. Our target is calculating Kullback-Liebler, which is defined as:
+    """ Calculate the Jensen-Shannon divergence according the the Dimensionality reduction method. In this case, we have continuous probability densities we have to integrate over the measureable space. Our target is calculating Kullback-Liebler, which is defined as:
 
 .. math::
 	D_{KL}(P(x) || Q(x)) = \\int_{-\\infty}^{\\infty}P(x_i) ln(P(x_i)/Q(x_i)) = \\langle{}ln(P(x))\\rangle{}_P - \\langle{}ln(Q(x))\\rangle{}_P
 
 where the :math:`\\langle{}.\\rangle{}_P` denotes an expectation calculated under the 
-distribution P. We can thus just estimate the expectation values of the components to get an estimate an estimation of dKL.
-Since the Jensen-Shannon distance is actually  more complex, we need to estimate four expecation values:
+distribution P. We can, thus, just estimate the expectation values of the components to get an estimate of dKL.
+Since the Jensen-Shannon distance is actually  more complex, we need to estimate four expectation values:
 
 .. math::	
      \\langle{}log(P(x))\\rangle{}_P
@@ -322,25 +329,25 @@ Since the Jensen-Shannon distance is actually  more complex, we need to estimate
 	Kernel density estimation for ensemble 1
 
 `resamples1` : numpy.array
-	samples drawn according do kde1. Will be used as samples to calculate the expected values according to 'P' as detailed before.
+	Samples drawn according do kde1. Will be used as samples to calculate the expected values according to 'P' as detailed before.
 
 `kde2` : scipy.stats.gaussian_kde
         Kernel density estimation for ensemble 2
 
 `resamples2` : numpy.array
-        samples drawn according do kde2. Will be used as sample to calculate the expected values according to 'Q' as detailed before.	
+        Samples drawn according do kde2. Will be used as sample to calculate the expected values according to 'Q' as detailed before.	
 
 `ln_P1_exp_P1` : float or None
-	use this value for :math:`\\langle{}log(P(x))\\rangle{}_P`; if None, calculate it instead
+	Use this value for :math:`\\langle{}log(P(x))\\rangle{}_P`; if None, calculate it instead
 
 `ln_P2_exp_P2` : float or None
-        use this value for :math:`\\langle{}log(Q(x))\\rangle{}_Q`; if None, calculate it instead
+        Use this value for :math:`\\langle{}log(Q(x))\\rangle{}_Q`; if None, calculate it instead
 
 `ln_P1P2_exp_P1` : float or None
-        use this value for :math:`\\langle{}log(0.5*(P(x)+Q(x)))\\rangle{}_P`;  if None, calculate it instead
+        Use this value for :math:`\\langle{}log(0.5*(P(x)+Q(x)))\\rangle{}_P`;  if None, calculate it instead
 
 `ln_P1P2_exp_P1` : float or None
-        use this value for :math:`\\langle{}log(0.5*(P(x)+Q(x)))\\rangle{}_Q`; if None, calculate it instead	
+        Use this value for :math:`\\langle{}log(0.5*(P(x)+Q(x)))\\rangle{}_Q`; if None, calculate it instead	
 
 **Returns:**
 
@@ -358,20 +365,21 @@ Since the Jensen-Shannon distance is actually  more complex, we need to estimate
 
 def cumulative_gen_kde_pdfs(embedded_space, ensemble_assignment, nensembles,  nsamples=None, ens_id_min=1, ens_id_max=None):
     """
-    Generate Kernel Density Estimates (KDE) from embedded spaces and elaborate the coordinates for later use. Hoever, consider more than one ensemble as the space on which the KDE will be generated. In particular, will use ensembles with ID [ens_id_min, ens_id_max]. 
+    Generate Kernel Density Estimates (KDE) from embedded spaces and elaborate the coordinates for later use. However, consider more than one ensemble as the space on which the KDE will be generated. In particular, will use ensembles with ID [ens_id_min, ens_id_max]. 
 
 **Arguments:**
 
 `embedded_space` : numpy.array
-        array containing the coordinates of the embedded space
+        Array containing the coordinates of the embedded space
+
 `ensemble_assignment` : numpy.array
         array containing one int per ensemble conformation. These allow to distinguish, in the complete embedded space, which conformations belong to each ensemble. For instance if ensemble_assignment is [1,1,1,1,2,2], it means that the first four conformations belong to ensemble 1 and the last two to ensemble 2
 
 `nesensembles` : int
-        number of ensembles
+        Number of ensembles
 
 `nsamples : int 
-	samples to be drawn from the ensembles. Will be required in a later stage in order to calculate dJS.`
+	Samples to be drawn from the ensembles. Will be required in a later stage in order to calculate dJS.`
 
 `ens_id_min` : int 
 	Minimum ID of the ensemble to be considered; see description
@@ -385,10 +393,10 @@ def cumulative_gen_kde_pdfs(embedded_space, ensemble_assignment, nensembles,  ns
         KDEs calculated from ensembles
 
 `resamples` : list of numpy.array
-        for each KDE, draw samples according to the probability distribution of the kde mixture model
+        For each KDE, draw samples according to the probability distribution of the kde mixture model
 
 `embedded_ensembles` : list of numpy.array
-        list of numpy.array containing, each one, the elements of the embedded space belonging to a certain ensemble
+        List of numpy.array containing, each one, the elements of the embedded space belonging to a certain ensemble
     """
 
     kdes = []
@@ -396,10 +404,8 @@ def cumulative_gen_kde_pdfs(embedded_space, ensemble_assignment, nensembles,  ns
     resamples = []
     if not ens_id_max:
         ens_id_max = nensembles+1
-    #print ens_id_min, "ENSE"
     for i in range(ens_id_min, ens_id_max+1):
         this_embedded = embedded_space.transpose()[numpy.where(np.logical_and(ensemble_assignment >= ens_id_min, ensemble_assignment <= i))].transpose()
-        #print "enjoy", this_embedded.shape, ens_id_min, i, ensemble_assignment
         embedded_ensembles.append(this_embedded)
         kdes.append(gaussian_kde(this_embedded)) # XXX support different bandwidth values
 

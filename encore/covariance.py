@@ -42,14 +42,15 @@ class EstimatorML:
 	**Arguments:**
 
         `coordinates` : numpy.array
-            flattened array of coordiantes
-        `reference_coordinates` : numpy.array 
-            optional reference to use instead of mean
+            Flattened array of coordiantes
+        
+	`reference_coordinates` : numpy.array 
+            Optional reference to use instead of mean
 
 	**Returns:**
 
 	`cov_mat` : numpy.array
-            estimate covariance matrix
+            Estimate of  covariance matrix
 	
         '''
 
@@ -95,7 +96,7 @@ class EstimatorShrinkage:
         **Arguments:**
 
         `shrinkage_parameter` : float
-            makes it possible to set the shrinkage parameter explicitly, rather than having it estimated automatically.
+            Makes it possible to set the shrinkage parameter explicitly, rather than having it estimated automatically.
         '''
         self.shrinkage_parameter = shrinkage_parameter
 
@@ -106,14 +107,14 @@ class EstimatorShrinkage:
         **Arguments:**
         
         `coordinates` : numpy.array
-            flattened array of coordiantes
+            Flattened array of coordiantes
         `reference_coordinates`: numpy.array
-            optional reference to use instead of mean
+            Optional reference to use instead of mean
             
         **Returns**:
 
         `cov_mat` : nump.array
-            covariance matrix
+            Covariance matrix
         '''
 
         x = coordinates
@@ -184,18 +185,21 @@ def covariance_matrix(ensemble,
     **Arguments:**
     
     `ensemble` : Ensemble object
-        the structural ensemble
+        The structural ensemble
+    
     `estimator` : MLEstimator or ShrinkageEstimator object
-        which estimator type to use (maximum likelihood, shrinkage). This object is required to have a __call__ function defined.
+        Which estimator type to use (maximum likelihood, shrinkage). This object is required to have a __call__ function defined.
+    
     `mass_weighted` : bool
-        whether to do a mass-weighted analysis
+        Whether to do a mass-weighted analysis
+    
     `reference` : MDAnalysis.Universe object
-        use the distances to a specific reference structure rather than the distance to the mean.
+        Use the distances to a specific reference structure rather than the distance to the mean.
         
     **Returns:**
 
     cov_mat : numpy.array
-        covariance matrix
+        Covariance matrix
 
     '''
 

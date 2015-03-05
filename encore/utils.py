@@ -49,11 +49,14 @@ metadata for the matrix (date of creation, name of author ...)
     
     def __init__(self, size, metadata=None, loadfile=None):
         """Class constructor.
-        `size` : int or multiprocessing.SyncrhonizeArray
-        size of the matrix (number of rows or columns). If an array is provided instead, the size of the triangular matrix will be calculated and the array copied as the matrix elements. Otherwise, the matrix is just initialized to zero.
+        
+	**Attributes:**
+
+	`size` : int or multiprocessing.SyncrhonizeArray
+        Size of the matrix (number of rows or columns). If an array is provided instead, the size of the triangular matrix will be calculated and the array copied as the matrix elements. Otherwise, the matrix is just initialized to zero.
 
         `metadata` : dict or None
-        metadata dictionary. Used to generate the metadata attribute.
+        Metadata dictionary. Used to generate the metadata attribute.
 
         `loadfile` : str or None
         Load the matrix from this file. All the attributes and data will be determined by the matrix file itself (i.e. metadata will be ignored); size has to be provided though.
@@ -97,7 +100,7 @@ metadata for the matrix (date of creation, name of author ...)
         **Arguments**:
         
         `fname` : str
-        name of the file to be saved.
+        Name of the file to be saved.
 
         """
         savez(fname, elements=self._elements,metadata=self.metadata)
@@ -108,7 +111,7 @@ metadata for the matrix (date of creation, name of author ...)
         **Arguments**:
 
         `fname` : str
-        name of the file to be loaded.
+        Name of the file to be loaded.
         """
         loaded = load(fname)
         if loaded['metadata'] != None:
@@ -268,23 +271,23 @@ class PassThroughOptionParser(optparse.OptionParser):
 class ParallelCalculation:
     """
     Generic parallel calculation class. Can use arbitrary functions,
-    arguments to functions ans kwargs to functions. 
+    arguments to functions and kwargs to functions. 
 
     **Attributes:**
 	`ncores` : int 
-		number of cores to be used for parallel calculation
+		Number of cores to be used for parallel calculation
 	
 	`function` : callable object
-		function to be run in parallel.
+		Function to be run in parallel.
 
 	`args` : list of tuples
-		each tuple contains the arguments that will be passed to function(). This means that a call o function() is performed for each tuple. function is called as function(*args, **kwargs). Runs are distributed on the requested numbers of cores.
+		Each tuple contains the arguments that will be passed to function(). This means that a call to function() is performed for each tuple. function is called as function(*args, **kwargs). Runs are distributed on the requested numbers of cores.
 
 	`kwargs` : list of dicts
-		each tuple contains the named arguments that will be passed to function, similarly as described for the args attribute.
+		Each tuple contains the named arguments that will be passed to function, similarly as described for the args attribute.
 
 	`nruns` : int
-		number of runs to be performed. Must be equal to len(args) and len(kwargs).
+		Number of runs to be performed. Must be equal to len(args) and len(kwargs).
     """
     def __init__(self, ncores, function, args=[], kwargs=None):
 	""" Class constructor.
@@ -298,7 +301,7 @@ class ParallelCalculation:
 		function to be run in parallel.
 
 	`args` : list of tuples
-		arguments for function; see the ParallelCalculation class description.
+		Arguments for function; see the ParallelCalculation class description.
 
 	`kwargs` : list of dicts or None
 		kwargs for function; see the ParallelCalculation class description.
@@ -423,8 +426,8 @@ class ProgressBar(object):
 
 class AnimatedProgressBar(ProgressBar):
     """Extends ProgressBar to allow you to use it straighforward on a script.
-    Accepts an extra keyword argument named `stdout` (by default use sys.stdout)
-    and may be any file-object to which send the progress status.
+    Accepts an extra keyword argument named `stdout` (by default use sys.stdout).
+    The progress status may be send to any file-object. 
     """
     def __init__(self, *args, **kwargs):
         super(AnimatedProgressBar, self).__init__(*args, **kwargs)
@@ -441,7 +444,7 @@ class AnimatedProgressBar(ProgressBar):
 
 def trm_indeces(a,b):
     """
-    generate (i,j) indeces of a triangular matrix, between elements a and b. The matrix size is automatically determined from the number of elements.
+    Generate (i,j) indeces of a triangular matrix, between elements a and b. The matrix size is automatically determined from the number of elements.
     For instance: trm_indexes((0,0),(2,1)) yields (0,0) (1,0) (1,1) (2,0) (2,1).
 
     **Arguments:**
@@ -472,7 +475,7 @@ def trm_indeces_nodiag(n):
     **Arguments:**
 
     `n` : int 
-	matrix size
+	Matrix size
 """
 
     for i in xrange(1,n):
