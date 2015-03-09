@@ -6,13 +6,7 @@
 Welcome to encore's documentation!
 ==================================
 
-Contents:
-
-.. toctree::
-   :maxdepth: 4
-
-   encore.rst
-
-   encore.clustering.rst
-
-   encore.dimensionality_reduction.rst
+.. include:: intro.rst
+.. include:: encore.rst
+.. include:: encore.clustering.rst
+.. include:: encore.dimensionality_reduction.rst

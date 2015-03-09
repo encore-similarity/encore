@@ -43,6 +43,8 @@ from scipy.stats import gaussian_kde
 # Silence deprecation warnings - scipy problem
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 warnings.filterwarnings("ignore", category=RuntimeWarning) 
+warnings.filterwarnings("ignore", category=FutureWarning) 
+
 
 
 # Low boundary value for log() argument - ensure no nans 
@@ -420,13 +422,59 @@ def cumulative_gen_kde_pdfs(embedded_space, ensemble_assignment, nensembles,  ns
     return (kdes, resamples, embedded_ensembles)
 
 def write_output(matrix, base_fname=None, header="", suffix="", extension="dat"):
+    """
+    Write output matrix with a nice format, to stdout and optionally a file.  
+
+**Arguments:**
+
+`matrix` : encore.utils.TriangularMatrix
+        Matrix containing the values to be printed
+
+`base_fname` : str
+	Basic filename for output. If None, no files will be written, and the matrix will be just printed on screen
+
+`header` : str
+        Line to be written just before the matrix
+
+`suffix` : str 
+	String to be concatenated to basename, in order to get the final file name        
+
+`extension` : str 
+	Extension for the output file       
+
+    """
+
     if base_fname != None:
         fname = base_fname+"-"+suffix+"."+extension
     else:
         fname = None
     matrix.square_print(header=header, fname=fname)
         
-def write_output_line(value, fhandler=None, suffix="", extension="dat", label="win.", number=0, rawline=None):
+def write_output_line(value, fhandler=None, suffix="", label="win.", number=0, rawline=None):
+    """
+    Write a line of data with a fixed format to standard output and optionally file. The line will be appended or written to a file object.
+The format is (in the Python str.format specification language): '{:s}{:d}\t{:.3f}', with the first element being the label, the second being
+a number that identifies the data point, and the third being the number itself. For instance:
+
+win.3	0.278
+
+**Arguments:**
+
+`value` : float
+        Value to be printed.
+
+`fhandler` : file object
+	File object in which the line will be written. if None, nothing will be written to file, and the value will be just printed on screen
+
+`label` : str
+        Label to be written before the data 
+
+`number` : int 
+	Number that identifies the data being written in this line.        
+
+`rawline` : str
+	If rawline is not None, write rawline to fhandler instead of the formatted number line. rawline can be any arbitrary string.       
+    """
 
     if fhandler == None:
         fh = Tee(sys.stdout)

@@ -1,17 +1,18 @@
-=============================== ENCORE ===============================
+Introduction
+===============
 
 ENCORE is a Python package designed to quantify the similarity between
 conformational ensembles of proteins (or in principle other
 macromolecules), using three different methods originally described
 in:
-
-   Lindorff-Larsen K, Ferkinghoff-Borg J (2009) 
+::
+   Kresten Lindorff-Larsen, Jesper Ferkinghoff-Borg (2009) 
    Similarity Measures for Protein Ensembles. 
    PLoS ONE 4(1): e4203. doi:10.1371/journal.pone.0004203
 
 A description of ENCORE and a number of application can be found in:
-
-   Matteo Tiberti, Elena Papaleo, Tone Bengtsen, Wouter Boomsma and
+::
+   Matteo Tiberti, Elena Papaleo, Tone Bengtsen, Wouter Boomsma and 
    Kresten Lindorff-Larsen, 
    ENCORE: Software for quantitative ensemble comparison
    Submitted
@@ -85,10 +86,8 @@ showcase three typical cases of study:
 
 See the examples themselves for more information.
 If you use ENCORE for your scientific work, please cite:
-
-   Matteo Tiberti, Elena Papaleo, Tone Bengtsen, Wouter Boomsma and
-   Kresten Lindorff-Larsen,
+::
+   Matteo Tiberti, Elena Papaleo, Tone Bengtsen, Wouter Boomsma and Kresten Lindorff-Larsen,
    ENCORE: Software for quantitative ensemble comparison
    Submitted
-
 

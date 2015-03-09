@@ -27,10 +27,33 @@ import copy
 
 
 class Tee:
+    """Simple class that writes to one or more file objects.
+
+**Attributes:**
+
+`files` : list of file objects
+	File objects to be written to.
+
+"""
     def __init__(self, *files):
+	"""Class constructor.
+
+**Arguments**:
+        
+`files` : file objects
+	File objects to be written to.	
+"""
         self.files = files
         
     def write(self, obj):
+	"""Write string obj to all the file objects.
+
+**Arguments**:
+        
+`obj` : str
+	String to write to the file objects.  
+"""
+
         for f in self.files:
             f.write(obj)
 
@@ -40,10 +63,10 @@ class TriangularMatrix:
 **Attributes:**
 
 `ensemble` : int
-size of the matrix (number of rows or number of columns)
+	Size of the matrix (number of rows or number of columns)
 
 `metadata` : dict
-metadata for the matrix (date of creation, name of author ...)
+	Metadata for the matrix (date of creation, name of author ...)
 """    
     
     

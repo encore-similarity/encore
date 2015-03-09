@@ -1,0 +1,30 @@
+Encore documentation
+=====================
+
+The ENCORE reference documentation is automatically generated from 
+the docstrings in the code, except for the Cython (.pyx) files and
+the introduction, which have been added manually as rst files. 
+In order to generate the documentation, you need: 
+
+* the Sphinx package installed (see http://sphinx-doc.org/index.html)
+* a LaTeX distribution, so that pdflatex is available 
+* you have to build and install the ENCORE package in the  
+  installation directory, by running:
+      
+      python setup.py develop
+
+Then, to generate the documentation, you may run:
+
+    make latexpdf
+
+for the documentation in pdf format, and
+
+    make html
+
+for the documentation in the html format.
+
+You can find the resulting files in the _build/latex or _build/html
+directory. For your convenience, we have also provided a 
+pre-compiled pdf file (encore-docs.pdf).
+
+  
