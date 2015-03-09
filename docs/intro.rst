@@ -87,7 +87,8 @@ showcase three typical cases of study:
 See the examples themselves for more information.
 If you use ENCORE for your scientific work, please cite:
 ::
-   Matteo Tiberti, Elena Papaleo, Tone Bengtsen, Wouter Boomsma and Kresten Lindorff-Larsen,
+   Matteo Tiberti, Elena Papaleo, Tone Bengtsen, Wouter Boomsma 
+   and Kresten Lindorff-Larsen,
    ENCORE: Software for quantitative ensemble comparison
    Submitted
 

@@ -371,7 +371,7 @@ class ParallelCalculation:
 	**Returns:**
 
 	`results` : tuple of ordered tuples (int, object)
-		int is the number of the calculation corresponding to a certain argument in the args list, and object is the result of corresponding calculation. For instance, in (3, output), output is the return of function(*args[3], **kwargs[3]).  
+		int is the number of the calculation corresponding to a certain argument in the args list, and object is the result of corresponding calculation. For instance, in (3, output), output is the return of function(\*args[3], \*\*kwargs[3]).  
         """
         manager = Manager()
         q = manager.Queue()

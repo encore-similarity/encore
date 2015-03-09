@@ -231,7 +231,8 @@ See the examples themselves for more information.
 If you use ENCORE for your scientific work, please cite:
 
 \begin{Verbatim}[frame=single,commandchars=\\\{\}]
-Matteo Tiberti, Elena Papaleo, Tone Bengtsen, Wouter Boomsma and Kresten Lindorff\PYGZhy{}Larsen,
+Matteo Tiberti, Elena Papaleo, Tone Bengtsen, Wouter Boomsma
+and Kresten Lindorff\PYGZhy{}Larsen,
 ENCORE: Software for quantitative ensemble comparison
 Submitted
 \end{Verbatim}
@@ -259,9 +260,9 @@ those coming from NMR structure resoltion experiments.
 \phantomsection\label{index:encore.Ensemble.Ensemble}\pysiglinewithargsret{\strong{class }\code{encore.Ensemble.}\bfcode{Ensemble}}{\emph{universe=None}, \emph{topology=None}, \emph{trajectory=None}, \emph{atom\_selection\_string='(name CA)'}, \emph{superimposition\_selection\_string=None}, \emph{frame\_interval=1}}{}
 Ensemble class designed to easily manage more than one trajectory files. Users can provide either a topology/trajectory(es) combination or a MDAnalysis.Universe object. Topology and trajectory files must have the same number of atoms, and order is of course important.
 
-While creating a new Ensemble object it is possible to load from a trajectory a selected subset of atoms, using the MDAnalysis syntax for selections (see \href{http://mdanalysis.googlecode.com/git/package/doc/html/documentation\_pages/selections.html}{http://mdanalysis.googlecode.com/git/package/doc/html/documentation\_pages/selections.html} for details) and the atom\_selection\_string argument. By default all the alpha carbons (``CA'') are considered. It is also possible to load a lower number of frames for each trajectory, by selecting only one frame every frame\_interval (e.g. with frame interval=2 only one frame every two will be loaded).
+While creating a new Ensemble object it is possible to load from a trajectory a selected subset of atoms, using the MDAnalysis syntax for selections (see \href{http://mdanalysis.googlecode.com/git/package/doc/html/documentation\_pages/selections.html}{http://mdanalysis.googlecode.com/git/package/doc/html/documentation\_pages/selections.html} for details) and the atom\_selection\_string argument. By default all the alpha carbons (``CA'') are considered. It is also possible to load a lower number of frames for each trajectory, by selecting only one frame every frame\_interval (e.g. with frame-interval=2 only every second frame will be loaded).
 
-Frames in an Ensemble objects can be superimposed to a reference conformation (see method align). By default the rotation matrix for this superimposition is calculated on all the atoms of the system, as defined by the atom\_selection\_string. However, if the superimposition\_selection\_string is provided, that subset will be used to calculate the rotation matrix, which will be applied on the whole atom\_selection\_string. Notice that the set defined by superimposition\_selection\_string is completely independent from the atom\_selection\_string atoms, as it can be a subset or superset of that, although it must refer to the same topology.
+Frames in an Ensemble object can be superimposed to a reference conformation (see method align). By default the rotation matrix for this superimposition is calculated on all the atoms of the system, as defined by the atom\_selection\_string. However, if the superimposition\_selection\_string is provided, that subset will be used to calculate the rotation matrix, which will be applied on the whole atom\_selection\_string. Notice that the set defined by superimposition\_selection\_string is completely independent from the atom\_selection\_string atoms, as it can be a subset or superset of that, although it must refer to the same topology.
 
 \textbf{Attributes}
 \begin{description}
@@ -310,7 +311,7 @@ It must have the same topology as the Ensemble topology.
 If reference is None, the structure in the first frame of the ensemble will be used as reference.
 
 \item[{\emph{weighted}}] \leavevmode{[}bool{]}
-whether perform weighted superimposition or not
+Whether to perform weighted superimposition or not
 
 \end{description}
 
@@ -333,7 +334,7 @@ If the argument is None,  the atoms defined in the atom\_selection\_string will 
 \textbf{Returns:}
 \begin{description}
 \item[{\emph{coordinates}}] \leavevmode{[}(x,N,3) numpy array{]}
-the requested array of coordinates.
+The requested array of coordinates.
 
 \end{description}
 
@@ -368,26 +369,26 @@ Run the conformational distance matrix calculation.
 Ensemble object for which the conformational distance matrix will be computed.
 
 \item[{\emph{pairwise\_align}}] \leavevmode{[}bool{]}
-whether perform pairwise alignment between conformations
+Whether to perform pairwise alignment between conformations
 
 \item[{\emph{align\_subset\_coordinates}}] \leavevmode{[}numpy.array or None{]}
-use these coordinates for superimposition instead of those from ensemble.superimposition\_coordinates
+Use these coordinates for superimposition instead of those from ensemble.superimposition\_coordinates
 
 \item[{\emph{mass\_weighted}}] \leavevmode{[}bool{]}
-perform mass-weighted superimposition and metric calculation
+Whether to perform mass-weighted superimposition and metric calculation
 
 \item[{\emph{metadata}}] \leavevmode{[}bool{]}
-whether to build a metadata dataset for the calculated matrix
+Whether to build a metadata dataset for the calculated matrix
 
 \item[{\emph{ncores}}] \leavevmode{[}int{]}
-number of cores to be used for parallel calculation
+Number of cores to be used for parallel calculation
 
 \end{description}
 
 \textbf{Returns:}
 \begin{description}
 \item[{\emph{cond\_dist\_matrix}}] \leavevmode{[}encore.utils.TriangularMatrix object{]}
-conformational distance matrix, in triangular representation.
+Conformational distance matrix in triangular representation.
 
 \end{description}
 
@@ -438,17 +439,17 @@ The generated object acts as a functor.
 \textbf{Arguments:}
 \begin{description}
 \item[{\emph{coordinates}}] \leavevmode{[}numpy.array{]}
-flattened array of coordiantes
+Flattened array of coordiantes
 
 \item[{\emph{reference\_coordinates}}] \leavevmode{[}numpy.array {]}
-optional reference to use instead of mean
+Optional reference to use instead of mean
 
 \end{description}
 
 \textbf{Returns:}
 \begin{description}
 \item[{\emph{cov\_mat}}] \leavevmode{[}numpy.array{]}
-estimate covariance matrix
+Estimate of  covariance matrix
 
 \end{description}
 
@@ -479,17 +480,17 @@ The generated object acts as a functor.
 \textbf{Arguments:}
 \begin{description}
 \item[{\emph{coordinates}}] \leavevmode{[}numpy.array{]}
-flattened array of coordiantes
+Flattened array of coordiantes
 
 \item[{\emph{reference\_coordinates}: numpy.array}] \leavevmode
-optional reference to use instead of mean
+Optional reference to use instead of mean
 
 \end{description}
 
 \textbf{Returns}:
 \begin{description}
 \item[{\emph{cov\_mat}}] \leavevmode{[}nump.array{]}
-covariance matrix
+Covariance matrix
 
 \end{description}
 
@@ -501,29 +502,29 @@ covariance matrix
 \index{covariance\_matrix() (in module encore.covariance)}
 
 \begin{fulllineitems}
-\phantomsection\label{index:encore.covariance.covariance_matrix}\pysiglinewithargsret{\code{encore.covariance.}\bfcode{covariance\_matrix}}{\emph{ensemble}, \emph{estimator=\textless{}encore.covariance.EstimatorShrinkage instance at 0x39835a8\textgreater{}}, \emph{mass\_weighted=True}, \emph{reference=None}, \emph{start=0}, \emph{end=None}}{}
+\phantomsection\label{index:encore.covariance.covariance_matrix}\pysiglinewithargsret{\code{encore.covariance.}\bfcode{covariance\_matrix}}{\emph{ensemble}, \emph{estimator=\textless{}encore.covariance.EstimatorShrinkage instance at 0x2f4c170\textgreater{}}, \emph{mass\_weighted=True}, \emph{reference=None}, \emph{start=0}, \emph{end=None}}{}
 Calculates (optionally mass weighted) covariance matrix
 
 \textbf{Arguments:}
 \begin{description}
 \item[{\emph{ensemble}}] \leavevmode{[}Ensemble object{]}
-the structural ensemble
+The structural ensemble
 
 \item[{\emph{estimator}}] \leavevmode{[}MLEstimator or ShrinkageEstimator object{]}
-which estimator type to use (maximum likelihood, shrinkage). This object is required to have a \_\_call\_\_ function defined.
+Which estimator type to use (maximum likelihood, shrinkage). This object is required to have a \_\_call\_\_ function defined.
 
 \item[{\emph{mass\_weighted}}] \leavevmode{[}bool{]}
-whether to do a mass-weighted analysis
+Whether to do a mass-weighted analysis
 
 \item[{\emph{reference}}] \leavevmode{[}MDAnalysis.Universe object{]}
-use the distances to a specific reference structure rather than the distance to the mean.
+Use the distances to a specific reference structure rather than the distance to the mean.
 
 \end{description}
 
 \textbf{Returns:}
 \begin{description}
 \item[{cov\_mat}] \leavevmode{[}numpy.array{]}
-covariance matrix
+Covariance matrix
 
 \end{description}
 
@@ -547,7 +548,7 @@ Ferkinghoff-Borg, J. PLoS ONE 2009, 4, e4203.
 
 \begin{fulllineitems}
 \phantomsection\label{index:encore.similarity.clustering_ensemble_similarity}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{clustering\_ensemble\_similarity}}{\emph{cc}, \emph{ens1}, \emph{ens1\_id}, \emph{ens2}, \emph{ens2\_id}}{}
-Clustering ensemble similarity: calculate the probability densities from the clusters and compare calculate discrete Jensen-Shannon divergence.
+Clustering ensemble similarity: calculate the probability densities from the clusters and calculate discrete Jensen-Shannon divergence.
 
 \textbf{Arguments:}
 \begin{description}
@@ -618,22 +619,22 @@ Jensen-Shannon divergence between the two ensembles, as calculated by the cluste
 \begin{fulllineitems}
 \phantomsection\label{index:encore.similarity.cumulative_gen_kde_pdfs}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{cumulative\_gen\_kde\_pdfs}}{\emph{embedded\_space}, \emph{ensemble\_assignment}, \emph{nensembles}, \emph{nsamples=None}, \emph{ens\_id\_min=1}, \emph{ens\_id\_max=None}}{}~\begin{quote}
 
-Generate Kernel Density Estimates (KDE) from embedded spaces and elaborate the coordinates for later use. Hoever, consider more than one ensemble as the space on which the KDE will be generated. In particular, will use ensembles with ID {[}ens\_id\_min, ens\_id\_max{]}.
+Generate Kernel Density Estimates (KDE) from embedded spaces and elaborate the coordinates for later use. However, consider more than one ensemble as the space on which the KDE will be generated. In particular, will use ensembles with ID {[}ens\_id\_min, ens\_id\_max{]}.
 \end{quote}
 
 \textbf{Arguments:}
 \begin{description}
 \item[{\emph{embedded\_space}}] \leavevmode{[}numpy.array{]}
-array containing the coordinates of the embedded space
+Array containing the coordinates of the embedded space
 
 \item[{\emph{ensemble\_assignment}}] \leavevmode{[}numpy.array{]}
 array containing one int per ensemble conformation. These allow to distinguish, in the complete embedded space, which conformations belong to each ensemble. For instance if ensemble\_assignment is {[}1,1,1,1,2,2{]}, it means that the first four conformations belong to ensemble 1 and the last two to ensemble 2
 
 \item[{\emph{nesensembles}}] \leavevmode{[}int{]}
-number of ensembles
+Number of ensembles
 
 \item[{{\color{red}\bfseries{}{}`}nsamples}] \leavevmode{[}int {]}
-samples to be drawn from the ensembles. Will be required in a later stage in order to calculate dJS.{}`
+Samples to be drawn from the ensembles. Will be required in a later stage in order to calculate dJS.{}`
 
 \item[{\emph{ens\_id\_min}}] \leavevmode{[}int {]}
 Minimum ID of the ensemble to be considered; see description
@@ -649,10 +650,10 @@ Maximum ID of the ensemble to be considered; see description
 KDEs calculated from ensembles
 
 \item[{\emph{resamples}}] \leavevmode{[}list of numpy.array{]}
-for each KDE, draw samples according to the probability distribution of the kde mixture model
+For each KDE, draw samples according to the probability distribution of the kde mixture model
 
 \item[{\emph{embedded\_ensembles}}] \leavevmode{[}list of numpy.array{]}
-list of numpy.array containing, each one, the elements of the embedded space belonging to a certain ensemble
+List of numpy.array containing, each one, the elements of the embedded space belonging to a certain ensemble
 
 \end{description}
 
@@ -662,13 +663,13 @@ list of numpy.array containing, each one, the elements of the embedded space bel
 
 \begin{fulllineitems}
 \phantomsection\label{index:encore.similarity.dimred_ensemble_similarity}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{dimred\_ensemble\_similarity}}{\emph{kde1}, \emph{resamples1}, \emph{kde2}, \emph{resamples2}, \emph{ln\_P1\_exp\_P1=None}, \emph{ln\_P2\_exp\_P2=None}, \emph{ln\_P1P2\_exp\_P1=None}, \emph{ln\_P1P2\_exp\_P2=None}}{}
-Calculate the Jensen-Shannon divergence according the the Dimensionality reduction method. In this case we have continuous probability densities we have to integrate over the measureable space. Our target is calculating Kullback-Liebler, which is defined as:
+Calculate the Jensen-Shannon divergence according the the Dimensionality reduction method. In this case, we have continuous probability densities we have to integrate over the measureable space. Our target is calculating Kullback-Liebler, which is defined as:
 \begin{gather}
 \begin{split}D_{KL}(P(x) || Q(x)) = \int_{-\infty}^{\infty}P(x_i) ln(P(x_i)/Q(x_i)) = \langle{}ln(P(x))\rangle{}_P - \langle{}ln(Q(x))\rangle{}_P\end{split}\notag
 \end{gather}
 where the \(\langle{}.\rangle{}_P\) denotes an expectation calculated under the 
-distribution P. We can thus just estimate the expectation values of the components to get an estimate an estimation of dKL.
-Since the Jensen-Shannon distance is actually  more complex, we need to estimate four expecation values:
+distribution P. We can, thus, just estimate the expectation values of the components to get an estimate of dKL.
+Since the Jensen-Shannon distance is actually  more complex, we need to estimate four expectation values:
 \begin{gather}
 \begin{split}\langle{}log(P(x))\rangle{}_P\end{split}\notag\\\begin{split}\langle{}log(Q(x))\rangle{}_Q\end{split}\notag\\\begin{split}\langle{}log(0.5*(P(x)+Q(x)))\rangle{}_P\end{split}\notag\\\begin{split}\langle{}log(0.5*(P(x)+Q(x)))\rangle{}_Q\end{split}\notag
 \end{gather}
@@ -678,25 +679,25 @@ Since the Jensen-Shannon distance is actually  more complex, we need to estimate
 Kernel density estimation for ensemble 1
 
 \item[{\emph{resamples1}}] \leavevmode{[}numpy.array{]}
-samples drawn according do kde1. Will be used as samples to calculate the expected values according to `P' as detailed before.
+Samples drawn according do kde1. Will be used as samples to calculate the expected values according to `P' as detailed before.
 
 \item[{\emph{kde2}}] \leavevmode{[}scipy.stats.gaussian\_kde{]}
 Kernel density estimation for ensemble 2
 
 \item[{\emph{resamples2}}] \leavevmode{[}numpy.array{]}
-samples drawn according do kde2. Will be used as sample to calculate the expected values according to `Q' as detailed before.
+Samples drawn according do kde2. Will be used as sample to calculate the expected values according to `Q' as detailed before.
 
 \item[{\emph{ln\_P1\_exp\_P1}}] \leavevmode{[}float or None{]}
-use this value for \(\langle{}log(P(x))\rangle{}_P\); if None, calculate it instead
+Use this value for \(\langle{}log(P(x))\rangle{}_P\); if None, calculate it instead
 
 \item[{\emph{ln\_P2\_exp\_P2}}] \leavevmode{[}float or None{]}
-use this value for \(\langle{}log(Q(x))\rangle{}_Q\); if None, calculate it instead
+Use this value for \(\langle{}log(Q(x))\rangle{}_Q\); if None, calculate it instead
 
 \item[{\emph{ln\_P1P2\_exp\_P1}}] \leavevmode{[}float or None{]}
-use this value for \(\langle{}log(0.5*(P(x)+Q(x)))\rangle{}_P\);  if None, calculate it instead
+Use this value for \(\langle{}log(0.5*(P(x)+Q(x)))\rangle{}_P\);  if None, calculate it instead
 
 \item[{\emph{ln\_P1P2\_exp\_P1}}] \leavevmode{[}float or None{]}
-use this value for \(\langle{}log(0.5*(P(x)+Q(x)))\rangle{}_Q\); if None, calculate it instead
+Use this value for \(\langle{}log(0.5*(P(x)+Q(x)))\rangle{}_Q\); if None, calculate it instead
 
 \end{description}
 
@@ -714,23 +715,27 @@ Jensen-Shannon divergence calculated according to the dimensionality reduction m
 \begin{fulllineitems}
 \phantomsection\label{index:encore.similarity.discrete_jensen_shannon_divergence}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{discrete\_jensen\_shannon\_divergence}}{\emph{pA}, \emph{pB}}{}
 Jensen-Shannon divergence between discrete probability distributions.
+
+\textbf{Arguments:}
+\begin{quote}
 \begin{description}
-\item[{\textbf{Arguments:}}] \leavevmode\begin{description}
 \item[{\emph{pA}}] \leavevmode{[}iterable of floats{]}
-first discrete probability density function
+First discrete probability density function
 
 \item[{\emph{pB}}] \leavevmode{[}iterable of floats{]}
-second discrete probability density function
+Second discrete probability density function
 
 \end{description}
+\end{quote}
 
-\item[{\textbf{Returns:}}] \leavevmode\begin{description}
+\textbf{Returns:}
+\begin{quote}
+\begin{description}
 \item[{\emph{djs}}] \leavevmode{[}float{]}
-discrete Jensen-Shannon divergence
+Discrete Jensen-Shannon divergence
 
 \end{description}
-
-\end{description}
+\end{quote}
 
 \end{fulllineitems}
 
@@ -739,23 +744,27 @@ discrete Jensen-Shannon divergence
 \begin{fulllineitems}
 \phantomsection\label{index:encore.similarity.discrete_kullback_leibler_divergence}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{discrete\_kullback\_leibler\_divergence}}{\emph{pA}, \emph{pB}}{}
 Kullback-Leibler divergence between discrete probability distribution. Notice that since this measure is not symmetric  \(d_{KL}(p_A,p_B) != d_{KL}(p_B,p_A)\)
+
+\textbf{Arguments:}
+\begin{quote}
 \begin{description}
-\item[{\textbf{Arguments:}}] \leavevmode\begin{description}
 \item[{\emph{pA}}] \leavevmode{[}iterable of floats{]}
-first discrete probability density function
+First discrete probability density function
 
 \item[{\emph{pB}}] \leavevmode{[}iterable of floats{]}
-second discrete probability density function
+Second discrete probability density function
 
 \end{description}
+\end{quote}
 
-\item[{\textbf{Returns:}}] \leavevmode\begin{description}
+\textbf{Returns:}
+\begin{quote}
+\begin{description}
 \item[{\emph{dkl}}] \leavevmode{[}float{]}
-discrete Kullback-Liebler divergence
+Discrete Kullback-Liebler divergence
 
 \end{description}
-
-\end{description}
+\end{quote}
 
 \end{fulllineitems}
 
@@ -770,13 +779,13 @@ Generate Kernel Density Estimates (KDE) from embedded spaces and elaborate the c
 \textbf{Arguments:}
 \begin{description}
 \item[{\emph{embedded\_space}}] \leavevmode{[}numpy.array{]}
-array containing the coordinates of the embedded space
+Array containing the coordinates of the embedded space
 
 \item[{\emph{ensemble\_assignment}}] \leavevmode{[}numpy.array{]}
-array containing one int per ensemble conformation. These allow to distinguish, in the complete embedded space, which conformations belong to each ensemble. For instance if ensemble\_assignment is {[}1,1,1,1,2,2{]}, it means that the first four conformations belong to ensemble 1 and the last two to ensemble 2
+Array containing one int per ensemble conformation. These allow to distinguish, in the complete embedded space, which conformations belong to each ensemble. For instance if ensemble\_assignment is {[}1,1,1,1,2,2{]}, it means that the first four conformations belong to ensemble 1 and the last two to ensemble 2
 
 \item[{\emph{nesensembles}}] \leavevmode{[}int{]}
-number of ensembles
+Number of ensembles
 
 \end{description}
 
@@ -788,10 +797,10 @@ number of ensembles
 KDEs calculated from ensembles
 
 \item[{\emph{resamples}}] \leavevmode{[}list of numpy.array{]}
-for each KDE, draw samples according to the probability distribution of the kde mixture model
+For each KDE, draw samples according to the probability distribution of the KDE mixture model
 
 \item[{\emph{embedded\_ensembles}}] \leavevmode{[}list of numpy.array{]}
-list of numpy.array containing, each one, the elements of the embedded space belonging to a certain ensemble
+List of numpy.array containing, each one, the elements of the embedded space belonging to a certain ensemble
 
 \end{description}
 
@@ -800,7 +809,7 @@ list of numpy.array containing, each one, the elements of the embedded space bel
 \index{harmonic\_ensemble\_similarity() (in module encore.similarity)}
 
 \begin{fulllineitems}
-\phantomsection\label{index:encore.similarity.harmonic_ensemble_similarity}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{harmonic\_ensemble\_similarity}}{\emph{ensemble1=None}, \emph{ensemble2=None}, \emph{sigma1=None}, \emph{sigma2=None}, \emph{x1=None}, \emph{x2=None}, \emph{mass\_weighted=True}, \emph{covariance\_estimator=\textless{}encore.covariance.EstimatorShrinkage instance at 0x3e0f440\textgreater{}}}{}
+\phantomsection\label{index:encore.similarity.harmonic_ensemble_similarity}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{harmonic\_ensemble\_similarity}}{\emph{ensemble1=None}, \emph{ensemble2=None}, \emph{sigma1=None}, \emph{sigma2=None}, \emph{x1=None}, \emph{x2=None}, \emph{mass\_weighted=True}, \emph{covariance\_estimator=\textless{}encore.covariance.EstimatorShrinkage instance at 0x33d8170\textgreater{}}}{}
 Calculate the harmonic ensemble similarity measure
 as defined in
 \begin{quote}
@@ -813,28 +822,28 @@ Ferkinghoff-Borg, J. PLoS ONE 2009, 4, e4203.
 \begin{quote}
 \begin{description}
 \item[{\emph{ensemble1}}] \leavevmode{[}encore.Ensemble or None{]}
-first ensemble to be compared. If this is None, sigma1 and x1 must be provided.
+First ensemble to be compared. If this is None, sigma1 and x1 must be provided.
 
 \item[{\emph{ensemble2}}] \leavevmode{[}encore.Ensemble or None{]}
-second ensemble to be compared. If this is None, sigma2 and x2 must be provided.
+Second ensemble to be compared. If this is None, sigma2 and x2 must be provided.
 
 \item[{\emph{sigma1}}] \leavevmode{[}numpy.array{]}
-covariance matrix for the first ensemble. If this None, calculate it from ensemble1 using covariance\_estimator
+Covariance matrix for the first ensemble. If this None, calculate it from ensemble1 using covariance\_estimator
 
 \item[{\emph{sigma2}}] \leavevmode{[}numpy.array{]}
-covariance matrix for the second ensemble. If this None, calculate it from ensemble1 using covariance\_estimator
+Covariance matrix for the second ensemble. If this None, calculate it from ensemble1 using covariance\_estimator
 
 \item[{\emph{x1}: numpy.array }] \leavevmode
-mean for the estimated normal multivariate distribution of the first ensemble. If this is None, calculate it from ensemble1
+Mean for the estimated normal multivariate distribution of the first ensemble. If this is None, calculate it from ensemble1
 
 \item[{\emph{x2}: numpy.array}] \leavevmode
-mean for the estimated normal multivariate distribution of the first ensemble.. If this is None, calculate it from ensemble2
+Mean for the estimated normal multivariate distribution of the first ensemble.. If this is None, calculate it from ensemble2
 
 \item[{\emph{mass\_weighted}}] \leavevmode{[}bool{]}
-whether to perform mass-weighted covariance matrix estimation
+Whether to perform mass-weighted covariance matrix estimation
 
 \item[{\emph{covariance\_estimator}}] \leavevmode{[}either EstimatorShrinkage or EstimatorML objects{]}
-use this covariance estimator
+Which covariance estimator to use
 
 \end{description}
 \end{quote}
@@ -853,13 +862,64 @@ harmonic similarity measure
 \index{write\_output() (in module encore.similarity)}
 
 \begin{fulllineitems}
-\phantomsection\label{index:encore.similarity.write_output}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{write\_output}}{\emph{matrix}, \emph{base\_fname=None}, \emph{header='`}, \emph{suffix='`}, \emph{extension='dat'}}{}
+\phantomsection\label{index:encore.similarity.write_output}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{write\_output}}{\emph{matrix}, \emph{base\_fname=None}, \emph{header='`}, \emph{suffix='`}, \emph{extension='dat'}}{}~\begin{quote}
+
+Write output matrix with a nice format, to stdout and optionally a file.
+\end{quote}
+
+\textbf{Arguments:}
+\begin{description}
+\item[{\emph{matrix}}] \leavevmode{[}encore.utils.TriangularMatrix{]}
+Matrix containing the values to be printed
+
+\item[{\emph{base\_fname}}] \leavevmode{[}str{]}
+Basic filename for output. If None, no files will be written, and the matrix will be just printed on screen
+
+\item[{\emph{header}}] \leavevmode{[}str{]}
+Line to be written just before the matrix
+
+\item[{\emph{suffix}}] \leavevmode{[}str {]}
+String to be concatenated to basename, in order to get the final file name
+
+\item[{\emph{extension}}] \leavevmode{[}str {]}
+Extension for the output file
+
+\end{description}
+
 \end{fulllineitems}
 
 \index{write\_output\_line() (in module encore.similarity)}
 
 \begin{fulllineitems}
-\phantomsection\label{index:encore.similarity.write_output_line}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{write\_output\_line}}{\emph{value}, \emph{fhandler=None}, \emph{suffix='`}, \emph{extension='dat'}, \emph{label='win.'}, \emph{number=0}, \emph{rawline=None}}{}
+\phantomsection\label{index:encore.similarity.write_output_line}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{write\_output\_line}}{\emph{value}, \emph{fhandler=None}, \emph{suffix='`}, \emph{label='win.'}, \emph{number=0}, \emph{rawline=None}}{}~\begin{quote}
+
+Write a line of data with a fixed format to standard output and optionally file. The line will be appended or written to a file object.
+\end{quote}
+
+The format is (in the Python str.format specification language): `\{:s\}\{:d\}      \{:.3f\}', with the first element being the label, the second being
+a number that identifies the data point, and the third being the number itself. For instance:
+
+win.3   0.278
+
+\textbf{Arguments:}
+\begin{description}
+\item[{\emph{value}}] \leavevmode{[}float{]}
+Value to be printed.
+
+\item[{\emph{fhandler}}] \leavevmode{[}file object{]}
+File object in which the line will be written. if None, nothing will be written to file, and the value will be just printed on screen
+
+\item[{\emph{label}}] \leavevmode{[}str{]}
+Label to be written before the data
+
+\item[{\emph{number}}] \leavevmode{[}int {]}
+Number that identifies the data being written in this line.
+
+\item[{\emph{rawline}}] \leavevmode{[}str{]}
+If rawline is not None, write rawline to fhandler instead of the formatted number line. rawline can be any arbitrary string.
+
+\end{description}
+
 \end{fulllineitems}
 
 
@@ -868,7 +928,7 @@ harmonic similarity measure
 \label{index:encore-utils-module}\label{index:module-encore.utils}\index{encore.utils (module)}\index{AllowUnrecognizedOptionParser (class in encore.utils)}
 
 \begin{fulllineitems}
-\phantomsection\label{index:encore.utils.AllowUnrecognizedOptionParser}\pysiglinewithargsret{\strong{class }\code{encore.utils.}\bfcode{AllowUnrecognizedOptionParser}}{\emph{usage=None}, \emph{option\_list=None}, \emph{option\_class=\textless{}class optparse.Option at 0x166d808\textgreater{}}, \emph{version=None}, \emph{conflict\_handler='error'}, \emph{description=None}, \emph{formatter=None}, \emph{add\_help\_option=True}, \emph{prog=None}, \emph{epilog=None}}{}
+\phantomsection\label{index:encore.utils.AllowUnrecognizedOptionParser}\pysiglinewithargsret{\strong{class }\code{encore.utils.}\bfcode{AllowUnrecognizedOptionParser}}{\emph{usage=None}, \emph{option\_list=None}, \emph{option\_class=\textless{}class optparse.Option at 0xc41808\textgreater{}}, \emph{version=None}, \emph{conflict\_handler='error'}, \emph{description=None}, \emph{formatter=None}, \emph{add\_help\_option=True}, \emph{prog=None}, \emph{epilog=None}}{}
 Bases: \code{optparse.OptionParser}
 
 Parser allowing unknown options. Note that only AmbiguousOptionError
@@ -884,8 +944,8 @@ rise to an error.
 Bases: {\hyperref[index:encore.utils.ProgressBar]{\code{encore.utils.ProgressBar}}}
 
 Extends ProgressBar to allow you to use it straighforward on a script.
-Accepts an extra keyword argument named \emph{stdout} (by default use sys.stdout)
-and may be any file-object to which send the progress status.
+Accepts an extra keyword argument named \emph{stdout} (by default use sys.stdout).
+The progress status may be send to any file-object.
 \index{show\_progress() (encore.utils.AnimatedProgressBar method)}
 
 \begin{fulllineitems}
@@ -943,23 +1003,23 @@ possible since they are bound to a specific parser.
 \begin{fulllineitems}
 \phantomsection\label{index:encore.utils.ParallelCalculation}\pysiglinewithargsret{\strong{class }\code{encore.utils.}\bfcode{ParallelCalculation}}{\emph{ncores}, \emph{function}, \emph{args={[}{]}}, \emph{kwargs=None}}{}
 Generic parallel calculation class. Can use arbitrary functions,
-arguments to functions ans kwargs to functions.
+arguments to functions and kwargs to functions.
 \begin{description}
 \item[{\textbf{Attributes:}}] \leavevmode\begin{description}
 \item[{\emph{ncores}}] \leavevmode{[}int {]}
-number of cores to be used for parallel calculation
+Number of cores to be used for parallel calculation
 
 \item[{\emph{function}}] \leavevmode{[}callable object{]}
-function to be run in parallel.
+Function to be run in parallel.
 
 \item[{\emph{args}}] \leavevmode{[}list of tuples{]}
-each tuple contains the arguments that will be passed to function(). This means that a call o function() is performed for each tuple. function is called as function({\color{red}\bfseries{}*}args, {\color{red}\bfseries{}**}kwargs). Runs are distributed on the requested numbers of cores.
+Each tuple contains the arguments that will be passed to function(). This means that a call to function() is performed for each tuple. function is called as function({\color{red}\bfseries{}*}args, {\color{red}\bfseries{}**}kwargs). Runs are distributed on the requested numbers of cores.
 
 \item[{\emph{kwargs}}] \leavevmode{[}list of dicts{]}
-each tuple contains the named arguments that will be passed to function, similarly as described for the args attribute.
+Each tuple contains the named arguments that will be passed to function, similarly as described for the args attribute.
 
 \item[{\emph{nruns}}] \leavevmode{[}int{]}
-number of runs to be performed. Must be equal to len(args) and len(kwargs).
+Number of runs to be performed. Must be equal to len(args) and len(kwargs).
 
 \end{description}
 
@@ -973,7 +1033,7 @@ Run parallel calculation.
 \textbf{Returns:}
 \begin{description}
 \item[{\emph{results}}] \leavevmode{[}tuple of ordered tuples (int, object){]}
-int is the number of the calculation corresponding to a certain argument in the args list, and object is the result of corresponding calculation. For instance, in (3, output), output is the return of function({\color{red}\bfseries{}*}args{[}3{]}, {\color{red}\bfseries{}**}kwargs{[}3{]}).
+int is the number of the calculation corresponding to a certain argument in the args list, and object is the result of corresponding calculation. For instance, in (3, output), output is the return of function(*args{[}3{]}, **kwargs{[}3{]}).
 
 \end{description}
 
@@ -1023,7 +1083,7 @@ Wrapper for a parser for a single phase. Takes a list of option groups as argume
 \index{PassThroughOptionParser (class in encore.utils)}
 
 \begin{fulllineitems}
-\phantomsection\label{index:encore.utils.PassThroughOptionParser}\pysiglinewithargsret{\strong{class }\code{encore.utils.}\bfcode{PassThroughOptionParser}}{\emph{usage=None}, \emph{option\_list=None}, \emph{option\_class=\textless{}class optparse.Option at 0x166d808\textgreater{}}, \emph{version=None}, \emph{conflict\_handler='error'}, \emph{description=None}, \emph{formatter=None}, \emph{add\_help\_option=True}, \emph{prog=None}, \emph{epilog=None}}{}
+\phantomsection\label{index:encore.utils.PassThroughOptionParser}\pysiglinewithargsret{\strong{class }\code{encore.utils.}\bfcode{PassThroughOptionParser}}{\emph{usage=None}, \emph{option\_list=None}, \emph{option\_class=\textless{}class optparse.Option at 0xc41808\textgreater{}}, \emph{version=None}, \emph{conflict\_handler='error'}, \emph{description=None}, \emph{formatter=None}, \emph{add\_help\_option=True}, \emph{prog=None}, \emph{epilog=None}}{}
 Bases: \code{optparse.OptionParser}
 
 An unknown option pass-through implementation of OptionParser.
@@ -1065,10 +1125,28 @@ Update the progress value instead of incrementing it
 \index{Tee (class in encore.utils)}
 
 \begin{fulllineitems}
-\phantomsection\label{index:encore.utils.Tee}\pysiglinewithargsret{\strong{class }\code{encore.utils.}\bfcode{Tee}}{\emph{*files}}{}~\index{write() (encore.utils.Tee method)}
+\phantomsection\label{index:encore.utils.Tee}\pysiglinewithargsret{\strong{class }\code{encore.utils.}\bfcode{Tee}}{\emph{*files}}{}
+Simple class that writes to one or more file objects.
+
+\textbf{Attributes:}
+\begin{description}
+\item[{\emph{files}}] \leavevmode{[}list of file objects{]}
+File objects to be written to.
+
+\end{description}
+\index{write() (encore.utils.Tee method)}
 
 \begin{fulllineitems}
 \phantomsection\label{index:encore.utils.Tee.write}\pysiglinewithargsret{\bfcode{write}}{\emph{obj}}{}
+Write string obj to all the file objects.
+
+\textbf{Arguments}:
+\begin{description}
+\item[{\emph{obj}}] \leavevmode{[}str{]}
+String to write to the file objects.
+
+\end{description}
+
 \end{fulllineitems}
 
 
@@ -1081,12 +1159,14 @@ Update the progress value instead of incrementing it
 Triangular matrix class. This class is designed to provide a memory-efficient representation of a triangular matrix that still behaves as a square symmetric one. The class wraps a numpy.array object, in which data are memorized in row-major order. It also has few additional facilities to conveniently load/write a matrix from/to file. It can be accessed using the {[}{]} and () operators, similarly to a normal numpy array.
 
 \textbf{Attributes:}
+\begin{description}
+\item[{\emph{ensemble}}] \leavevmode{[}int{]}
+Size of the matrix (number of rows or number of columns)
 
-\emph{ensemble} : int
-size of the matrix (number of rows or number of columns)
+\item[{\emph{metadata}}] \leavevmode{[}dict{]}
+Metadata for the matrix (date of creation, name of author ...)
 
-\emph{metadata} : dict
-metadata for the matrix (date of creation, name of author ...)
+\end{description}
 \index{loadz() (encore.utils.TriangularMatrix method)}
 
 \begin{fulllineitems}
@@ -1096,7 +1176,7 @@ Load matrix from the npz compressed numpy format.
 \textbf{Arguments}:
 
 \emph{fname} : str
-name of the file to be loaded.
+Name of the file to be loaded.
 
 \end{fulllineitems}
 
@@ -1109,7 +1189,7 @@ Save matrix in the npz compressed numpy format. Save metadata and data as well.
 \textbf{Arguments}:
 
 \emph{fname} : str
-name of the file to be saved.
+Name of the file to be saved.
 
 \end{fulllineitems}
 
@@ -1137,7 +1217,7 @@ Print the triangular matrix as triangular
 
 \begin{fulllineitems}
 \phantomsection\label{index:encore.utils.trm_indeces}\pysiglinewithargsret{\code{encore.utils.}\bfcode{trm\_indeces}}{\emph{a}, \emph{b}}{}
-generate (i,j) indeces of a triangular matrix, between elements a and b. The matrix size is automatically determined from the number of elements.
+Generate (i,j) indeces of a triangular matrix, between elements a and b. The matrix size is automatically determined from the number of elements.
 For instance: trm\_indexes((0,0),(2,1)) yields (0,0) (1,0) (1,1) (2,0) (2,1).
 
 \textbf{Arguments:}
@@ -1161,7 +1241,7 @@ generate (i,j) indeces of a triangular matrix of n rows (or columns), without di
 \textbf{Arguments:}
 \begin{description}
 \item[{\emph{n}}] \leavevmode{[}int {]}
-matrix size
+Matrix size
 
 \end{description}
 
@@ -1181,13 +1261,13 @@ A callback for the option parser allowing a variable number of arguments.
 \label{index:encore-clustering-package}
 
 \section{Submodules}
-\label{index:id11}
+\label{index:id7}
 
 \section{encore.clustering.Cluster module}
 \label{index:module-encore.clustering.Cluster}\label{index:encore-clustering-cluster-module}\index{encore.clustering.Cluster (module)}
 
 \subsection{Ensemble representation --- \texttt{MDAnalysis.analysis.ensemble.ensemble}}
-\label{index:id12}
+\label{index:id8}
 The module contains the Cluster and ClusterCollection classes which are designed
 to store results from clustering algorithms.
 \index{Cluster (class in encore.clustering.Cluster)}
@@ -1275,23 +1355,26 @@ list of cluster ids
 
 
 \section{encore.clustering.affinityprop module}
-\label{index:encore-clustering-affinityprop-module}\label{index:module-encore.clustering.affinityprop}\index{encore.clustering.affinityprop (module)}
+\label{index:encore-clustering-affinityprop-module}\label{index:module-encore.clustering.affinityprop}\index{encore.clustering.affinityprop (module)}\index{AffinityPropagation (class in encore.clustering.affinityprop)}
 
 \begin{fulllineitems}
-\pysigline{\bfcode{class~AffinityPropagation:}}
+\phantomsection\label{index:encore.clustering.affinityprop.AffinityPropagation}\pysigline{\strong{class }\code{encore.clustering.affinityprop.}\bfcode{AffinityPropagation}}
 Affinity propagation clustering algorithm. This class is a Cython wrapper around the Affinity propagation algorithm, which is implement as a C library (see ap.c). The implemented algorithm is described in the paper:
-\begin{quote}
 \begin{quote}
 
 Clustering by Passing Messages Between Data Points.
 Brendan J. Frey and Delbert Dueck, University of Toronto
 Science 315, 972–976, February 2007
 \end{quote}
-\index{run() (in module encore.clustering.affinityprop)}
+\index{run() (encore.clustering.affinityprop.AffinityPropagation method)}
 
 \begin{fulllineitems}
-\phantomsection\label{index:encore.clustering.affinityprop.run}\pysiglinewithargsret{\code{encore.clustering.affinityprop.}\bfcode{run}}{\emph{self}, \emph{s}, \emph{preference}, \emph{double lam}, \emph{int max\_iterations}, \emph{int convergence}, \emph{int noise=1}}{}\pysigline{\bfcode{:module:~encore.clustering.affinityprop}}
+\phantomsection\label{index:encore.clustering.affinityprop.AffinityPropagation.run}\pysiglinewithargsret{\bfcode{run}}{\emph{self}, \emph{s}, \emph{preference}, \emph{double lam}, \emph{int max\_iterations}, \emph{int convergence}, \emph{int noise=1}}{}
+\end{fulllineitems}
+
+
 Run the clustering algorithm.
+\begin{quote}
 
 \textbf{Arguments:}
 \begin{description}
@@ -1321,9 +1404,6 @@ Whether to apply noise to the input s matrix, such there are no equal values. 1 
 List of cluster-assigned elements, which can be used by encore.utils.ClustersCollection to generate Cluster objects. See these classes for more details.
 
 \end{description}
-
-\end{fulllineitems}
-
 \end{quote}
 
 \end{fulllineitems}
@@ -1334,10 +1414,10 @@ List of cluster-assigned elements, which can be used by encore.utils.ClustersCol
 \label{index:encore-dimensionality-reduction-package}
 
 \section{Module contents}
-\label{index:module-contents}\label{index:module-encore.dimensionality_reduction}\index{encore.dimensionality\_reduction (module)}\phantomsection\label{index:module-encore.dimensionality_reduction.stochasticproxembed}\index{encore.dimensionality\_reduction.stochasticproxembed (module)}
+\label{index:module-contents}\label{index:module-encore.dimensionality_reduction}\index{encore.dimensionality\_reduction (module)}\phantomsection\label{index:module-encore.dimensionality_reduction.stochasticproxembed}\index{encore.dimensionality\_reduction.stochasticproxembed (module)}\index{StochasticProximityEmbedding (class in encore.dimensionality\_reduction.stochasticproxembed)}
 
 \begin{fulllineitems}
-\pysigline{\bfcode{StochasticProximityEmbedding:}}~\begin{quote}
+\phantomsection\label{index:encore.dimensionality_reduction.stochasticproxembed.StochasticProximityEmbedding}\pysigline{\strong{class }\code{encore.dimensionality\_reduction.stochasticproxembed.}\bfcode{StochasticProximityEmbedding}}~\begin{quote}
 
 Stochastic proximity embedding dimensionality reduction algorithm. The algorithm implemented here is described in this paper:
 \begin{quote}
@@ -1348,10 +1428,16 @@ Journal of Molecular Graphics and Modelling 22 (2003) 133–140
 \end{quote}
 
 This class is a Cython wrapper for a C implementation (see spe.c)
-\index{run() (in module encore.dimensionality\_reduction.stochasticproxembed)}
+\index{run() (encore.dimensionality\_reduction.stochasticproxembed.StochasticProximityEmbedding method)}
 
 \begin{fulllineitems}
-\phantomsection\label{index:encore.dimensionality_reduction.stochasticproxembed.run}\pysiglinewithargsret{\code{encore.dimensionality\_reduction.stochasticproxembed.}\bfcode{run}}{\emph{self}, \emph{s}, \emph{double rco}, \emph{int dim}, \emph{double maxlam}, \emph{double minlam}, \emph{int ncycle}, \emph{int nstep}, \emph{int stressfreq}}{}\pysigline{\bfcode{Run~stochastic~proximity~embedding.}}
+\phantomsection\label{index:encore.dimensionality_reduction.stochasticproxembed.StochasticProximityEmbedding.run}\pysiglinewithargsret{\bfcode{run}}{\emph{self}, \emph{s}, \emph{double rco}, \emph{int dim}, \emph{double maxlam}, \emph{double minlam}, \emph{int ncycle}, \emph{int nstep}, \emph{int stressfreq}}{}
+\end{fulllineitems}
+
+
+Run stochastic proximity embedding.
+\begin{quote}
+
 \textbf{Arguments:}
 \begin{description}
 \item[{\emph{s}}] \leavevmode{[}encore.utils.TriangularMatrix object{]}
@@ -1386,21 +1472,29 @@ float is the final stress obtained; the array are the coordinates of the element
 calculate and report stress value every stressfreq cycle
 
 \end{description}
-
-\end{fulllineitems}
-
+\end{quote}
 \end{quote}
 
 \end{fulllineitems}
 
-
-
-\begin{fulllineitems}
-\pysigline{\bfcode{kNNStochasticProximityEmbedding:}}~\begin{quote}
-\index{run() (in module encore.dimensionality\_reduction.stochasticproxembed)}
+\index{kNNStochasticProximityEmbedding (class in encore.dimensionality\_reduction.stochasticproxembed)}
 
 \begin{fulllineitems}
-\pysiglinewithargsret{\code{encore.dimensionality\_reduction.stochasticproxembed.}\bfcode{run}}{\emph{self}, \emph{s}, \emph{int kn}, \emph{int dim}, \emph{double maxlam}, \emph{double minlam}, \emph{int ncycle}, \emph{int nstep}, \emph{int stressfreq}}{}\pysigline{\bfcode{Run~kNN-SPE.}}~\begin{quote}
+\phantomsection\label{index:encore.dimensionality_reduction.stochasticproxembed.kNNStochasticProximityEmbedding}\pysigline{\strong{class }\code{encore.dimensionality\_reduction.stochasticproxembed.}\bfcode{kNNStochasticProximityEmbedding}}~\begin{quote}
+
+k-Nearest Neighbours Stochastic proximity embedding dimensionality reduction algorithm.
+This is a variation of the SPE algorithm in which neighbourhood is not defined by a distance cut-off; instead, at each step, when a point is randomly chosen to perform coordinate updates, the coordinates of its k nearest neighbours are updated as well.
+This class is a Cython wrapper for a C implementation (see spe.c)
+\index{run() (encore.dimensionality\_reduction.stochasticproxembed.kNNStochasticProximityEmbedding method)}
+
+\begin{fulllineitems}
+\phantomsection\label{index:encore.dimensionality_reduction.stochasticproxembed.kNNStochasticProximityEmbedding.run}\pysiglinewithargsret{\bfcode{run}}{\emph{self}, \emph{s}, \emph{int kn}, \emph{int dim}, \emph{double maxlam}, \emph{double minlam}, \emph{int ncycle}, \emph{int nstep}, \emph{int stressfreq}}{}
+\end{fulllineitems}
+
+
+Run kNN-SPE.
+\begin{quote}
+\begin{quote}
 
 \textbf{Arguments:}
 \end{quote}
@@ -1437,9 +1531,7 @@ float is the final stress obtained; the array are the coordinates of the element
 calculate and report stress value every stressfreq cycle
 
 \end{description}
-
-\end{fulllineitems}
-
+\end{quote}
 \end{quote}
 
 \end{fulllineitems}

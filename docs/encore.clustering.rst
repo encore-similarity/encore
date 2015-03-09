@@ -20,7 +20,7 @@ encore.clustering.affinityprop module
     :undoc-members:
     :show-inheritance:
 
-.. py:class:: class AffinityPropagation:
+.. py:class:: AffinityPropagation
    :module: encore.clustering.affinityprop
 
    Affinity propagation clustering algorithm. This class is a Cython wrapper around the Affinity propagation algorithm, which is implement as a C library (see ap.c). The implemented algorithm is described in the paper:
@@ -29,10 +29,9 @@ encore.clustering.affinityprop module
         Brendan J. Frey and Delbert Dueck, University of Toronto
         Science 315, 972–976, February 2007 
 
-       .. py:method:: run(self, s, preference, double lam, int max_iterations, int convergence, int noise=1)
-          :module: encore.clustering.affinityprop
-
-        Run the clustering algorithm. 
+   .. py:method:: run(self, s, preference, double lam, int max_iterations, int convergence, int noise=1)
+      :module: encore.clustering.affinityprop
+   Run the clustering algorithm. 
 
         **Arguments:**
         
@@ -57,4 +56,3 @@ encore.clustering.affinityprop module
         
         `elements` : list of int or None
                 List of cluster-assigned elements, which can be used by encore.utils.ClustersCollection to generate Cluster objects. See these classes for more details.
-

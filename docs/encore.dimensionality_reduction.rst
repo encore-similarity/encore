@@ -14,7 +14,7 @@ Module contents
     :undoc-members:
     :show-inheritance:
 
-.. py:class:: StochasticProximityEmbedding:
+.. py:class:: StochasticProximityEmbedding
    :module: encore.dimensionality_reduction.stochasticproxembed
 
     Stochastic proximity embedding dimensionality reduction algorithm. The algorithm implemented here is described in this paper:
@@ -26,7 +26,8 @@ Module contents
     This class is a Cython wrapper for a C implementation (see spe.c)
 
     .. py:method:: run(self, s, double rco, int dim, double maxlam, double minlam, int ncycle, int nstep, int stressfreq)
-        Run stochastic proximity embedding.
+       :module: encore.dimensionality_reduction.stochasticproxembed
+    Run stochastic proximity embedding.
 
         **Arguments:**
         
@@ -59,14 +60,17 @@ Module contents
         `stressfreq` : int
                 calculate and report stress value every stressfreq cycle
 
-.. py:class:: kNNStochasticProximityEmbedding:
+.. py:class:: kNNStochasticProximityEmbedding
    :module: encore.dimensionality_reduction.stochasticproxembed
+
     k-Nearest Neighbours Stochastic proximity embedding dimensionality reduction algorithm. 
     This is a variation of the SPE algorithm in which neighbourhood is not defined by a distance cut-off; instead, at each step, when a point is randomly chosen to perform coordinate updates, the coordinates of its k nearest neighbours are updated as well.
     This class is a Cython wrapper for a C implementation (see spe.c)
 
     .. py:method:: run(self, s, int kn, int dim, double maxlam, double minlam, int ncycle, int nstep, int stressfreq)
-        Run kNN-SPE.
+       :module: encore.dimensionality_reduction.stochasticproxembed
+
+    Run kNN-SPE.
 
          **Arguments:**
 
