@@ -1,0 +1,39 @@
+ln: creazione del collegamento simbolico "./encore" non riuscita: File già esistente
+ln: creazione del collegamento simbolico "./MDAnalysis" non riuscita: File già esistente
+Now running: ./similarity.py -v --topology topology.pdb --mode=hes --nensembles=3 --ensemble1-trajectory traj_c22-star.xtc --ensemble2-trajectory traj_c36.xtc --ensemble3-trajectory traj_ff99sb-ildn-star.xtc
+/home/teo/.local/lib/python2.7/site-packages/ENCORE-0.7-py2.7-linux-x86_64.egg/encore//similarity.py
+15-03-11 11:29:  Loading ensembles . . .
+15-03-11 11:29:  Ensemble 1 Loaded.
+    trajectories: traj_c22-star.xtc
+    frame interval: 1
+    number of frames: 251
+    atoms selection: (name CA)
+    number of atoms: 163
+
+15-03-11 11:29:  Ensemble 2 Loaded.
+    trajectories: traj_c36.xtc
+    frame interval: 1
+    number of frames: 251
+    atoms selection: (name CA)
+    number of atoms: 163
+
+15-03-11 11:29:  Ensemble 3 Loaded.
+    trajectories: traj_ff99sb-ildn-star.xtc
+    frame interval: 1
+    number of frames: 251
+    atoms selection: (name CA)
+    number of atoms: 163
+
+15-03-11 11:29:  Done! 3 ensembles loaded.
+15-03-11 11:29:  Performing least-square fit of each frame on the topology conformation.
+15-03-11 11:29:  Similarity metric calculations will now begin. 3 values will be computed.
+15-03-11 11:29:  8 core(s) will be used for parallel calculations.
+15-03-11 11:29:  Chosen metric: Harmonic similarity
+15-03-11 11:29:  WARNING: for optimal performance, the number of cores should be a factor of the number of similarity metric values.
+15-03-11 11:29:      Covariance matrix estimator: Shrinkage
+15-03-11 11:29:  Calculation complete.
+# === Harmonic similarity ===
+           ens.0      ens.1      ens.2      
+ens.0      0.000      1808738.297 1212.250   
+ens.1      1808738.297 0.000      2293906.883 
+ens.2      1212.250   2293906.883 0.000      

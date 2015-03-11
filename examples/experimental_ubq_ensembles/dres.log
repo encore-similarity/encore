@@ -1,0 +1,75 @@
+ln: creazione del collegamento simbolico "./encore" non riuscita: File già esistente
+ln: creazione del collegamento simbolico "./MDAnalysis" non riuscita: File già esistente
+Now running: ./similarity.py --mode=dres --superimpose --np=3 --load-matrix=minusrmsd_pw.npz --change-matrix-sign --nensembles 6 --topology filtered_reference.pdb --use-density=resample --dim=3 --samples=10000 --nsteps=1000000 --ncycle=100 --neighborhood-cutoff=1.5 --spe-mode=vanilla -v --ensemble1-trajectory filtered_1XQQ.pdb --ensemble2-trajectory filtered_2K39.pdb --ensemble3-trajectory filtered_2KOX.pdb --ensemble4-trajectory filtered_2LJ5.pdb --ensemble5-trajectory filtered_2NR2.pdb --ensemble6-trajectory xray.dcd
+15-03-11 11:26:  Loading ensembles . . .
+15-03-11 11:26:  Ensemble 1 Loaded.
+    trajectories: filtered_1XQQ.pdb
+    frame interval: 1
+    number of frames: 128
+    atoms selection: (name CA)
+    number of atoms: 69
+
+15-03-11 11:26:  Ensemble 2 Loaded.
+    trajectories: filtered_2K39.pdb
+    frame interval: 1
+    number of frames: 116
+    atoms selection: (name CA)
+    number of atoms: 69
+
+15-03-11 11:27:  Ensemble 3 Loaded.
+    trajectories: filtered_2KOX.pdb
+    frame interval: 1
+    number of frames: 640
+    atoms selection: (name CA)
+    number of atoms: 69
+
+15-03-11 11:27:  Ensemble 4 Loaded.
+    trajectories: filtered_2LJ5.pdb
+    frame interval: 1
+    number of frames: 301
+    atoms selection: (name CA)
+    number of atoms: 69
+
+15-03-11 11:27:  Ensemble 5 Loaded.
+    trajectories: filtered_2NR2.pdb
+    frame interval: 1
+    number of frames: 144
+    atoms selection: (name CA)
+    number of atoms: 69
+
+15-03-11 11:27:  Ensemble 6 Loaded.
+    trajectories: xray.dcd
+    frame interval: 1
+    number of frames: 46
+    atoms selection: (name CA)
+    number of atoms: 69
+
+15-03-11 11:27:  Done! 6 ensembles loaded.
+15-03-11 11:27:  Performing least-square fit of each frame on the topology conformation.
+15-03-11 11:27:  Similarity metric calculations will now begin. 6 values will be computed.
+15-03-11 11:27:  3 core(s) will be used for parallel calculations.
+15-03-11 11:27:  Chosen metric: Dimensionality reduction
+15-03-11 11:27:      Similarity matrix: RMSD matrix
+15-03-11 11:27:          Loading similarity matrix from: minusrmsd_pw.npz
+15-03-11 11:27:          Done!
+15-03-11 11:27:          host : Diagon-Alley
+15-03-11 11:27:          user : teo
+15-03-11 11:27:          date : 2015-03-11 11:26:14.106894
+15-03-11 11:27:          topology file : filtered_reference.pdb
+15-03-11 11:27:          number of frames : 1375
+15-03-11 11:27:          pairwise superimposition : True
+15-03-11 11:27:          superimposition subset : (name CA)
+15-03-11 11:27:          mass-weighted : True
+15-03-11 11:27:          The matrix sign will be changed.
+15-03-11 11:27:  Starting Stochastic Proximity Embedding
+15-03-11 11:27:  Stochastic Proximity Embedding finished. Residual stress: 0.067
+Calculation finished. - Residual stress: 0.067
+15-03-11 11:27:  Calculation complete.
+# ==== Number of dimensions: 3 ===
+           ens.0      ens.1      ens.2      ens.3      ens.4      ens.5      
+ens.0      0.000      0.226      0.301      0.226      0.141      0.420      
+ens.1      0.226      0.000      0.380      0.355      0.317      0.468      
+ens.2      0.301      0.380      0.000      0.070      0.128      0.172      
+ens.3      0.226      0.355      0.070      0.000      0.077      0.251      
+ens.4      0.141      0.317      0.128      0.077      0.000      0.308      
+ens.5      0.420      0.468      0.172      0.251      0.308      0.000      

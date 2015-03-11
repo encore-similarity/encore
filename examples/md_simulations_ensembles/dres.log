@@ -1,0 +1,52 @@
+ln: creazione del collegamento simbolico "./encore" non riuscita: File già esistente
+ln: creazione del collegamento simbolico "./MDAnalysis" non riuscita: File già esistente
+Now running: ./similarity.py --mode=dres --superimpose --np=3 --load-matrix=minusrmsd_pw.npz --change-matrix-sign --nensembles 3 --topology topology.pdb --use-density=resample --dim=2 --samples=10000 --nsteps=1000000 --ncycle=100 --neighborhood-cutoff=1.5 --spe-mode=vanilla -v --ensemble1-trajectory traj_c22-star.xtc --ensemble2-trajectory traj_c36.xtc --ensemble3-trajectory traj_ff99sb-ildn-star.xtc
+/home/teo/.local/lib/python2.7/site-packages/ENCORE-0.7-py2.7-linux-x86_64.egg/encore//similarity.py
+15-03-11 11:31:  Loading ensembles . . .
+15-03-11 11:31:  Ensemble 1 Loaded.
+    trajectories: traj_c22-star.xtc
+    frame interval: 1
+    number of frames: 251
+    atoms selection: (name CA)
+    number of atoms: 163
+
+15-03-11 11:31:  Ensemble 2 Loaded.
+    trajectories: traj_c36.xtc
+    frame interval: 1
+    number of frames: 251
+    atoms selection: (name CA)
+    number of atoms: 163
+
+15-03-11 11:31:  Ensemble 3 Loaded.
+    trajectories: traj_ff99sb-ildn-star.xtc
+    frame interval: 1
+    number of frames: 251
+    atoms selection: (name CA)
+    number of atoms: 163
+
+15-03-11 11:31:  Done! 3 ensembles loaded.
+15-03-11 11:31:  Performing least-square fit of each frame on the topology conformation.
+15-03-11 11:31:  Similarity metric calculations will now begin. 3 values will be computed.
+15-03-11 11:31:  3 core(s) will be used for parallel calculations.
+15-03-11 11:31:  Chosen metric: Dimensionality reduction
+15-03-11 11:31:      Similarity matrix: RMSD matrix
+15-03-11 11:31:          Loading similarity matrix from: minusrmsd_pw.npz
+15-03-11 11:31:          Done!
+15-03-11 11:31:          host : Diagon-Alley
+15-03-11 11:31:          user : teo
+15-03-11 11:31:          date : 2015-03-11 11:30:43.531526
+15-03-11 11:31:          topology file : topology.pdb
+15-03-11 11:31:          number of frames : 753
+15-03-11 11:31:          pairwise superimposition : True
+15-03-11 11:31:          superimposition subset : (name CA)
+15-03-11 11:31:          mass-weighted : True
+15-03-11 11:31:          The matrix sign will be changed.
+15-03-11 11:31:  Starting Stochastic Proximity Embedding
+15-03-11 11:31:  Stochastic Proximity Embedding finished. Residual stress: 0.099
+Calculation finished. - Residual stress: 0.099
+15-03-11 11:31:  Calculation complete.
+# ==== Number of dimensions: 2 ===
+           ens.0      ens.1      ens.2      
+ens.0      0.000      0.693      0.603      
+ens.1      0.693      0.000      0.693      
+ens.2      0.603      0.693      0.000      

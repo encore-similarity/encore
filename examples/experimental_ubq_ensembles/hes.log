@@ -1,0 +1,63 @@
+ln: creazione del collegamento simbolico "./encore" non riuscita: File già esistente
+ln: creazione del collegamento simbolico "./MDAnalysis" non riuscita: File già esistente
+Now running: ./similarity.py -v --topology filtered_reference.pdb --mode=hes --nensembles=6 --ensemble1-trajectory filtered_1XQQ.pdb --ensemble2-trajectory filtered_2K39.pdb --ensemble3-trajectory filtered_2KOX.pdb --ensemble4-trajectory filtered_2LJ5.pdb --ensemble5-trajectory filtered_2NR2.pdb --ensemble6-trajectory xray.dcd
+/home/teo/.local/lib/python2.7/site-packages/ENCORE-0.7-py2.7-linux-x86_64.egg/encore//similarity.py
+15-03-11 11:25:  Loading ensembles . . .
+15-03-11 11:25:  Ensemble 1 Loaded.
+    trajectories: filtered_1XQQ.pdb
+    frame interval: 1
+    number of frames: 128
+    atoms selection: (name CA)
+    number of atoms: 69
+
+15-03-11 11:25:  Ensemble 2 Loaded.
+    trajectories: filtered_2K39.pdb
+    frame interval: 1
+    number of frames: 116
+    atoms selection: (name CA)
+    number of atoms: 69
+
+15-03-11 11:25:  Ensemble 3 Loaded.
+    trajectories: filtered_2KOX.pdb
+    frame interval: 1
+    number of frames: 640
+    atoms selection: (name CA)
+    number of atoms: 69
+
+15-03-11 11:25:  Ensemble 4 Loaded.
+    trajectories: filtered_2LJ5.pdb
+    frame interval: 1
+    number of frames: 301
+    atoms selection: (name CA)
+    number of atoms: 69
+
+15-03-11 11:25:  Ensemble 5 Loaded.
+    trajectories: filtered_2NR2.pdb
+    frame interval: 1
+    number of frames: 144
+    atoms selection: (name CA)
+    number of atoms: 69
+
+15-03-11 11:25:  Ensemble 6 Loaded.
+    trajectories: xray.dcd
+    frame interval: 1
+    number of frames: 46
+    atoms selection: (name CA)
+    number of atoms: 69
+
+15-03-11 11:25:  Done! 6 ensembles loaded.
+15-03-11 11:25:  Performing least-square fit of each frame on the topology conformation.
+15-03-11 11:25:  Similarity metric calculations will now begin. 6 values will be computed.
+15-03-11 11:25:  8 core(s) will be used for parallel calculations.
+15-03-11 11:25:  Chosen metric: Harmonic similarity
+15-03-11 11:25:  WARNING: for optimal performance, the number of cores should be a factor of the number of similarity metric values.
+15-03-11 11:25:      Covariance matrix estimator: Shrinkage
+15-03-11 11:25:  Calculation complete.
+# === Harmonic similarity ===
+           ens.0      ens.1      ens.2      ens.3      ens.4      ens.5      
+ens.0      0.000      155.550    55.332     71.990     83.361     533.979    
+ens.1      155.550    0.000      140.382    133.459    193.393    1224.437   
+ens.2      55.332     140.382    0.000      39.774     48.244     340.817    
+ens.3      71.990     133.459    39.774     0.000      74.578     425.247    
+ens.4      83.361     193.393    48.244     74.578     0.000      396.483    
+ens.5      533.979    1224.437   340.817    425.247    396.483    0.000      
