@@ -2,6 +2,11 @@
 ln -s $ENCORE_BUILD .
 ln -s $MDANALYSIS_BUILD .
 
+if [[ ! -e minusrmsd_pw.npz ]]; then
+        echo "-RMSD Matrix file ( minusrmsd_pw.npz ) not found! Please run the clustering example first."
+        exit
+fi
+
 # Trajectories containing the ensembles to be compared
 trajs=(traj_c22-star.xtc  traj_c36.xtc  traj_ff99sb-ildn-star.xtc)
 

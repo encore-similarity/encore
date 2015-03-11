@@ -18,13 +18,13 @@ nensembles=1
 # --evaluate-convergence: do evaluate convergence on ensemble 1
 # --window-size: number of frames to be used for the first window. The second and so on window will be multiples of the first one. (i.e. with --window-size=25 windows will be long 25, 50, 75, 100 ... frames)
 
-cmdline="./similarity.py --save-matrix=minusrmsd_ff99sb-ildn-star.npz --superimpose --convergence=50 --maxiter=500 --preferences=-2 --np=$NP --nensembles $nensembles --topology topology.pdb --mode=ces -v --evaluate-convergence --evaluate-convergence-mode=increasing-window --window-size=25"
+cmdline="./similarity.py --superimpose --convergence=50 --maxiter=500 --preferences=-2 --np=$NP --nensembles $nensembles --topology topology.pdb --mode=ces -v --evaluate-convergence --evaluate-convergence-mode=increasing-window --window-size=25"
 
 # Run the same command line for both trajectories
 for ff in ff99sb-ildn-star c22-star; do
 	traj=traj_"$ff".xtc
 
-	cmdline=$cmdline" --ensemble1-trajectory="$traj
+	cmdline=$cmdline" --ensemble1-trajectory=$traj --save-matrix=minusrmsd_pw_$ff.npz" 
 
 	echo "Now running: $ff"
 	echo  $ENCORE_BUILD/similarity.py

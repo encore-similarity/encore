@@ -16,13 +16,17 @@ nensembles=1
 # --evaluate-convergence: do evaluate convergence on ensemble 1
 # --window-size: number of frames to be used for the first window. The second and so on window will be multiples of the first one. (i.e. with --window-size=25 windows will be long 25, 50, 75, 100 ... frames)
 
-cmdline="./similarity.py --load-matrix=minusrmsd_ff99sb-ildn-star.npz --change-matrix-sign --superimpose --mode=dres --dim=2 --samples=10000 --nsteps=1000000 --ncycle=100 --neighborhood-cutoff=1.7 --spe-mode=vanilla --np=$NP --nensembles $nensembles --topology topology.pdb --evaluate-convergence --evaluate-convergence-mode=increasing-window --window-size=25 -v"
+cmdline="./similarity.py --change-matrix-sign --superimpose --mode=dres --dim=2 --samples=10000 --nsteps=1000000 --ncycle=100 --neighborhood-cutoff=1.7 --spe-mode=vanilla --np=$NP --nensembles $nensembles --topology topology.pdb --evaluate-convergence --evaluate-convergence-mode=increasing-window --window-size=25 -v"
 
 # Run the same command line for both trajectories
 for ff in ff99sb-ildn-star c22-star; do
+	if [[ ! -e minusrmsd_pw_$ff.npz ]]; then
+        	echo "-RMSD Matrix file ( minusrmsd_pw_$ff.npz ) not found! Please run the clustering example first."
+        	exit
+	fi
 	traj=traj_"$ff".xtc
 
-	cmdline=$cmdline" --ensemble1-trajectory="$traj
+	cmdline=$cmdline" --ensemble1-trajectory=$traj  --load-matrix=minusrmsd_pw_$ff.npz"
 
 	echo "Now running: $ff"
 	echo  $ENCORE_BUILD/similarity.py

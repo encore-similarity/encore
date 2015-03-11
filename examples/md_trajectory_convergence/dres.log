@@ -2,87 +2,87 @@ ln: creazione del collegamento simbolico "./encore" non riuscita: File già esis
 ln: creazione del collegamento simbolico "./MDAnalysis" non riuscita: File già esistente
 Now running: ff99sb-ildn-star
 /home/teo/.local/lib/python2.7/site-packages/ENCORE-0.7-py2.7-linux-x86_64.egg/encore//similarity.py
-15-03-11 11:40:  Loading ensembles . . .
-15-03-11 11:40:  Ensemble 1 Loaded.
+15-03-11 12:08:  Loading ensembles . . .
+15-03-11 12:08:  Ensemble 1 Loaded.
     trajectories: traj_ff99sb-ildn-star.xtc
     frame interval: 1
     number of frames: 251
     atoms selection: (name CA)
     number of atoms: 163
 
-15-03-11 11:40:  Done! 1 ensembles loaded.
-15-03-11 11:40:  Performing least-square fit of each frame on the topology conformation.
-15-03-11 11:40:  Similarity metric calculations will now begin. 1 values will be computed.
-15-03-11 11:40:  3 core(s) will be used for parallel calculations.
-15-03-11 11:40:  WARNING: the last window will be shorter than the prescribed window size (1 frames)
-15-03-11 11:40:  Chosen metric: Dimensionality reduction
-15-03-11 11:40:      Similarity matrix: RMSD matrix
-15-03-11 11:40:          Loading similarity matrix from: minusrmsd_pw_ff99sb-ildn-star.npz
-15-03-11 11:40:          Done!
-15-03-11 11:40:          host : Diagon-Alley
-15-03-11 11:40:          user : teo
-15-03-11 11:40:          date : 2015-03-11 11:39:51.307816
-15-03-11 11:40:          topology file : topology.pdb
-15-03-11 11:40:          number of frames : 251
-15-03-11 11:40:          pairwise superimposition : True
-15-03-11 11:40:          superimposition subset : (name CA)
-15-03-11 11:40:          mass-weighted : True
-15-03-11 11:40:          The matrix sign will be changed.
-15-03-11 11:40:  Starting Stochastic Proximity Embedding
-15-03-11 11:40:  Stochastic Proximity Embedding finished. Residual stress: 0.131
+15-03-11 12:08:  Done! 1 ensembles loaded.
+15-03-11 12:08:  Performing least-square fit of each frame on the topology conformation.
+15-03-11 12:08:  Similarity metric calculations will now begin. 1 values will be computed.
+15-03-11 12:08:  3 core(s) will be used for parallel calculations.
+15-03-11 12:08:  WARNING: the last window will be shorter than the prescribed window size (1 frames)
+15-03-11 12:08:  Chosen metric: Dimensionality reduction
+15-03-11 12:08:      Similarity matrix: RMSD matrix
+15-03-11 12:08:          Loading similarity matrix from: minusrmsd_pw_ff99sb-ildn-star.npz
+15-03-11 12:08:          Done!
+15-03-11 12:08:          host : Diagon-Alley
+15-03-11 12:08:          user : teo
+15-03-11 12:08:          date : 2015-03-11 12:08:30.835806
+15-03-11 12:08:          topology file : topology.pdb
+15-03-11 12:08:          number of frames : 251
+15-03-11 12:08:          pairwise superimposition : True
+15-03-11 12:08:          superimposition subset : (name CA)
+15-03-11 12:08:          mass-weighted : True
+15-03-11 12:08:          The matrix sign will be changed.
+15-03-11 12:08:  Starting Stochastic Proximity Embedding
+15-03-11 12:08:  Stochastic Proximity Embedding finished. Residual stress: 0.131
 Calculation finished. - Residual stress: 0.131
-15-03-11 11:40:  Calculation complete.
+15-03-11 12:08:  Calculation complete.
 === convergence dimred, dimension 2: increasing window ===
-win.1	0.174
-win.2	0.172
-win.3	0.171
-win.4	0.156
-win.5	0.155
-win.6	0.074
-win.7	0.024
-win.8	0.005
-win.9	0.001
+win.1	0.210
+win.2	0.173
+win.3	0.175
+win.4	0.164
+win.5	0.164
+win.6	0.072
+win.7	0.022
+win.8	0.007
+win.9	0.000
 win.10	0.000
 Now running: c22-star
 /home/teo/.local/lib/python2.7/site-packages/ENCORE-0.7-py2.7-linux-x86_64.egg/encore//similarity.py
-15-03-11 11:40:  Loading ensembles . . .
-15-03-11 11:40:  Ensemble 1 Loaded.
+15-03-11 12:08:  Loading ensembles . . .
+15-03-11 12:08:  Ensemble 1 Loaded.
     trajectories: traj_c22-star.xtc
     frame interval: 1
     number of frames: 251
     atoms selection: (name CA)
     number of atoms: 163
 
-15-03-11 11:40:  Done! 1 ensembles loaded.
-15-03-11 11:40:  Performing least-square fit of each frame on the topology conformation.
-15-03-11 11:40:  Similarity metric calculations will now begin. 1 values will be computed.
-15-03-11 11:40:  3 core(s) will be used for parallel calculations.
-15-03-11 11:40:  WARNING: the last window will be shorter than the prescribed window size (1 frames)
-15-03-11 11:40:  Chosen metric: Dimensionality reduction
-15-03-11 11:40:      Similarity matrix: RMSD matrix
-15-03-11 11:40:          Loading similarity matrix from: minusrmsd_pw_c22-star.npz
-15-03-11 11:40:          Done!
-15-03-11 11:40:          host : Diagon-Alley
-15-03-11 11:40:          user : teo
-15-03-11 11:40:          date : 2015-03-11 11:39:53.346568
-15-03-11 11:40:          topology file : topology.pdb
-15-03-11 11:40:          number of frames : 251
-15-03-11 11:40:          pairwise superimposition : True
-15-03-11 11:40:          superimposition subset : (name CA)
-15-03-11 11:40:          mass-weighted : True
-15-03-11 11:40:          The matrix sign will be changed.
-15-03-11 11:40:  Starting Stochastic Proximity Embedding
-15-03-11 11:40:  Stochastic Proximity Embedding finished. Residual stress: 0.100
-Calculation finished. - Residual stress: 0.100
-15-03-11 11:40:  Calculation complete.
+15-03-11 12:08:  Done! 1 ensembles loaded.
+15-03-11 12:08:  Performing least-square fit of each frame on the topology conformation.
+15-03-11 12:08:  Similarity metric calculations will now begin. 1 values will be computed.
+15-03-11 12:08:  3 core(s) will be used for parallel calculations.
+15-03-11 12:08:  WARNING: the last window will be shorter than the prescribed window size (1 frames)
+15-03-11 12:08:  Chosen metric: Dimensionality reduction
+15-03-11 12:08:      Similarity matrix: RMSD matrix
+15-03-11 12:08:          Loading similarity matrix from: minusrmsd_pw_c22-star.npz
+15-03-11 12:08:          Done!
+15-03-11 12:08:          host : Diagon-Alley
+15-03-11 12:08:          user : teo
+15-03-11 12:08:          date : 2015-03-11 12:08:32.849990
+15-03-11 12:08:          topology file : topology.pdb
+15-03-11 12:08:          number of frames : 251
+15-03-11 12:08:          pairwise superimposition : True
+15-03-11 12:08:          superimposition subset : (name CA)
+15-03-11 12:08:          mass-weighted : True
+15-03-11 12:08:          The matrix sign will be changed.
+15-03-11 12:08:  Starting Stochastic Proximity Embedding
+15-03-11 12:08:  Stochastic Proximity Embedding finished. Residual stress: 0.101
+Calculation finished. - Residual stress: 0.101
+15-03-11 12:09:  Calculation complete.
 === convergence dimred, dimension 2: increasing window ===
-win.1	0.485
-win.2	0.275
-win.3	0.212
-win.4	0.186
-win.5	0.131
-win.6	0.087
-win.7	0.040
-win.8	0.019
-win.9	0.006
+win.1	0.502
+win.2	0.295
+win.3	0.232
+win.4	0.195
+win.5	0.138
+win.6	0.092
+win.7	0.046
+win.8	0.023
+win.9	0.005
 win.10	0.000

@@ -18,7 +18,7 @@ nensembles=3
 # --np: maximum number of cores to be used 
 
 
-cmdline="./similarity.py --save-matrix=minusrmsd_pw.npz --superimpose --convergence=50 --maxiter=500 --preferences=-5.0 --np=$NP --nensembles $nensembles --topology topology.pdb --mode=ces -v --lambda=0.9"
+cmdline="./similarity.py --save-matrix=minusrmsd_pw.npz --superimpose --convergence=50 --maxiter=500 --preferences=-10.0 --np=$NP --nensembles $nensembles --topology topology.pdb --mode=ces -v --lambda=0.9"
 
 # add the --ensemble*-trajectory options (--ensemble1-trajectory traj_c22-star.xtc --ensemble2-trajectory traj_c36.xtc etc.)
 for i in $(seq 0 2); do

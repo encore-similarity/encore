@@ -2,47 +2,47 @@ ln: creazione del collegamento simbolico "./encore" non riuscita: File già esis
 ln: creazione del collegamento simbolico "./MDAnalysis" non riuscita: File già esistente
 Now running: ff99sb-ildn-star
 /home/teo/.local/lib/python2.7/site-packages/ENCORE-0.7-py2.7-linux-x86_64.egg/encore//similarity.py
-15-03-11 11:41:  Loading ensembles . . .
-15-03-11 11:41:  Ensemble 1 Loaded.
+15-03-11 12:08:  Loading ensembles . . .
+15-03-11 12:08:  Ensemble 1 Loaded.
     trajectories: traj_ff99sb-ildn-star.xtc
     frame interval: 1
     number of frames: 251
     atoms selection: (name CA)
     number of atoms: 163
 
-15-03-11 11:41:  Done! 1 ensembles loaded.
-15-03-11 11:41:  Performing least-square fit of each frame on the topology conformation.
-15-03-11 11:41:  Similarity metric calculations will now begin. 1 values will be computed.
-15-03-11 11:41:  3 core(s) will be used for parallel calculations.
-15-03-11 11:41:  WARNING: the last window will be shorter than the prescribed window size (1 frames)
-15-03-11 11:41:  Chosen metric: Conformational clustering
-15-03-11 11:41:      Similarity matrix: -RMSD matrix
-15-03-11 11:41:          Perform pairwise alignment: True
-15-03-11 11:41:          Mass-weighted alignment and RMSD: True
-15-03-11 11:41:          Atoms subset for alignment: None
-15-03-11 11:41:      Calculating similarity matrix . . .
+15-03-11 12:08:  Done! 1 ensembles loaded.
+15-03-11 12:08:  Performing least-square fit of each frame on the topology conformation.
+15-03-11 12:08:  Similarity metric calculations will now begin. 1 values will be computed.
+15-03-11 12:08:  3 core(s) will be used for parallel calculations.
+15-03-11 12:08:  WARNING: the last window will be shorter than the prescribed window size (1 frames)
+15-03-11 12:08:  Chosen metric: Conformational clustering
+15-03-11 12:08:      Similarity matrix: -RMSD matrix
+15-03-11 12:08:          Perform pairwise alignment: True
+15-03-11 12:08:          Mass-weighted alignment and RMSD: True
+15-03-11 12:08:          Atoms subset for alignment: None
+15-03-11 12:08:      Calculating similarity matrix . . .
 
 [>................................................................................] 0%
-[===============>.................................................................] 19%
-[===============================>.................................................] 39%
-[===============================================>.................................] 59%
-[===============================================================>.................] 79%
-[===============================================================================>.] 99%
-[================================================================================>] 100%15-03-11 11:41:      Done!
-15-03-11 11:41:      Similarity matrix will be saved in minusrmsd_pw_ff99sb-ildn-star.npz.
-15-03-11 11:41:      Clustering algorithm: Affinity Propagation
-15-03-11 11:41:          Preference values: -2.00
-15-03-11 11:41:          Maximum iterations: 500
-15-03-11 11:41:          Convergence: 50
-15-03-11 11:41:          Damping: 0.80
-15-03-11 11:41:          Apply noise to similarity matrix: True
-15-03-11 11:41:  WARNING: for optimal performance, the number of cores should be a factor of the number of preference values.
-15-03-11 11:41:      Starting affinity propagation runs . . .
-15-03-11 11:41:  Preference -2.00: starting Affinity Propagation
-15-03-11 11:41:  Preference -2.00: converged in 68 iterations
-15-03-11 11:41:  
+[===============>.................................................................] 18%
+[==============================>..................................................] 38%
+[==============================================>..................................] 57%
+[=============================================================>...................] 77%
+[=============================================================================>...] 96%
+[================================================================================>] 100%15-03-11 12:08:      Done!
+15-03-11 12:08:      Similarity matrix will be saved in minusrmsd_pw_ff99sb-ildn-star.npz.
+15-03-11 12:08:      Clustering algorithm: Affinity Propagation
+15-03-11 12:08:          Preference values: -2.00
+15-03-11 12:08:          Maximum iterations: 500
+15-03-11 12:08:          Convergence: 50
+15-03-11 12:08:          Damping: 0.80
+15-03-11 12:08:          Apply noise to similarity matrix: True
+15-03-11 12:08:  WARNING: for optimal performance, the number of cores should be a factor of the number of preference values.
+15-03-11 12:08:      Starting affinity propagation runs . . .
+15-03-11 12:08:  Preference -2.00: starting Affinity Propagation
+15-03-11 12:08:  Preference -2.00: converged in 68 iterations
+15-03-11 12:08:  
     Done!
-15-03-11 11:41:  Calculation complete.
+15-03-11 12:08:  Calculation complete.
 === convergence clustering, preference -2.0, increasing window ===
 win.1	0.206
 win.2	0.175
@@ -56,47 +56,47 @@ win.9	0.001
 win.10	0.000
 Now running: c22-star
 /home/teo/.local/lib/python2.7/site-packages/ENCORE-0.7-py2.7-linux-x86_64.egg/encore//similarity.py
-15-03-11 11:41:  Loading ensembles . . .
-15-03-11 11:41:  Ensemble 1 Loaded.
+15-03-11 12:08:  Loading ensembles . . .
+15-03-11 12:08:  Ensemble 1 Loaded.
     trajectories: traj_c22-star.xtc
     frame interval: 1
     number of frames: 251
     atoms selection: (name CA)
     number of atoms: 163
 
-15-03-11 11:41:  Done! 1 ensembles loaded.
-15-03-11 11:41:  Performing least-square fit of each frame on the topology conformation.
-15-03-11 11:41:  Similarity metric calculations will now begin. 1 values will be computed.
-15-03-11 11:41:  3 core(s) will be used for parallel calculations.
-15-03-11 11:41:  WARNING: the last window will be shorter than the prescribed window size (1 frames)
-15-03-11 11:41:  Chosen metric: Conformational clustering
-15-03-11 11:41:      Similarity matrix: -RMSD matrix
-15-03-11 11:41:          Perform pairwise alignment: True
-15-03-11 11:41:          Mass-weighted alignment and RMSD: True
-15-03-11 11:41:          Atoms subset for alignment: None
-15-03-11 11:41:      Calculating similarity matrix . . .
+15-03-11 12:08:  Done! 1 ensembles loaded.
+15-03-11 12:08:  Performing least-square fit of each frame on the topology conformation.
+15-03-11 12:08:  Similarity metric calculations will now begin. 1 values will be computed.
+15-03-11 12:08:  3 core(s) will be used for parallel calculations.
+15-03-11 12:08:  WARNING: the last window will be shorter than the prescribed window size (1 frames)
+15-03-11 12:08:  Chosen metric: Conformational clustering
+15-03-11 12:08:      Similarity matrix: -RMSD matrix
+15-03-11 12:08:          Perform pairwise alignment: True
+15-03-11 12:08:          Mass-weighted alignment and RMSD: True
+15-03-11 12:08:          Atoms subset for alignment: None
+15-03-11 12:08:      Calculating similarity matrix . . .
 
 [>................................................................................] 0%
 [===============>.................................................................] 19%
-[==============================>..................................................] 38%
-[==============================================>..................................] 58%
-[=============================================================>...................] 77%
-[=============================================================================>...] 96%
-[================================================================================>] 100%15-03-11 11:41:      Done!
-15-03-11 11:41:      Similarity matrix will be saved in minusrmsd_pw_c22-star.npz.
-15-03-11 11:41:      Clustering algorithm: Affinity Propagation
-15-03-11 11:41:          Preference values: -2.00
-15-03-11 11:41:          Maximum iterations: 500
-15-03-11 11:41:          Convergence: 50
-15-03-11 11:41:          Damping: 0.80
-15-03-11 11:41:          Apply noise to similarity matrix: True
-15-03-11 11:41:  WARNING: for optimal performance, the number of cores should be a factor of the number of preference values.
-15-03-11 11:41:      Starting affinity propagation runs . . .
-15-03-11 11:41:  Preference -2.00: starting Affinity Propagation
-15-03-11 11:41:  Preference -2.00: converged in 71 iterations
-15-03-11 11:41:  
+[===============================>.................................................] 39%
+[===============================================>.................................] 58%
+[==============================================================>..................] 78%
+[==============================================================================>..] 98%
+[================================================================================>] 100%15-03-11 12:08:      Done!
+15-03-11 12:08:      Similarity matrix will be saved in minusrmsd_pw_c22-star.npz.
+15-03-11 12:08:      Clustering algorithm: Affinity Propagation
+15-03-11 12:08:          Preference values: -2.00
+15-03-11 12:08:          Maximum iterations: 500
+15-03-11 12:08:          Convergence: 50
+15-03-11 12:08:          Damping: 0.80
+15-03-11 12:08:          Apply noise to similarity matrix: True
+15-03-11 12:08:  WARNING: for optimal performance, the number of cores should be a factor of the number of preference values.
+15-03-11 12:08:      Starting affinity propagation runs . . .
+15-03-11 12:08:  Preference -2.00: starting Affinity Propagation
+15-03-11 12:08:  Preference -2.00: converged in 71 iterations
+15-03-11 12:08:  
     Done!
-15-03-11 11:41:  Calculation complete.
+15-03-11 12:08:  Calculation complete.
 === convergence clustering, preference -2.0, increasing window ===
 win.1	0.495
 win.2	0.276
