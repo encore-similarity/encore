@@ -18,7 +18,7 @@ nensembles=6
 # --convergence, --maxiter, --preferences, --lambda: parameters for the Affinity              propagation clustering algorithm (see help)
 # --np: maximum number of cores to be used
 
-cmdline="./similarity.py --save-matrix=minusrmsd_pw.npz --superimpose --convergence=50 --maxiter=500 --preferences=-4.0 --np=$NP --nensembles $nensembles --topology filtered_reference.pdb --mode=ces -v"
+cmdline="./similarity.py --save-matrix=minusrmsd_pw.npz --superimpose --convergence=50 --maxiter=500 --preferences=-5.0 --np=$NP --nensembles $nensembles --topology filtered_reference.pdb --mode=ces -v"
 
 # for each ensemble: add the --ensemble-trajectory option to the command line. For instance: --ensemble1-trajectory filtered_1XQQ.pdb --ensemble2-trajectory filtered_2K39.pdb etc.
 for i in $(seq 0 5); do
