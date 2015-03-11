@@ -11,9 +11,9 @@ In order to generate the documentation, you need:
 * you have to build and install the ENCORE package in the  
   installation directory, by running:
       
-      python setup.py develop
+      python setup.py develop --user
 
-Then, to generate the documentation, you may run:
+Then, to generate the documentation, you may run from here:
 
     make latexpdf
 

@@ -15,7 +15,6 @@ The examples are found in the three subdirectories:
 md_simulations_ensembles, experimental_ubq_ensembles and
 md_trajectory_convergence. In order to run the examples please follow
 these steps:
-
  
 - install ENCORE. Please refer to the INSTALL file in the main ENCORE
   installation for detailed instructions.

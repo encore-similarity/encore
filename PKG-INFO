@@ -1,10 +1,9 @@
 Metadata-Version: 1.1
 Name: ENCORE
-Version: 0.1b
+Version: 0.7
 Summary: A python package to calculate conformational distance measures between ensembles.
 Home-page: https://github.com/wouterboomsma/encore
 Author: Matteo Tiberti, Wouter Boomsma, Elena Papaleo, Kresten Lindorff-Larsen
-Author-email: ? 
 License: GPL 2
 Description: see README for mor details
         
