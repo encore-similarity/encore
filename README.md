@@ -25,7 +25,7 @@ of trajectories from time-dependent simulations. The package was
 designed as a Python 2.6 (or any higher 2.X version) library. The user
 may also use some of the library files as scripts that accept command
 line arguments. Usually, the help text included for each script
-(obtained running “python encore/script.py -h”) is
+(obtained running "python encore/script.py -h") is
 self-explanatory. Examples are also available on how ENCORE may be
 used to calculate the similarity measures on a number of ensembles.
 
