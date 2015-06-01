@@ -62,7 +62,7 @@ class TriangularMatrix:
 
 **Attributes:**
 
-`ensemble` : int
+`size` : int
 	Size of the matrix (number of rows or number of columns)
 
 `metadata` : dict
@@ -154,6 +154,7 @@ class TriangularMatrix:
             for j in xrange(i+1):
                 print "%.3f".ljust(justification) % self.__getitem__((i,j)),
             print ""
+
 
     def square_print(self, fname=None, header=None, label="ens.", justification=10):
         """ 
@@ -504,6 +505,21 @@ def trm_indeces_nodiag(n):
     for i in xrange(1,n):
         for j in xrange(i):
             yield (i,j)
+
+def print_square_array(array):
+    """
+    Pretty print square matrix numpy array
+
+    **Arguments:**
+
+    `array` : numpy.array
+        numpy array to be printed.
+    """
+    for i in range(array.shape[0]):
+        for j in range(array.shape[1]):
+            print "%.3f\t" % array[i,j],
+        print ""
+
 
 def vararg_callback(option, opt_str, value, parser):
     '''A callback for the option parser allowing a variable number of arguments.'''

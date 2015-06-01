@@ -12,10 +12,14 @@
 \usepackage{sphinx}
 \usepackage{multirow}
 
+\addto\captionsenglish{\renewcommand{\figurename}{Fig. }}
+\addto\captionsenglish{\renewcommand{\tablename}{Table }}
+\floatname{literal-block}{Listing }
+
 
 
 \title{ENCORE Documentation}
-\date{March 11, 2015}
+\date{June 01, 2015}
 \release{1.0}
 \author{}
 \newcommand{\sphinxlogo}{}
@@ -133,7 +137,7 @@ conformational ensembles of proteins (or in principle other
 macromolecules), using three different methods originally described
 in:
 
-\begin{Verbatim}[frame=single,commandchars=\\\{\}]
+\begin{Verbatim}[commandchars=\\\{\}]
 Kresten Lindorff\PYGZhy{}Larsen, Jesper Ferkinghoff\PYGZhy{}Borg (2009)
 Similarity Measures for Protein Ensembles.
 PLoS ONE 4(1): e4203. doi:10.1371/journal.pone.0004203
@@ -141,7 +145,7 @@ PLoS ONE 4(1): e4203. doi:10.1371/journal.pone.0004203
 
 A description of ENCORE and a number of application can be found in:
 
-\begin{Verbatim}[frame=single,commandchars=\\\{\}]
+\begin{Verbatim}[commandchars=\\\{\}]
 Matteo Tiberti, Elena Papaleo, Tone Bengtsen, Wouter Boomsma and
 Kresten Lindorff\PYGZhy{}Larsen,
 ENCORE: Software for quantitative ensemble comparison
@@ -230,7 +234,7 @@ comparing  experimentally-derived ensembles from the PDB
 See the examples themselves for more information.
 If you use ENCORE for your scientific work, please cite:
 
-\begin{Verbatim}[frame=single,commandchars=\\\{\}]
+\begin{Verbatim}[commandchars=\\\{\}]
 Matteo Tiberti, Elena Papaleo, Tone Bengtsen, Wouter Boomsma
 and Kresten Lindorff\PYGZhy{}Larsen,
 ENCORE: Software for quantitative ensemble comparison
@@ -401,7 +405,7 @@ Conformational distance matrix in triangular representation.
 
 \begin{fulllineitems}
 \phantomsection\label{index:encore.confdistmatrix.MinusRMSDMatrixGenerator}\pysigline{\strong{class }\code{encore.confdistmatrix.}\bfcode{MinusRMSDMatrixGenerator}}
-Bases: {\hyperref[index:encore.confdistmatrix.ConformationalDistanceMatrixGenerator]{\code{encore.confdistmatrix.ConformationalDistanceMatrixGenerator}}}
+Bases: {\hyperref[index:encore.confdistmatrix.ConformationalDistanceMatrixGenerator]{\emph{\code{encore.confdistmatrix.ConformationalDistanceMatrixGenerator}}}}
 
 -RMSD Matrix calculator. See encore.confdistmatrix.RMSDMatrixGenerator for details.
 
@@ -411,7 +415,7 @@ Bases: {\hyperref[index:encore.confdistmatrix.ConformationalDistanceMatrixGenera
 
 \begin{fulllineitems}
 \phantomsection\label{index:encore.confdistmatrix.RMSDMatrixGenerator}\pysigline{\strong{class }\code{encore.confdistmatrix.}\bfcode{RMSDMatrixGenerator}}
-Bases: {\hyperref[index:encore.confdistmatrix.ConformationalDistanceMatrixGenerator]{\code{encore.confdistmatrix.ConformationalDistanceMatrixGenerator}}}
+Bases: {\hyperref[index:encore.confdistmatrix.ConformationalDistanceMatrixGenerator]{\emph{\code{encore.confdistmatrix.ConformationalDistanceMatrixGenerator}}}}
 
 RMSD Matrix calculator. Simple workers doesn't perform fitting, while fitter worker does.
 
@@ -502,7 +506,7 @@ Covariance matrix
 \index{covariance\_matrix() (in module encore.covariance)}
 
 \begin{fulllineitems}
-\phantomsection\label{index:encore.covariance.covariance_matrix}\pysiglinewithargsret{\code{encore.covariance.}\bfcode{covariance\_matrix}}{\emph{ensemble}, \emph{estimator=\textless{}encore.covariance.EstimatorShrinkage instance at 0x2f4c170\textgreater{}}, \emph{mass\_weighted=True}, \emph{reference=None}, \emph{start=0}, \emph{end=None}}{}
+\phantomsection\label{index:encore.covariance.covariance_matrix}\pysiglinewithargsret{\code{encore.covariance.}\bfcode{covariance\_matrix}}{\emph{ensemble}, \emph{estimator=\textless{}encore.covariance.EstimatorShrinkage instance\textgreater{}}, \emph{mass\_weighted=True}, \emph{reference=None}, \emph{start=0}, \emph{end=None}}{}
 Calculates (optionally mass weighted) covariance matrix
 
 \textbf{Arguments:}
@@ -544,6 +548,57 @@ protein ensembles described in:
 Similarity Measures for Protein Ensembles. Lindorff-Larsen, K.; 
 Ferkinghoff-Borg, J. PLoS ONE 2009, 4, e4203.
 \end{quote}
+\index{bootstrap\_coordinates() (in module encore.similarity)}
+
+\begin{fulllineitems}
+\phantomsection\label{index:encore.similarity.bootstrap_coordinates}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{bootstrap\_coordinates}}{\emph{coords}, \emph{times}}{}~\begin{quote}
+
+Bootstrap conformations in a encore.Ensemble. This means drawing from the encore.Ensemble.coordinates numpy array with replacement ``times'' times and returning the outcome.
+\end{quote}
+
+\textbf{Arguments:}
+\begin{description}
+\item[{\emph{coords}}] \leavevmode{[}numpy.array{]}
+3-dimensional coordinates array
+
+\item[{\emph{times}}] \leavevmode{[}int{]}
+number of times the coordinates will be bootstrapped
+
+\end{description}
+
+\textbf{Returns:}
+\begin{description}
+\item[{\emph{out}}] \leavevmode{[}list{]}
+Bootstrapped coordinates list. len(out) = times.
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{bootstrap\_matrix() (in module encore.similarity)}
+
+\begin{fulllineitems}
+\phantomsection\label{index:encore.similarity.bootstrap_matrix}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{bootstrap\_matrix}}{\emph{matrix}}{}~\begin{quote}
+
+Bootstrap an input square matrix. The resulting matrix will have the same shape as the original one, but the order of its elements will be drawn (with repetition). Separately bootstraps each ensemble.
+\end{quote}
+
+\textbf{Arguments:}
+\begin{description}
+\item[{\emph{matrix}}] \leavevmode{[}encore.utils.TriangularMatrix{]}
+similarity/dissimilarity matrix
+
+\end{description}
+
+\textbf{Returns:}
+\begin{description}
+\item[{\emph{this\_m}}] \leavevmode{[}encore.utils.TriangularMatrix{]}
+bootstrapped similarity/dissimilarity matrix
+
+\end{description}
+
+\end{fulllineitems}
+
 \index{clustering\_ensemble\_similarity() (in module encore.similarity)}
 
 \begin{fulllineitems}
@@ -809,7 +864,7 @@ List of numpy.array containing, each one, the elements of the embedded space bel
 \index{harmonic\_ensemble\_similarity() (in module encore.similarity)}
 
 \begin{fulllineitems}
-\phantomsection\label{index:encore.similarity.harmonic_ensemble_similarity}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{harmonic\_ensemble\_similarity}}{\emph{ensemble1=None}, \emph{ensemble2=None}, \emph{sigma1=None}, \emph{sigma2=None}, \emph{x1=None}, \emph{x2=None}, \emph{mass\_weighted=True}, \emph{covariance\_estimator=\textless{}encore.covariance.EstimatorShrinkage instance at 0x33d8170\textgreater{}}}{}
+\phantomsection\label{index:encore.similarity.harmonic_ensemble_similarity}\pysiglinewithargsret{\code{encore.similarity.}\bfcode{harmonic\_ensemble\_similarity}}{\emph{ensemble1=None}, \emph{ensemble2=None}, \emph{sigma1=None}, \emph{sigma2=None}, \emph{x1=None}, \emph{x2=None}, \emph{mass\_weighted=True}, \emph{covariance\_estimator=\textless{}encore.covariance.EstimatorShrinkage instance\textgreater{}}}{}
 Calculate the harmonic ensemble similarity measure
 as defined in
 \begin{quote}
@@ -928,7 +983,7 @@ If rawline is not None, write rawline to fhandler instead of the formatted numbe
 \label{index:encore-utils-module}\label{index:module-encore.utils}\index{encore.utils (module)}\index{AllowUnrecognizedOptionParser (class in encore.utils)}
 
 \begin{fulllineitems}
-\phantomsection\label{index:encore.utils.AllowUnrecognizedOptionParser}\pysiglinewithargsret{\strong{class }\code{encore.utils.}\bfcode{AllowUnrecognizedOptionParser}}{\emph{usage=None}, \emph{option\_list=None}, \emph{option\_class=\textless{}class optparse.Option at 0xc41808\textgreater{}}, \emph{version=None}, \emph{conflict\_handler='error'}, \emph{description=None}, \emph{formatter=None}, \emph{add\_help\_option=True}, \emph{prog=None}, \emph{epilog=None}}{}
+\phantomsection\label{index:encore.utils.AllowUnrecognizedOptionParser}\pysiglinewithargsret{\strong{class }\code{encore.utils.}\bfcode{AllowUnrecognizedOptionParser}}{\emph{usage=None}, \emph{option\_list=None}, \emph{option\_class=\textless{}class optparse.Option\textgreater{}}, \emph{version=None}, \emph{conflict\_handler='error'}, \emph{description=None}, \emph{formatter=None}, \emph{add\_help\_option=True}, \emph{prog=None}, \emph{epilog=None}}{}
 Bases: \code{optparse.OptionParser}
 
 Parser allowing unknown options. Note that only AmbiguousOptionError
@@ -941,7 +996,7 @@ rise to an error.
 
 \begin{fulllineitems}
 \phantomsection\label{index:encore.utils.AnimatedProgressBar}\pysiglinewithargsret{\strong{class }\code{encore.utils.}\bfcode{AnimatedProgressBar}}{\emph{*args}, \emph{**kwargs}}{}
-Bases: {\hyperref[index:encore.utils.ProgressBar]{\code{encore.utils.ProgressBar}}}
+Bases: {\hyperref[index:encore.utils.ProgressBar]{\emph{\code{encore.utils.ProgressBar}}}}
 
 Extends ProgressBar to allow you to use it straighforward on a script.
 Accepts an extra keyword argument named \emph{stdout} (by default use sys.stdout).
@@ -1083,7 +1138,7 @@ Wrapper for a parser for a single phase. Takes a list of option groups as argume
 \index{PassThroughOptionParser (class in encore.utils)}
 
 \begin{fulllineitems}
-\phantomsection\label{index:encore.utils.PassThroughOptionParser}\pysiglinewithargsret{\strong{class }\code{encore.utils.}\bfcode{PassThroughOptionParser}}{\emph{usage=None}, \emph{option\_list=None}, \emph{option\_class=\textless{}class optparse.Option at 0xc41808\textgreater{}}, \emph{version=None}, \emph{conflict\_handler='error'}, \emph{description=None}, \emph{formatter=None}, \emph{add\_help\_option=True}, \emph{prog=None}, \emph{epilog=None}}{}
+\phantomsection\label{index:encore.utils.PassThroughOptionParser}\pysiglinewithargsret{\strong{class }\code{encore.utils.}\bfcode{PassThroughOptionParser}}{\emph{usage=None}, \emph{option\_list=None}, \emph{option\_class=\textless{}class optparse.Option\textgreater{}}, \emph{version=None}, \emph{conflict\_handler='error'}, \emph{description=None}, \emph{formatter=None}, \emph{add\_help\_option=True}, \emph{prog=None}, \emph{epilog=None}}{}
 Bases: \code{optparse.OptionParser}
 
 An unknown option pass-through implementation of OptionParser.
@@ -1160,7 +1215,7 @@ Triangular matrix class. This class is designed to provide a memory-efficient re
 
 \textbf{Attributes:}
 \begin{description}
-\item[{\emph{ensemble}}] \leavevmode{[}int{]}
+\item[{\emph{size}}] \leavevmode{[}int{]}
 Size of the matrix (number of rows or number of columns)
 
 \item[{\emph{metadata}}] \leavevmode{[}dict{]}
@@ -1210,6 +1265,21 @@ Print the triangular matrix as triangular
 
 \end{fulllineitems}
 
+
+\end{fulllineitems}
+
+\index{print\_square\_array() (in module encore.utils)}
+
+\begin{fulllineitems}
+\phantomsection\label{index:encore.utils.print_square_array}\pysiglinewithargsret{\code{encore.utils.}\bfcode{print\_square\_array}}{\emph{array}}{}
+Pretty print square matrix numpy array
+
+\textbf{Arguments:}
+\begin{description}
+\item[{\emph{array}}] \leavevmode{[}numpy.array{]}
+numpy array to be printed.
+
+\end{description}
 
 \end{fulllineitems}
 

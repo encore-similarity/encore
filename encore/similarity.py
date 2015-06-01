@@ -39,6 +39,7 @@ from covariance import covariance_matrix, EstimatorShrinkage, EstimatorML
 from multiprocessing import cpu_count
 from utils import *
 from scipy.stats import gaussian_kde
+from random import randint
 
 # Silence deprecation warnings - scipy problem
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
@@ -407,7 +408,7 @@ def cumulative_gen_kde_pdfs(embedded_space, ensemble_assignment, nensembles,  ns
     if not ens_id_max:
         ens_id_max = nensembles+1
     for i in range(ens_id_min, ens_id_max+1):
-        this_embedded = embedded_space.transpose()[numpy.where(np.logical_and(ensemble_assignment >= ens_id_min, ensemble_assignment <= i))].transpose()
+        this_embedded = embedded_space.transpose()[numpy.where(numpy.logical_and(ensemble_assignment >= ens_id_min, ensemble_assignment <= i))].transpose()
         embedded_ensembles.append(this_embedded)
         kdes.append(gaussian_kde(this_embedded)) # XXX support different bandwidth values
 
@@ -487,6 +488,60 @@ win.3	0.278
 
     print >>fh, "{:s}{:d}\t{:.3f}".format(label, number, value)
 
+def bootstrap_coordinates(coords, times):
+    """
+    Bootstrap conformations in a encore.Ensemble. This means drawing from the encore.Ensemble.coordinates numpy array with replacement "times" times and returning the outcome. 
+
+**Arguments:**
+
+`coords` : numpy.array
+        3-dimensional coordinates array
+
+`times` : int
+        number of times the coordinates will be bootstrapped
+
+**Returns:**
+
+`out` : list
+        Bootstrapped coordinates list. len(out) = times.
+    """
+    out = []
+    for t in range(times):
+        this_coords=numpy.zeros(coords.shape)
+        for c in range(this_coords.shape[0]):
+            this_coords[c,:,:] = coords[numpy.random.randint(low=0, high=this_coords.shape[0]),:,:]
+        out.append(this_coords)
+    return out
+
+def bootstrap_matrix(matrix):
+    """
+    Bootstrap an input square matrix. The resulting matrix will have the same shape as the original one, but the order of its elements will be drawn (with repetition). Separately bootstraps each ensemble.
+
+**Arguments:**
+
+`matrix` : encore.utils.TriangularMatrix
+        similarity/dissimilarity matrix
+
+**Returns:**
+
+`this_m` : encore.utils.TriangularMatrix
+        bootstrapped similarity/dissimilarity matrix
+    """
+    ensemble_identifiers = numpy.unique(ensemble_assignment)
+    this_m = TriangularMatrix(size = matrix.size)
+    indexes = []
+    for ens in ensemble_identifiers:
+        old_indexes = numpy.where(ensemble_assignment == ens)[0]
+        indexes.append( numpy.random.randint(low=numpy.min(old_indexes), high=numpy.max(old_indexes)+1, size=old_indexes.shape[0] ) )
+
+    indexes = numpy.hstack(indexes)
+    for j in range(this_m.size):
+        for k in range(j):
+            this_m[j, k] = matrix[indexes[j], indexes[k]]
+        
+    logging.info("Matrix bootstrapped.")
+    return this_m
+    
 
 
 
@@ -520,6 +575,10 @@ if __name__ == "__main__":
                  help="Use the ensemble comparison measure to evaluate the convergence of the ensemble 1.")
     group.add_option("--evaluate-convergence-mode", dest="convergence_mode", type="choice", default="increasing-window", choices=["increasing-window"],
                      help="Compare a time-window of increasing size with the rest of the trajectory. (default: increasing-window)")
+    group.add_option("--estimate-error", dest="estimate_error", action="store_true", default=False,
+                 help="Estimate error")
+    group.add_option("--estimate-error-mode", dest="error_mode", type="choice", default="bootstrapping", choices=["bootstrapping"], 
+                 help="Method with which the error will be estimated (default: bootstrapping)")
     group.add_option("--output-files","-o", dest="outfiles", action="store", type="str", default=None,
                      help="Write single matrices in output files as well. Use this basename for the file names.")
 
@@ -527,6 +586,10 @@ if __name__ == "__main__":
     #group = group_templates.add_group("evaluate-convergence-mode=half-half options")
     #group.add_option("--window-size", dest="window_size", type=int, default=2500,
     #                 help="Size of used windows (number of frames; default 2500)")
+
+    group = group_templates.add_group("estimate-error-mode=bootstrapping options")
+    group.add_option("--bootstrapping-runs", dest="bootstrapping_runs", type=int, default=1000,
+                     help="Number of bootstrapping runs (default: 1000)")
 
     group = group_templates.add_group("evaluate-convergence-mode=increasing-window options")
     group.add_option("--window-size", dest="window_size", type=int, default=2500,
@@ -563,6 +626,7 @@ if __name__ == "__main__":
                       help="Density estimation method (default: kde)")
     group.add_option("--dim", dest="dim", default="2", type="str",
                       help="Dimensionality of the embedded spaces (one or more, comma-separated: 2,3,4; default: 2)")
+
     #group.add_option("--replicas", dest="replicas", default=1, type="int",
     #                  help="Number of replicas for each number of dimensions")
 
@@ -612,6 +676,8 @@ if __name__ == "__main__":
     group.add_option("--load-matrix", "--load-similarity-matrix", dest="load_matrix", default = None,
                       help="Load similarity/dissimilarity matrix from numpy binary file instead of calculating it. A filename is required.")
     group.add_option("--change-matrix-sign", dest="change_matrix_sign", default=False, action="store_true", help="Change the sign of the elements of loaded matrix")
+    group.add_option("--matrix-only", dest="matrix_only", default=False, action="store_true",
+                      help="Calculate (and save) the similarity matrix only. Run together with --save-matrix") 
 
     # Options for similarity-mode=rmsd
     group = group_templates.add_group("similarity-mode=rmsd options")
@@ -626,6 +692,9 @@ if __name__ == "__main__":
     group.add_option("--load-matrix", dest="load_matrix", default = None,
                       help="Load matrix from numpy binary file instead of calculating it. A filename is required.")
     group.add_option("--change-matrix-sign", dest="change_matrix_sign", default=False, action="store_true", help="Invert the sign of the elements of the loaded matrix")
+    group.add_option("--matrix-only", dest="matrix_only", default=False, action="store_true",
+                      help="Calculate (and save) the similarity matrix only. Run together with --save-matrix") 
+
 # Options for similarity-mode=ap
     group = group_templates.add_group("clustering-mode=ap options")
     group.add_option("--preferences", dest="preferences", default="-5.0", type="str",
@@ -692,6 +761,9 @@ if __name__ == "__main__":
         if parser_phase1.options.convergence_mode == "increasing-window":
             option_groups += [group_templates["evaluate-convergence-mode=increasing-window options"]]
 
+    if parser_phase1.options.estimate_error:
+        if parser_phase1.options.error_mode == "bootstrapping":
+            option_groups += [group_templates["estimate-error-mode=bootstrapping options"]]
         #if parser_phase1.options.convergence_mode == "half-half":
         #    option_groups += [group_templates["evaluate-convergence-mode=half-half options"]]
         #elif parser_phase1.options.convergence_mode == "increasing-half":
@@ -722,11 +794,21 @@ if __name__ == "__main__":
     parser_phase3.parse()
 
     # Set logging level and format
+ 
+    #console = logging.StreamHandler()
+    #logging.addHandler(console)    
+
     if parser_phase3.options.verbose:
-        logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%y-%m-%d %H:%M: ',level=logging.INFO)
+        #logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%y-%m-%d %H:%M:%S : ',level=logging.INFO)
+        #logging.basicConfig(format='%(asctime)s.%(msecs)03d',datefmt='%Y-%m-%d,%H:%M:%S', level=logging.INFO)
+        logging.basicConfig(format='%(asctime)s.%(msecs)03d : %(message)s', datefmt='%Y-%m-%d,%H:%M:%S', level=logging.INFO)
     else:
-        logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%y-%m-%d %H:%M: ',level=logging.WARNING)
+        logging.basicConfig(level=logging.WARNING)
+        #logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%y-%m-%d %H:%M:%S : ',level=logging.WARNING)
     
+    #logging.Formatter()
+    logging.basicConfig(format='%(asctime)s.%(msecs)03d : %(message)s', datefmt='%Y-%m-%d,%H:%M:%S', level=logging.INFO)
+
     logging.info("Loading ensembles . . .")    
     
     ensembles = []
@@ -912,7 +994,43 @@ if __name__ == "__main__":
         
         xs = []
         sigmas = []
-        
+
+        if parser_phase1.options.estimate_error:
+            if parser_phase1.options.error_mode == "bootstrapping":
+                data = []
+                for t in range(parser_phase3.options.bootstrapping_runs):
+                    logging.info("The coordinates will be bootstrapped.")
+                    xs = []
+                    sigmas = []
+                    values = numpy.zeros((out_matrix_eln,out_matrix_eln))
+                    for e in ensembles:
+                        this_coords = bootstrap_coordinates(e.coordinates, 1)[0]
+                        xs.append(numpy.average(this_coords, axis=0).flatten())
+                        sigmas.append( covariance_matrix(e,
+                                                         mass_weighted=True,
+                                                         estimator = covariance_estimator) )
+                    for i,j in pairs_indeces:
+                        value = harmonic_ensemble_similarity(x1 = xs[i],
+                                                             x2 = xs[j],
+                                                             sigma1 = sigmas[i],
+                                                             sigma2 = sigmas[j])
+                        values[i,j] = value
+                        values[j,i] = value
+                    data.append(values)
+                outs = numpy.array(data)
+                avgs = np.average(data, axis=0)
+                stds = np.std(data, axis=0)
+
+                print "averages:"
+                print_square_array(avgs)
+                print "standard deviations:"
+                print_square_array(stds)
+                print "values (ens.A-ens.B value_run_1 value_run_2 ... value_run_N):"
+                for i,j in pairs_indeces:
+                    print "%d-%d\t" % (i+1,j+1),
+                    print " ".join(["%.3f"%k for k in outs[:,i,j]])
+                exit(0)
+
         # Calculate the parameters for the multivariate normal distribution of each ensemble
         for e in ensembles:
             
@@ -926,7 +1044,7 @@ if __name__ == "__main__":
             sigmas.append( covariance_matrix(e, 
                                mass_weighted=True,
                                estimator = covariance_estimator) )
-
+                        
         if parser_phase3.options.evaluate_convergence:
             fname = str(parser_phase3.options.outfiles)+"_convergence_"
             #if parser_phase3.options.convergence_mode == 'half-half':
@@ -991,7 +1109,7 @@ if __name__ == "__main__":
                                               mass_weighted=True,
                                               estimator = covariance_estimator)
 
-                write_output_line(rawline="# === Increasing window convergence estimation ===")
+                write_output_line(0,rawline="# === Increasing window convergence estimation ===")
                 for i in range(0,len(ensembles)):
                     write_output_line(harmonic_ensemble_similarity(x1 = ref_x,
                                                                 x2 = xs[i],
@@ -1102,7 +1220,24 @@ if __name__ == "__main__":
             if parser_phase3.options.save_matrix:
                 logging.info("    Similarity matrix will be saved in %s.%s"%(parser_phase3.options.save_matrix, "" if parser_phase3.options.save_matrix[-3:] == "npz" else "npz"))
                 confdistmatrix.savez(parser_phase3.options.save_matrix)
+            if parser_phase3.options.matrix_only:
+                logging.info("The calculation of the simialrity matrix only was requested; calculation finished.")
+                exit(0)
 
+        if parser_phase3.options.estimate_error: # if bootstrap
+            logging.info("Error will be estimated instead of normal calculation.")
+            if parser_phase3.options.error_mode == "bootstrapping":
+                logging.info("Error estimation mode: Bootstrapping")
+                logging.info("the similarity matrix will be bootstrapped %d times." % parser_phase3.options.bootstrapping_runs)
+
+                bs_args = [tuple([confdistmatrix]) for i in range(parser_phase3.options.bootstrapping_runs)]
+
+                pc = ParallelCalculation(parser_phase3.options.coresn, bootstrap_matrix, bs_args)
+                
+                pc_results = pc.run()
+                print pc_results
+                bootstrap_matrices = zip(*pc_results)[1]
+                
     # Start building Probability density functions (pdf)
     if parser_phase3.options.mode == "clustering" or parser_phase3.options.mode == "ces":
 
@@ -1125,14 +1260,32 @@ if __name__ == "__main__":
             clustalgo = AffinityPropagation()
 
             # Prepare input for parallel calculation
-            confdistmatrixs = [ confdistmatrix for i in preferences ]
-            lams = [ parser_phase3.options.lam for i in preferences ]
-            max_iterationss = [ parser_phase3.options.max_iterations for i in preferences ]
-            convergences = [ parser_phase3.options.convergence for i in preferences ]
-            noises = [ int(parser_phase3.options.noise) for i in preferences ]
+            if parser_phase3.options.estimate_error:
+                if parser_phase3.options.error_mode == "bootstrapping":
+                    confdistmatrixs = []
+                    lams = []
+                    max_iterationss = []
+                    convergences = []
+                    noises = []
+                    real_prefs = []
+                    for p in preferences: 
+                        confdistmatrixs.extend(bootstrap_matrices)
+                        lams.extend([parser_phase3.options.lam]*len(bootstrap_matrices))
+                        max_iterationss.extend([parser_phase3.options.max_iterations]*len(bootstrap_matrices))
+                        noises.extend([parser_phase3.options.noise]*len(bootstrap_matrices))
+                        convergences.extend([parser_phase3.options.convergence]*len(bootstrap_matrices))
+                        real_prefs.extend([p]*len(bootstrap_matrices))
+                    old_prefs = preferences
+                    preferences = real_prefs
+            else:
+                confdistmatrixs = [ confdistmatrix for i in preferences ]
+                lams = [ parser_phase3.options.lam for i in preferences ]
+                max_iterationss = [ parser_phase3.options.max_iterations for i in preferences ]
+                convergences = [ parser_phase3.options.convergence for i in preferences ]
+                noises = [ int(parser_phase3.options.noise) for i in preferences ]
 
             args = zip(confdistmatrixs, preferences, lams, max_iterationss, convergences, noises)
-
+            print args
             logging.info("    Starting affinity propagation runs . . .")
 
             # Do it
@@ -1145,60 +1298,50 @@ if __name__ == "__main__":
             # Create clusters collections from clustering results, one for each cluster. None if clustering didn't work.
             ccs = [ ClustersCollection(clusters[1], metadata=metadata) for clusters in results ]
             
+        
+            if parser_phase3.options.estimate_error:
+                if parser_phase3.options.error_mode == "bootstrapping":
+                    preferences = old_prefs
+                    k = 0
+                    for i,p in enumerate(preferences):
+                        failed_runs = 0
+                        values = []
+                        for j in range(parser_phase3.options.bootstrapping_runs):
+                            print i,j,k
+                            if ccs[k].clusters == None:
+                                failed_runs += 1
+                                k += 1
+                                continue
+                            values.append(numpy.zeros((out_matrix_eln,out_matrix_eln)))
+            
+                            for pair in pairs_indeces:
+                                # Calculate dJS
+                                this_djs = clustering_ensemble_similarity( ccs[k], ensembles[pair[0]], pair[0]+1, ensembles[pair[1]], pair[1]+1 )
+                                values[-1][pair[0],pair[1]] = this_djs
+                                values[-1][pair[1],pair[0]] = this_djs
+                            k += 1
+                        outs = numpy.array(values)
+                        avgs = numpy.average(outs, axis=0)
+                        stds = numpy.std(outs, axis=0)
+
+                        print "== clustering ensemble similarity, preference %.1f" %p
+                        print "averages:"
+                        print_square_array(avgs)
+                        print "standard deviations:"
+                        print_square_array(stds)
+                        print "values (ens.A-ens.B value_run_1 value_run_2 ... value_run_N):"
+                        for i,j in pairs_indeces:
+                            print "%d-%d\t" % (i+1,j+1),
+                            print " ".join(["%.3f"%k for k in outs[:,i,j]])
+
+                exit(0)
+
             for i,p in enumerate(preferences):
                 if ccs[i].clusters == None:
                     continue
                 if parser_phase3.options.evaluate_convergence:
                     fname = str(parser_phase3.options.outfiles)+"_convergence_clustering_preference%.1f" %p
                     header = "=== convergence clustering, preference %.1f, "%p
-                    #if parser_phase3.options.convergence_mode == 'half-half':
-                    #    header += "half-half ==="
-                    #    fname+="_half-half.dat"
-                    #    if parser_phase3.options.outfiles != None:
-                    #        fhandler = open(fname,'a')
-                    #    else:
-                    #        fhandler = None
-
-                    #    write_output_line(0,rawline=header,fhandler=fhandler)
-                    #    write_output_line(0, rawline="half-half distance: %.3f" %   
-                    #                                    harmonic_ensemble_similarity(x1 = xs[0],
-                    #                                      x2 = xs[1],
-                    #                                      sigma1 = sigmas[0],
-                    #                                      sigma2 = sigmas[1]),
-                    #                                    fhandler=fhandler)
-
-                    #elif parser_phase3.options.convergence_mode == 'sliding-window':
-                    #    print "sliding window ==="
-                    #    for j in range(len(ensembles)-1):
-                    #        print "%.3f" % clustering_ensemble_similarity( ccs[i], ensembles[j], j+1,  ensembles[j+1], j+2)
-                    #elif parser_phase3.options.convergence_mode == 'fixed-window':
-                    #    print "fixed window ==="
-                    #    for j in range(1,len(ensembles)):
-                    #        print "%.3f" % clustering_ensemble_similarity( ccs[i], ensembles[0], 1, ensembles[j], j+1)
-                    #elif parser_phase3.options.convergence_mode == "increasing-half":
-                    #    print "increasing half ==="
-                    #    for j in range(0,len(ensembles)):
-                    #        print "%.3f" % cumulative_clustering_ensemble_similarity( ccs[i], ensembles[-1], len(ensembles)+1, ensembles[j], j+1, ens1_id_min=len(ensembles)+1)
-                    # for every preference value
-
-                    #if parser_phase3.options.convergence_mode == "increasing-half":
-                    #    fname += "_increasing-half.dat"
-                    #    header += "increasing half ==="
-                    #    if parser_phase3.options.outfiles != None:
-                    #        fhandler = open(fname,'a')
-                    #    else:
-                    #        fhandler = None
-
-                    #    write_output_line(0,rawline=header, fhandler=fhandler)
-                    #    for j in range(0,len(ensembles)):
-                    #        write_output_line(cumulative_clustering_ensemble_similarity( ccs[i], 
-                    #                                                                    ensembles[-1], 
-                    #                                                                    len(ensembles)+1, 
-                    #                                                                    ensembles[j], 
-                    #                                                                    j+1, 
-                    #                                                                    ens1_id_min=len(ensembles)+1),
-                    #                            fhandler=fhandler,
-                    #                            number=j+1)
 
                     if parser_phase3.options.convergence_mode=="increasing-window":
                         values = TriangularMatrix(size=out_matrix_eln)
@@ -1219,6 +1362,8 @@ if __name__ == "__main__":
                             fhandler=fhandler,
                             number=j+1)
                 # for every preference value
+
+
                 else:
                     values = TriangularMatrix(size=out_matrix_eln)
 
@@ -1242,22 +1387,30 @@ if __name__ == "__main__":
 
     if parser_phase3.options.mode == "dimred" or parser_phase3.options.mode == "dres":
         dimensions = map(int,parser_phase3.options.dim.split(','))
+
+        # prepare runs. (e.g.: runs = [1,2,3,1,2,3,1,2,3, ...])
+        if parser_phase3.options.estimate_error:
+            if parser_phase3.options.error_mode == "bootstrapping":
+                runs = []
+                for d in dimensions: 
+                    runs.extend([d]*parser_phase3.options.bootstrapping_runs)
+                matrices = bootstrap_matrices*parser_phase3.options.bootstrapping_runs
+        else:
+            runs = dimensions
+            matrices = [confdistmatrix for i in runs]
         for d in dimensions:
             if d > confdistmatrix.size:
                 logging.error("ERROR: The embedded space must have a number of dimensions inferior to the original space.")
                 exit(1)
-
-        # prepare runs. (e.g.: runs = [1,2,3,1,2,3,1,2,3, ...])
-        runs = dimensions*1
         
         # Choose algorithm and prepare options
         embedding_options = []
         if parser_phase3.options.spe_mode == 'vanilla':
             embedder = StochasticProximityEmbedding()
-            for r in runs:
-                embedding_options += [(confdistmatrix, 
+            for r in range(len(runs)):
+                embedding_options += [(matrices[r], 
                                   parser_phase3.options.neighborhood_cutoff, 
-                                  r,
+                                  runs[r],
                                   parser_phase3.options.maxlam,
                                   parser_phase3.options.minlam,
                                   parser_phase3.options.ncycle,
@@ -1266,11 +1419,11 @@ if __name__ == "__main__":
 
         if parser_phase3.options.spe_mode == 'rn':
             embedder = RandomNeighborhoodStochasticProximityEmbedding()
-            for r in runs:
-                embedding_options += [(confdistmatrix, 
+            for r in range(len(runs)):
+                embedding_options += [(matrices[r],
                                   parser_phase3.options.neighborhood_cutoff,
                                   parser_phase3.options.kn,
-                                  r,
+                                  runs[r],
                                   parser_phase3.options.maxlam,
                                   parser_phase3.options.minlam,
                                   parser_phase3.options.ncycle,
@@ -1278,10 +1431,10 @@ if __name__ == "__main__":
 
         if parser_phase3.options.spe_mode == 'knn':
             embedder = kNNStochasticProximityEmbedding()
-            for r in runs:
-                embedding_options += [(confdistmatrix, 
+            for r in range(len(runs)):
+                embedding_options += [(matrices[r],
                                   parser_phase3.options.kn,
-                                  r,
+                                  runs[r],
                                   parser_phase3.options.maxlam,
                                   parser_phase3.options.minlam,
                                   parser_phase3.options.ncycle,
@@ -1298,6 +1451,43 @@ if __name__ == "__main__":
         stresses_perdim = {}
 
         # Sort out obtained spaces and their residual stress values
+
+        if parser_phase3.options.estimate_error: # if bootstrap
+            if parser_phase3.options.error_mode == "bootstrapping":
+                k = 0
+                for ndim in dimensions:
+                    values = []
+                    for i in range(parser_phase3.options.bootstrapping_runs):
+
+                        header = "# ==== Number of dimensions: %d ==="%ndim
+                        values.append(numpy.zeros((out_matrix_eln,out_matrix_eln)))
+
+                        embedded_stress  = results[k][1][0]
+                        embedded_space = results[k][1][1]
+                        
+                        kdes, resamples, embedded_ensembles = gen_kde_pdfs(embedded_space, ensemble_assignment, parser_phase3.options.nensembles, nsamples = parser_phase3.options.samples)
+
+                        for pair in pairs_indeces:
+                            this_value = dimred_ensemble_similarity(kdes[pair[0]], resamples[pair[0]], kdes[pair[1]],resamples[pair[1]])
+                            values[-1][pair[0],pair[1]] = this_value
+                            values[-1][pair[1],pair[0]] = this_value
+                        
+                        k += 1
+                        outs = numpy.array(values)
+                        avgs = numpy.average(outs, axis=0)
+                        stds = numpy.std(outs, axis=0)
+                        
+                    print "== number of dimensions: %d ==" % ndim
+                    print "averages:"
+                    print_square_array(avgs)
+                    print "standard deviations:"
+                    print_square_array(stds)
+                    print "values (ens.A-ens.B value_run_1 value_run_2 ... value_run_N):"
+                    for i,j in pairs_indeces:
+                        print "%d-%d\t" % (i+1,j+1),
+                        print " ".join(["%.3f"%k for k in outs[:,i,j]])
+                exit(0)
+
         for i in range(len(dimensions)):
             stresses_perdim[dimensions[i]] = []
             embedded_spaces_perdim[dimensions[i]] = []
