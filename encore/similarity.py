@@ -1235,7 +1235,6 @@ if __name__ == "__main__":
                 pc = ParallelCalculation(parser_phase3.options.coresn, bootstrap_matrix, bs_args)
                 
                 pc_results = pc.run()
-                print pc_results
                 bootstrap_matrices = zip(*pc_results)[1]
                 
     # Start building Probability density functions (pdf)
@@ -1285,7 +1284,6 @@ if __name__ == "__main__":
                 noises = [ int(parser_phase3.options.noise) for i in preferences ]
 
             args = zip(confdistmatrixs, preferences, lams, max_iterationss, convergences, noises)
-            print args
             logging.info("    Starting affinity propagation runs . . .")
 
             # Do it
@@ -1307,7 +1305,6 @@ if __name__ == "__main__":
                         failed_runs = 0
                         values = []
                         for j in range(parser_phase3.options.bootstrapping_runs):
-                            print i,j,k
                             if ccs[k].clusters == None:
                                 failed_runs += 1
                                 k += 1
