@@ -25,7 +25,11 @@ A class to compute an RMSD matrix in such a way is also available.
 """
 
 from multiprocessing import Process, Array, cpu_count, Value, RawValue
-from MDAnalysis.analysis.align import rmsd, rotation_matrix
+try:
+    from MDAnalysis.analysis.rms import rmsd
+except:
+    from MDAnalysis.analysis.align import rmsd, rotation_matrix # backwards compatibility for MDAnalysis < 0.10.0
+
 from numpy import sum, average, transpose, dot, ones, asarray, mean, float64, object, bool, array, int
 from ctypes import c_float
 from cutils import *
