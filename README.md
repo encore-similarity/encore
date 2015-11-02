@@ -1,4 +1,6 @@
-=============================== ENCORE ===============================
+##### ** WARNING: ENCORE currently works with MDAnalysis v 0.10.0 or lower, as MDAnalysis 0.11 featured important API changes that break backwards compatibility. We're currently working on adapting the code to the newest version. We're sorry for any issue this might have caused.**
+
+# ENCORE 
 
 ENCORE is a Python package designed to quantify the similarity between
 conformational ensembles of proteins (or in principle other
