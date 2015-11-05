@@ -101,9 +101,9 @@ class ConformationalDistanceMatrixGenerator:
         subset_masses = None
     
         if mass_weighted:
-            masses = ensemble.atom_selection.masses()
+            masses = ensemble.atom_selection.masses
             if pairwise_align:
-                subset_masses = subset_selection.masses()
+                subset_masses = subset_selection.masses
         else:
             masses = ones((ensemble.coordinates[0].shape[0]))
             if pairwise_align:

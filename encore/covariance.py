@@ -216,7 +216,7 @@ def covariance_matrix(ensemble,
     if reference:
 
         # Select the same atoms in reference structure
-        reference_atom_selection = reference.selectAtoms(ensemble.get_atom_selection_string())
+        reference_atom_selection = reference.select_atoms(ensemble.get_atom_selection_string())
         reference_coordinates = reference_atom_selection.atoms.coordinates()
 
         # Flatten reference coordinates 
@@ -227,7 +227,7 @@ def covariance_matrix(ensemble,
     # Optionally correct with mass-weighting
     if mass_weighted:
         # Calculate mass-weighted covariance matrix
-        masses = numpy.repeat(ensemble.atom_selection.masses(), 3)
+        masses = numpy.repeat(ensemble.atom_selection.masses, 3)
         mass_matrix = numpy.sqrt(numpy.identity(len(masses))*masses)
         sigma = numpy.dot(mass_matrix, numpy.dot(sigma, mass_matrix))
 

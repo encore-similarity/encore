@@ -122,7 +122,7 @@ class Ensemble:
  
         # Set the attributes for the atom set on which calculation will be performed
         self.atom_selection_string = atom_selection_string
-        self.atom_selection = self.universe.selectAtoms(self.atom_selection_string)
+        self.atom_selection = self.universe.select_atoms(self.atom_selection_string)
         self.coordinates = None
         self.coordinates = self.get_coordinates(subset_selection_string = self.atom_selection_string)
 
@@ -130,7 +130,7 @@ class Ensemble:
         # Fitting and calculation may be performed on two non-overlapping sets. This is optional.
         if superimposition_selection_string:
             self.superimposition_selection_string = superimposition_selection_string
-            self.superimposition_selection = self.universe.selectAtoms(superimposition_selection_string)    
+            self.superimposition_selection = self.universe.select_atoms(superimposition_selection_string)    
             self.superimposition_coordinates = self.get_coordinates(subset_selection_string = self.superimposition_selection_string)
         else:
             self.superimposition_selection_string = self.atom_selection_string
@@ -165,7 +165,7 @@ class Ensemble:
             
         if not subset_selection_string:
             subset_selection_string = self.atom_selection_string
-        subset_selection = self.universe.selectAtoms(subset_selection_string)
+        subset_selection = self.universe.select_atoms(subset_selection_string)
         
         # Try to extract coordinates using Timeseries object
         # This is significantly faster, but only implemented for certain 
@@ -223,9 +223,9 @@ class Ensemble:
             
             
         if weighted:
-            alignment_subset_masses = alignment_subset_atom_selection.masses()
+            alignment_subset_masses = alignment_subset_atom_selection.masses
         else:
-            alignment_subset_masses = np.ones(alignment_subset_atom_selection.masses().shape[0])
+            alignment_subset_masses = np.ones(alignment_subset_atom_selection.masses.shape[0])
         
         # Find center of mass of alignment subset for all frames 
         alignment_subset_coordinates_center_of_mass = numpy.average(alignment_subset_coordinates,
@@ -245,13 +245,13 @@ class Ensemble:
         if reference:
             offset = 0
             # Select the same atoms in reference structure
-            reference_atom_selection = reference.selectAtoms(self.superimposition_selection_string)
+            reference_atom_selection = reference.select_atoms(self.superimposition_selection_string)
             reference_coordinates = reference_atom_selection.atoms.coordinates()
 
             if weighted:
-                reference_masses = reference_atom_selection.masses()
+                reference_masses = reference_atom_selection.masses
             else:
-                reference_masses = np.ones(reference_atom_selection.masses().shape[0])
+                reference_masses = np.ones(reference_atom_selection.masses.shape[0])
         else:
             reference_coordinates = alignment_subset_coordinates[0]
 
