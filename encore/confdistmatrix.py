@@ -150,7 +150,7 @@ class ConformationalDistanceMatrixGenerator:
         if pairwise_align:
             workers = [Process(target=self._fitter_worker, args=(tasks_per_worker[i], ensemble.coordinates, subset_coords, masses, subset_masses, distmat, partial_counters[i])) for i in range(ncores)]
         else:
-            workers = [Process(target=self._simple_worker, args=(tasks_per_worker[i], ensemble.coordinates, masses, distmat, pbar_counter)) for i in range(ncores)]
+            workers = [Process(target=self._simple_worker, args=(tasks_per_worker[i], ensemble.coordinates, masses, distmat, partial_counters[i])) for i in range(ncores)]
 
 	workers += [Process(target=self._pbar_updater, args=(pbar, partial_counters, matsize))]
 
