@@ -1,3 +1,11 @@
+### ENCORE availability
+
+The ENCORE software is now integrated into the MDAnalysis Python library
+as an analysis module -  please head to the [MDAnalysis website](https://www.mdanalysis.org) 
+or the [MDAnalysis github repository](https://github.com/MDAnalysis/mdanalysis) 
+for installation and usage instructions. This is the recommended and most up to
+date version to use for your ENCORE analysis.
+
 # ENCORE 
 
 ENCORE is a Python package designed to quantify the similarity between
